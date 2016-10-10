@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jasonwilson/nodejs-dashboard.git"
+    "url": "git+https://github.com/FormidableLabs/nodejs-dashboard.git"
   },
   "author": "Jason Wilson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jasonwilson/nodejs-dashboard/issues"
+    "url": "https://github.com/FormidableLabs/nodejs-dashboard/issues"
   },
-  "homepage": "https://github.com/jasonwilson/nodejs-dashboard#readme",
+  "homepage": "https://github.com/FormidableLabs/nodejs-dashboard#readme",
   "dependencies": {
     "blessed": "^0.1.81",
     "blessed-contrib": "^3.5.5",
@@ -27,7 +27,6 @@
     "lodash": "^4.16.2",
     "pidusage": "^1.0.8",
     "pretty-bytes": "^4.0.2",
-    "root-require": "^0.3.1",
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "socketio": "^1.0.0"
