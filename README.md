@@ -1,6 +1,10 @@
-# nodejs-dashboard
+<h1 align="center">nodejs-dashboard</h1>
 
-Telemetry dashboard for node.js apps from the terminal!
+<h4 align="center">
+  Telemetry dashboard for node.js apps from the terminal!
+</h4>
+
+***
 
 ![http://i.imgur.com/FDEsZEC.png](http://i.imgur.com/FDEsZEC.png)
 
