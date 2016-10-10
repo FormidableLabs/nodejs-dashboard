@@ -1,0 +1,42 @@
+{
+  "name": "nodejs-dashboard",
+  "version": "0.0.1",
+  "description": "",
+  "bin": "bin/nodejs-dashboard.js",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonwilson/nodejs-dashboard.git"
+  },
+  "author": "Jason Wilson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonwilson/nodejs-dashboard/issues"
+  },
+  "homepage": "https://github.com/jasonwilson/nodejs-dashboard#readme",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^3.5.5",
+    "blocked": "^1.2.1",
+    "commander": "^2.9.0",
+    "cross-spawn": "^4.0.2",
+    "lodash": "^4.16.2",
+    "pidusage": "^1.0.8",
+    "pretty-bytes": "^4.0.2",
+    "root-require": "^0.3.1",
+    "socket.io": "^1.4.8",
+    "socket.io-client": "^1.4.8",
+    "socketio": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^2.10.2",
+    "eslint-config-formidable": "^2.0.1",
+    "eslint-plugin-filenames": "^1.1.0",
+    "eslint-plugin-import": "^1.16.0"
+  }
+}
