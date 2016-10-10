@@ -4,11 +4,12 @@
 const SocketIO = require("socket.io");
 const spawn = require("cross-spawn");
 const commander = require("commander");
+const path = require("path");
 
 const Dashboard = require("../lib/dashboard");
-const appPkg = require("root-require")("package.json");
-const pkg = require("../package.json");
 const config = require("../lib/config");
+const appPkg = require(path.resolve("package.json"));
+const pkg = require("../package.json");
 
 const appName = appPkg.name || "node";
 const program = new commander.Command(pkg.name);
