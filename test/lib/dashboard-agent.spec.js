@@ -1,6 +1,7 @@
 "use strict";
 
 const expect = require("chai").expect;
+const sinon = require("sinon");
 
 const SocketIO = require("socket.io");
 const config = require("../../lib/config");
@@ -10,20 +11,26 @@ const _ = require("lodash");
 describe("dashboard-agent", () => {
 
   let server;
+  let clock;
+  let agent;
   const TEST_PORT = 12345;
+  const REPORTING_THRESHOLD = 2000;
 
   before(() => {
+    clock = sinon.useFakeTimers();
     process.env[config.PORT_KEY] = TEST_PORT;
-    process.env[config.BLOCKED_THRESHOLD_KEY] = 75;
-    dashboardAgent();
+    process.env[config.BLOCKED_THRESHOLD_KEY] = 1;
+
   });
 
   beforeEach(() => {
+    agent = dashboardAgent();
     server = new SocketIO(TEST_PORT);
   });
 
   afterEach(() => {
     server.close();
+    agent.destroy();
   });
 
   describe("initialization", () => {
@@ -35,9 +42,9 @@ describe("dashboard-agent", () => {
         expect(metrics.eventLoop.delay).to.equal(0);
       };
 
+      clock.tick(REPORTING_THRESHOLD);
       server.on("connection", (socket) => {
         expect(socket).to.be.defined;
-
         socket.on("error", done);
         socket.on("metrics", (data) => { //eslint-disable-line max-nested-callbacks
           checkMetrics(JSON.parse(data));
@@ -61,6 +68,7 @@ describe("dashboard-agent", () => {
         expect(metrics.cpu.utilization).to.be.above(0);
       };
 
+      clock.tick(REPORTING_THRESHOLD);
       server.on("connection", (socket) => {
         socket.on("error", done);
         socket.on("metrics", (data) => {
@@ -71,9 +79,12 @@ describe("dashboard-agent", () => {
     });
 
     it("should report an event loop delay", (done) => {
+      clock.restore();
+      agent.destroy();
+      agent = dashboardAgent();
 
       const slowFunc = () => {
-        const count = 100000;
+        const count = 10000;
         let values = _.times(count, () => _.random(0, count));
 
         values = _.sortBy(values);
@@ -85,7 +96,6 @@ describe("dashboard-agent", () => {
       };
 
       slowFunc();
-
       server.on("connection", (socket) => {
         socket.on("error", (err) => done(err));
         socket.on("metrics", (data) => {
