@@ -12,11 +12,10 @@ describe("dashboard-agent", () => {
   let server;
   const TEST_PORT = 12345;
 
-  before((done) => {
+  before(() => {
     process.env[config.PORT_KEY] = TEST_PORT;
     process.env[config.BLOCKED_THRESHOLD_KEY] = 75;
     dashboardAgent();
-    done();
   });
 
   beforeEach(() => {
@@ -32,7 +31,7 @@ describe("dashboard-agent", () => {
     it("should use environment variables for configuration", (done) => {
 
       const checkMetrics = (metrics) => {
-        expect(metrics).to.be.defined;
+        expect(metrics).to.be.exist;
         expect(metrics.eventLoop.delay).to.equal(0);
       };
 
@@ -53,9 +52,8 @@ describe("dashboard-agent", () => {
 
       const checkMetrics = (metrics) => {
         expect(metrics).to.be.defined;
-        expect(metrics.eventLoop.delay).to.be.equal(0);
-        expect(metrics.eventLoop.high).to.be.equal(0);
-        expect(metrics.mem).exist;
+        expect(metrics.eventLoop).to.deep.equal({ delay: 0, high: 0 });
+        expect(metrics.mem).to.exist;
         expect(metrics.mem.systemTotal).to.be.above(0);
         expect(metrics.mem.rss).to.be.above(0);
         expect(metrics.mem.heapTotal).to.be.above(0);
@@ -75,11 +73,8 @@ describe("dashboard-agent", () => {
     it("should report an event loop delay", (done) => {
 
       const slowFunc = () => {
-        let values = [];
         const count = 100000;
-        _.times(count, () => {
-          values.push(_.random(0, count));
-        });
+        let values = _.times(count, () => _.random(0, count));
 
         values = _.sortBy(values);
       };
