@@ -6,12 +6,9 @@ require("../../index");
 const _ = require("lodash");
 
 const slowFunc = (count) => {
-  let values = [];
   const begin = Date.now();
-  _.times(count, (i) => {
-    values.push(_.random(0,10000));
-  });
 
+  let values = _.times(count, () => _.random(0, count));
   values = _.sortBy(values);
 
   return Date.now() - begin;
