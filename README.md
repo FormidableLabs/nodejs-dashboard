@@ -36,7 +36,7 @@ It's recommended that you create a npm script to launch the dashboard.
 ```
 
 #### Launch your app
-Once you've completed these steps run from the following from the terminal
+Once you've completed these steps run the following in your terminal:
 
 ```
 % npm run dev
