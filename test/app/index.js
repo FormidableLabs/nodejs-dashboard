@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-require("../lib/dashboard-agent");
+require("../../lib/dashboard-agent");
 
 const _ = require("lodash");
 
