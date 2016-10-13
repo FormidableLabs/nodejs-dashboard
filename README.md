@@ -59,3 +59,5 @@ Under the hood the dashboard utilizes SocketIO with a default port of `9838`. If
 
 #####`-eventdelay`
 This tunes the minimum threshold for reporting event loop delays. The default value is `10ms`. Any delay below this value will be reported at `0`.
+
+To gracefully exit and terminate the spawned process use one of:  `Ctrl + C`, `Q`, or `ESC`.
