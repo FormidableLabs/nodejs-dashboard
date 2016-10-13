@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/daithi/.nvm/versions/node/v6.2.1/bin/node',
+1 verbose cli   '/home/daithi/.nvm/versions/node/v6.2.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@3.9.3
+3 info using node@v6.2.1
+4 verbose stack Error: missing script: dev
+4 verbose stack     at run (/home/daithi/.nvm/versions/node/v6.2.1/lib/node_modules/npm/lib/run-script.js:150:19)
+4 verbose stack     at /home/daithi/.nvm/versions/node/v6.2.1/lib/node_modules/npm/lib/run-script.js:60:5
+4 verbose stack     at /home/daithi/.nvm/versions/node/v6.2.1/lib/node_modules/npm/node_modules/read-package-json/read-json.js:356:5
+4 verbose stack     at handleExists (/home/daithi/.nvm/versions/node/v6.2.1/lib/node_modules/npm/node_modules/read-package-json/read-json.js:329:20)
+4 verbose stack     at FSReqWrap.cb [as oncomplete] (fs.js:251:19)
+5 verbose cwd /opt/futurefinance/FF-API/node_modules/nodejs-dashboard
+6 error Linux 3.16.0-4-amd64
+7 error argv "/home/daithi/.nvm/versions/node/v6.2.1/bin/node" "/home/daithi/.nvm/versions/node/v6.2.1/bin/npm" "run" "dev"
+8 error node v6.2.1
+9 error npm  v3.9.3
+10 error missing script: dev
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]
