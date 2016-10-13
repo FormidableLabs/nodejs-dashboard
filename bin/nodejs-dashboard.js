@@ -4,6 +4,7 @@
 const SocketIO = require("socket.io");
 const spawn = require("cross-spawn");
 const commander = require("commander");
+const _ = require("lodash");
 const path = require("path");
 
 const Dashboard = require("../lib/dashboard");
@@ -26,7 +27,8 @@ if (!program.args.length) {
 }
 
 const command = program.args[0];
-const args = program.args.slice(1);
+const commandIndex = _.findIndex(program.rawArgs, (arg) => arg === command);
+const args = program.rawArgs.slice(commandIndex + 1);
 
 const port = program.port || config.PORT;
 const eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
