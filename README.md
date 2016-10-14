@@ -34,7 +34,7 @@ It's recommended that you create a npm script to launch the dashboard.
 ...
 ```
 
-If your app requires additional arguments you'll need to provide the `--` flag when launching the dashboard. For example:
+If your app requires additional arguments you'll need to pass the `--` flag to your script. For example:
 
 ```
 ...
