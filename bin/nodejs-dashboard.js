@@ -68,3 +68,5 @@ child.stderr.on("data", (data) => {
 process.on("exit", () => {
   process.kill(process.platform === "win32" ? child.pid : -child.pid);
 });
+
+require('../index');
