@@ -20,7 +20,6 @@ From within your `index.js` or app entry point simply require the `nodejs-dashbo
 
 ```
 require("nodejs-dashboard");
-
 ```
 
 #### Update your package.json
