@@ -18,6 +18,9 @@
     "url": "https://github.com/FormidableLabs/nodejs-dashboard/issues"
   },
   "homepage": "https://github.com/FormidableLabs/nodejs-dashboard#readme",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "dependencies": {
     "blessed": "^0.1.81",
     "blessed-contrib": "^3.5.5",
