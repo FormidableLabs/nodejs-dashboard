@@ -34,6 +34,17 @@ It's recommended that you create a npm script to launch the dashboard.
 ...
 ```
 
+If your app requires additional arguments you'll need to provide the `--` flag when launching the dashboard. For example:
+
+```
+...
+"scripts": {
+    "dev": "nodejs-dashboard -- node -myFlag=false --bar=true index.js"
+  }
+...
+```
+
+
 #### Launch your app
 Once you've completed these steps run the following in your terminal:
 
