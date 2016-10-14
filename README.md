@@ -46,7 +46,7 @@ If your app requires additional arguments you'll need to pass the `--` flag to y
 
 ##### But I want to use something else to launch my app!
 
-Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use another tool like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the cli.
+Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use something like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the cli.
 
 `nodemon --exec "nodejs-dashboard babel-node" src/index.js`
 
