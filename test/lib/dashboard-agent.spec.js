@@ -101,5 +101,18 @@ describe("dashboard-agent", () => {
         done();
       });
     });
+
+    it("should return an error when pusage fails", (done) => {
+      const pidStub = sinon.stub(pusage, "stat").yields(new Error("bad error"));
+
+      agent._getStats((err, metrics) => {
+        expect(err).to.exist;
+        expect(metrics).to.be.undefined;
+        expect(err.message).to.equal("bad error");
+
+        pidStub.restore();
+        done();
+      });
+    });
   });
 });
