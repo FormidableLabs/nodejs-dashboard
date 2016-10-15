@@ -80,7 +80,7 @@ describe("dashboard-agent", () => {
       });
     });
 
-    it("should report an event loop delay and cpu stats", (done) => {
+    it("should report an event loop delay and cpu stats", () => {
       const delay = { current: 100, max: 150 };
       const pusageResults = { cpu: 50 };
       const pidStub = sinon.stub(pusage, "stat").yields(null, pusageResults);
@@ -98,7 +98,6 @@ describe("dashboard-agent", () => {
         expect(err).to.be.null;
         checkMetrics(metrics);
         pidStub.restore();
-        done();
       });
     });
 
