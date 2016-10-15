@@ -6,21 +6,18 @@ const sinon = require("sinon");
 const SocketIO = require("socket.io");
 const config = require("../../lib/config");
 const dashboardAgent = require("../../lib/dashboard-agent");
-const _ = require("lodash");
+const pusage = require("pidusage");
 
 describe("dashboard-agent", () => {
 
   let server;
-  let clock;
   let agent;
   const TEST_PORT = 12345;
-  const REPORTING_THRESHOLD = 2000;
+  const REPORTING_THRESHOLD = 1500;
 
   before(() => {
-    clock = sinon.useFakeTimers();
     process.env[config.PORT_KEY] = TEST_PORT;
     process.env[config.BLOCKED_THRESHOLD_KEY] = 1;
-
   });
 
   beforeEach(() => {
@@ -34,15 +31,23 @@ describe("dashboard-agent", () => {
   });
 
   describe("initialization", () => {
+    let clock;
+    before(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    after(() => {
+      clock.restore();
+    });
 
     it("should use environment variables for configuration", (done) => {
-
       const checkMetrics = (metrics) => {
         expect(metrics).to.be.exist;
         expect(metrics.eventLoop.delay).to.equal(0);
       };
 
       clock.tick(REPORTING_THRESHOLD);
+
       server.on("connection", (socket) => {
         expect(socket).to.be.defined;
         socket.on("error", done);
@@ -68,40 +73,32 @@ describe("dashboard-agent", () => {
         expect(metrics.cpu.utilization).to.be.above(0);
       };
 
-      clock.tick(REPORTING_THRESHOLD);
-      server.on("connection", (socket) => {
-        socket.on("error", done);
-        socket.on("metrics", (data) => {
-          checkMetrics(JSON.parse(data));
-          done();
-        });
+      agent._getStats((err, metrics) => {
+        expect(err).to.be.null;
+        checkMetrics(metrics);
+        done();
       });
     });
 
-    it("should report an event loop delay", (done) => {
-      clock.restore();
-      agent.destroy();
-      agent = dashboardAgent();
+    it("should report an event loop delay and cpu stats", (done) => {
+      const delay = { current: 100, max: 150 };
+      const pusageResults = { cpu: 50 };
+      const pidStub = sinon.stub(pusage, "stat").yields(null, pusageResults);
 
-      const slowFunc = () => {
-        const count = 10000;
-        let values = _.times(count, () => _.random(0, count));
-
-        values = _.sortBy(values);
-      };
+      agent._delayed(delay.max);
+      agent._delayed(delay.current);
 
       const checkMetrics = (metrics) => {
-        expect(metrics.eventLoop.delay).to.be.above(0);
-        expect(metrics.eventLoop.high).to.be.above(0);
+        expect(metrics.eventLoop.delay).to.equal(delay.current);
+        expect(metrics.eventLoop.high).to.be.equal(delay.max);
+        expect(metrics.cpu.utilization).to.equal(pusageResults.cpu);
       };
 
-      slowFunc();
-      server.on("connection", (socket) => {
-        socket.on("error", (err) => done(err));
-        socket.on("metrics", (data) => {
-          checkMetrics(JSON.parse(data));
-          done();
-        });
+      agent._getStats((err, metrics) => {
+        expect(err).to.be.null;
+        checkMetrics(metrics);
+        pidStub.restore();
+        done();
       });
     });
   });
