@@ -15,7 +15,7 @@ const slowFunc = (count) => {
 
 }
 
-const bigBuffer = new Buffer.alloc(200000000);
+const bigBuffer = new Buffer(200000000);
 
 let count = 1;
 setInterval(() => {
