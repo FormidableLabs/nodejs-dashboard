@@ -10,55 +10,83 @@
 
 Determine in realtime what's happening inside your node process from the terminal. No need to instrument code to get the deets. Also splits stderr/stdout to help spot errors sooner.
 
+## Getting Started
+
 ### Install
+The preferred method is global install but can optionally be placed locally as well.
 
-`npm install nodejs-dashboard --save-dev`
-
-#### Add the reporting module to your code
-
-From within your `index.js` or app entry point simply require the `nodejs-dashboard` module.
-
+```bash
+% npm install -g nodejs-dashboard
 ```
+
+
+### Add the reporting module
+
+There are a couple patterns for including `nodejs-dashboard` in your code. This module isn't designed for production use and should be limited to development environments.
+
+#### Including via code
+
+From within a `dev.index.js` script or other dev entry point simply require the `nodejs-dashboard` module.
+
+```js
+// dev.index.js
 require("nodejs-dashboard");
+require("./index");
 ```
 
-#### Update your package.json
+Next update your `package.json` to launch the dashboard:
 
-It's recommended that you create a npm script to launch the dashboard.
-
-```
+```js
 ...
 "scripts": {
-    "dev": "nodejs-dashboard node index.js"
-  }
+    "dev": "nodejs-dashboard node dev.index.js"
+}
 ...
 ```
+
+#### Including via preload argument
+
+This method utilizes Node's `-r` flag to introduce the `nodejs-dashboard` module. In this setup no code modifications are required. This is functionally equivalent to the above example.
+
+Update your `package.json` with the new script:
+
+```js
+...
+"scripts": {
+    "dev": "nodejs-dashboard -- node -r nodejs-dashboard index.js"
+}
+...
+```
+
+#### Caveats
 
 If your app requires additional arguments you'll need to pass the `--` flag to your script. For example:
 
-```
+```js
 ...
 "scripts": {
-    "dev": "nodejs-dashboard -- node -myFlag=false --bar=true index.js"
-  }
+    "dev": "nodejs-dashboard -- node -m=false --bar=true index.js"
+}
 ...
 ```
 
-##### But I want to use something else to launch my app!
+#### But I want to use something else to launch my app!
 
-Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use something like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the cli.
+Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use something like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the CLI.
 
-`nodemon --exec "nodejs-dashboard babel-node" src/index.js`
+```bash
+% nodemon --exec "nodejs-dashboard babel-node" src/index.js
+```
 
 
-#### Launch your app
+### Launch your app
 Once you've completed these steps run the following in your terminal:
 
-```
+```bash
 % npm run dev
 ```
 
-#### What options does nodejs-dashboard support?
+### What options does nodejs-dashboard support?
 
 Usage: nodejs-dashboard [options] -- [node] [script] [arguments]
 ```
