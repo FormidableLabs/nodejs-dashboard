@@ -24,7 +24,7 @@ The preferred method is global install but can optionally be placed locally as w
 
 There are a couple patterns for including `nodejs-dashboard` in your code. This module isn't designed for production use and should be limited to development environments.
 
-##### Including via code
+#### Including via code
 
 From within a `dev.index.js` script or other dev entry point simply require the `nodejs-dashboard` module.
 
@@ -44,7 +44,7 @@ Next update your `package.json` to launch the dashboard:
 ...
 ```
 
-##### Including via preload argument
+#### Including via preload argument
 
 This method utilizes Node's `-r` flag to introduce the `nodejs-dashboard` module. In this setup no code modifications are required. This is functionally equivalent to the above example.
 
@@ -58,7 +58,7 @@ Update your `package.json` with the new script:
 ...
 ```
 
-##### Caveats
+#### Caveats
 
 If your app requires additional arguments you'll need to pass the `--` flag to your script. For example:
 
@@ -70,7 +70,7 @@ If your app requires additional arguments you'll need to pass the `--` flag to y
 ...
 ```
 
-##### But I want to use something else to launch my app!
+#### But I want to use something else to launch my app!
 
 Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use something like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the CLI.
 
