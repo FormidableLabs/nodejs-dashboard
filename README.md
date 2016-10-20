@@ -15,7 +15,9 @@ Determine in realtime what's happening inside your node process from the termina
 ### Install
 The preferred method is global install but can optionally be placed locally as well.
 
-`npm install -g nodejs-dashboard`
+```bash
+% npm install -g nodejs-dashboard
+```
 
 
 #### Add the reporting module to your code
@@ -26,7 +28,9 @@ There are a couple patterns for including `nodejs-dashboard` in your code. Since
 
 This pattern requires you to use a run-time flag (see below).
 
-`nodejs-dashboard -- node -r nodejs-dashboard index.js`
+```bash
+% nodejs-dashboard -- node -r nodejs-dashboard index.js
+```
 
 ##### Including via code
 
@@ -41,30 +45,31 @@ require("nodejs-dashboard");
 It's recommended that you create a npm script to launch the dashboard. How you decide to include the module will dictate the run script.
 
 For example, if you want to conditionally include via requires flag see the following example.
-```
+
+```js
 ...
 "scripts": {
     "dev": "nodejs-dashboard -- node -r nodejs-dashboard index.js"
-  }
+}
 ...
 ```
 
 In this example we've included the module in a custom development entry point.
-```
+```js
 ...
 "scripts": {
     "dev": "nodejs-dashboard node dev.index.js"
-  }
+}
 ...
 ```
 
 If your app requires additional arguments you'll need to pass the `--` flag to your script. For example:
 
-```
+```js
 ...
 "scripts": {
     "dev": "nodejs-dashboard -- node -m=false --bar=true index.js"
-  }
+}
 ...
 ```
 
@@ -72,13 +77,15 @@ If your app requires additional arguments you'll need to pass the `--` flag to y
 
 Most CLI interfaces provide a mechanism for launching other tools. If you're looking to use something like [nodemon](https://github.com/remy/nodemon) or [babel](https://github.com/babel/babel/tree/master/packages/babel-cli) checkout the exec options provided by the CLI.
 
-`nodemon --exec "nodejs-dashboard babel-node" src/index.js`
+```bash
+% nodemon --exec "nodejs-dashboard babel-node" src/index.js
+```
 
 
 #### Launch your app
 Once you've completed these steps run the following in your terminal:
 
-```
+```bash
 % npm run dev
 ```
 
