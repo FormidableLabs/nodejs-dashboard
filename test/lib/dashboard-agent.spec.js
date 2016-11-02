@@ -1,19 +1,19 @@
 "use strict";
 
-const expect = require("chai").expect;
-const sinon = require("sinon");
+var expect = require("chai").expect;
+var sinon = require("sinon");
 
-const SocketIO = require("socket.io");
-const config = require("../../lib/config");
-const dashboardAgent = require("../../lib/dashboard-agent");
-const pusage = require("pidusage");
+var SocketIO = require("socket.io");
+var config = require("../../lib/config");
+var dashboardAgent = require("../../lib/dashboard-agent");
+var pusage = require("pidusage");
 
 describe("dashboard-agent", () => {
 
   let server;
   let agent;
-  const TEST_PORT = 12345;
-  const REPORTING_THRESHOLD = 1500;
+  var TEST_PORT = 12345;
+  var REPORTING_THRESHOLD = 1500;
 
   before(() => {
     process.env[config.PORT_KEY] = TEST_PORT;
@@ -41,7 +41,7 @@ describe("dashboard-agent", () => {
     });
 
     it("should use environment variables for configuration", (done) => {
-      const checkMetrics = (metrics) => {
+      var checkMetrics = (metrics) => {
         expect(metrics).to.be.exist;
         expect(metrics.eventLoop.delay).to.equal(0);
       };
@@ -62,7 +62,7 @@ describe("dashboard-agent", () => {
   describe("reporting", () => {
     it("should provide basic metrics", (done) => {
 
-      const checkMetrics = (metrics) => {
+      var checkMetrics = (metrics) => {
         expect(metrics).to.be.defined;
         expect(metrics.eventLoop).to.deep.equal({ delay: 0, high: 0 });
         expect(metrics.mem).to.exist;
@@ -81,14 +81,14 @@ describe("dashboard-agent", () => {
     });
 
     it("should report an event loop delay and cpu stats", (done) => {
-      const delay = { current: 100, max: 150 };
-      const pusageResults = { cpu: 50 };
-      const pidStub = sinon.stub(pusage, "stat").yields(null, pusageResults);
+      var delay = { current: 100, max: 150 };
+      var pusageResults = { cpu: 50 };
+      var pidStub = sinon.stub(pusage, "stat").yields(null, pusageResults);
 
       agent._delayed(delay.max);
       agent._delayed(delay.current);
 
-      const checkMetrics = (metrics) => {
+      var checkMetrics = (metrics) => {
         expect(metrics.eventLoop.delay).to.equal(delay.current);
         expect(metrics.eventLoop.high).to.be.equal(delay.max);
         expect(metrics.cpu.utilization).to.equal(pusageResults.cpu);
@@ -103,7 +103,7 @@ describe("dashboard-agent", () => {
     });
 
     it("should return an error when pusage fails", (done) => {
-      const pidStub = sinon.stub(pusage, "stat").yields(new Error("bad error"));
+      var pidStub = sinon.stub(pusage, "stat").yields(new Error("bad error"));
 
       agent._getStats((err, metrics) => {
         expect(err).to.exist;

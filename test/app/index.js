@@ -3,10 +3,10 @@
 
 require("../../index");
 
-const _ = require("lodash");
+var _ = require("lodash");
 
-const slowFunc = (count) => {
-  const begin = Date.now();
+var slowFunc = (count) => {
+  var begin = Date.now();
 
   let values = _.times(count, () => _.random(0, count));
   values = _.sortBy(values);
@@ -15,7 +15,7 @@ const slowFunc = (count) => {
 
 }
 
-const bigBuffer = new Buffer(200000000);
+var bigBuffer = new Buffer(200000000);
 
 let count = 1;
 setInterval(() => {
@@ -25,7 +25,7 @@ setInterval(() => {
 
 setInterval(() => {
   console.log("Slow call started...");
-  const  duration = slowFunc(_.random(1000,100000));
+  var  duration = slowFunc(_.random(1000,100000));
   console.log("Completed in: ", duration);
 }, 3000);
 
