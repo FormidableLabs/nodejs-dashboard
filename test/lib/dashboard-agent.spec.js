@@ -8,50 +8,50 @@ var config = require("../../lib/config");
 var dashboardAgent = require("../../lib/dashboard-agent");
 var pusage = require("pidusage");
 
-describe("dashboard-agent", () => {
+describe("dashboard-agent", function () {
 
-  let server;
-  let agent;
+  var server;
+  var agent;
   var TEST_PORT = 12345;
   var REPORTING_THRESHOLD = 1500;
 
-  before(() => {
+  before(function () {
     process.env[config.PORT_KEY] = TEST_PORT;
     process.env[config.BLOCKED_THRESHOLD_KEY] = 1;
   });
 
-  beforeEach(() => {
+  beforeEach(function () {
     agent = dashboardAgent();
     server = new SocketIO(TEST_PORT);
   });
 
-  afterEach(() => {
+  afterEach(function () {
     server.close();
     agent.destroy();
   });
 
-  describe("initialization", () => {
-    let clock;
-    before(() => {
+  describe("initialization", function () {
+    var clock;
+    before(function () {
       clock = sinon.useFakeTimers();
     });
 
-    after(() => {
+    after(function () {
       clock.restore();
     });
 
-    it("should use environment variables for configuration", (done) => {
-      var checkMetrics = (metrics) => {
+    it("should use environment variables for configuration", function (done) {
+      var checkMetrics = function (metrics) {
         expect(metrics).to.be.exist;
         expect(metrics.eventLoop.delay).to.equal(0);
       };
 
       clock.tick(REPORTING_THRESHOLD);
 
-      server.on("connection", (socket) => {
+      server.on("connection", function (socket) {
         expect(socket).to.be.defined;
         socket.on("error", done);
-        socket.on("metrics", (data) => { //eslint-disable-line max-nested-callbacks
+        socket.on("metrics", function (data) { //eslint-disable-line max-nested-callbacks
           checkMetrics(JSON.parse(data));
           done();
         });
@@ -59,10 +59,10 @@ describe("dashboard-agent", () => {
     });
   });
 
-  describe("reporting", () => {
-    it("should provide basic metrics", (done) => {
+  describe("reporting", function () {
+    it("should provide basic metrics", function (done) {
 
-      var checkMetrics = (metrics) => {
+      var checkMetrics = function (metrics) {
         expect(metrics).to.be.defined;
         expect(metrics.eventLoop).to.deep.equal({ delay: 0, high: 0 });
         expect(metrics.mem).to.exist;
@@ -73,14 +73,14 @@ describe("dashboard-agent", () => {
         expect(metrics.cpu.utilization).to.be.above(0);
       };
 
-      agent._getStats((err, metrics) => {
+      agent._getStats(function (err, metrics) {
         expect(err).to.be.null;
         checkMetrics(metrics);
         done();
       });
     });
 
-    it("should report an event loop delay and cpu stats", (done) => {
+    it("should report an event loop delay and cpu stats", function (done) {
       var delay = { current: 100, max: 150 };
       var pusageResults = { cpu: 50 };
       var pidStub = sinon.stub(pusage, "stat").yields(null, pusageResults);
@@ -88,13 +88,13 @@ describe("dashboard-agent", () => {
       agent._delayed(delay.max);
       agent._delayed(delay.current);
 
-      var checkMetrics = (metrics) => {
+      var checkMetrics = function (metrics) {
         expect(metrics.eventLoop.delay).to.equal(delay.current);
         expect(metrics.eventLoop.high).to.be.equal(delay.max);
         expect(metrics.cpu.utilization).to.equal(pusageResults.cpu);
       };
 
-      agent._getStats((err, metrics) => {
+      agent._getStats(function (err, metrics) {
         expect(err).to.be.null;
         checkMetrics(metrics);
         pidStub.restore();
@@ -102,10 +102,10 @@ describe("dashboard-agent", () => {
       });
     });
 
-    it("should return an error when pusage fails", (done) => {
+    it("should return an error when pusage fails", function (done) {
       var pidStub = sinon.stub(pusage, "stat").yields(new Error("bad error"));
 
-      agent._getStats((err, metrics) => {
+      agent._getStats(function (err, metrics) {
         expect(err).to.exist;
         expect(metrics).to.be.undefined;
         expect(err.message).to.equal("bad error");
