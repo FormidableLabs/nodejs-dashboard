@@ -29,13 +29,13 @@
     "cross-spawn": "^4.0.2",
     "lodash": "^4.16.2",
     "pidusage": "^1.0.8",
-    "pretty-bytes": "^4.0.2",
+    "pretty-bytes": "^3.0.1",
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "socketio": "^1.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.0.0",
+    "babel-eslint": "^6.1.2",
     "chai": "^3.5.0",
     "eslint": "^2.10.2",
     "eslint-config-formidable": "^2.0.1",
