@@ -2,9 +2,14 @@
   "name": "nodejs-dashboard",
   "version": "0.1.2",
   "description": "",
-  "bin": "bin/nodejs-dashboard.js",
-  "main": "index.js",
+  "bin": "dist/bin/nodejs-dashboard.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "npm-run-all build:*",
+    "build:lib": "babel lib -d dist/lib",
+    "build:bin": "babel bin -d dist/bin",
+    "build:pkg": "cp *.json dist/",
+    "build:index": "babel index.js -o dist/index.js",
     "lint": "eslint .",
     "test": "mocha --recursive ./test/**/*.spec.js"
   },
@@ -35,13 +40,16 @@
     "socketio": "^1.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.16.0",
     "babel-eslint": "^7.0.0",
+    "babel-preset-es2015": "^6.16.0",
     "chai": "^3.5.0",
     "eslint": "^2.10.2",
     "eslint-config-formidable": "^2.0.1",
     "eslint-plugin-filenames": "^1.1.0",
     "eslint-plugin-import": "^1.16.0",
     "mocha": "^3.1.1",
+    "npm-run-all": "^3.1.1",
     "sinon": "^1.17.6"
   }
 }

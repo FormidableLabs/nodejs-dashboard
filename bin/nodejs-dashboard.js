@@ -22,7 +22,7 @@ program.parse(process.argv);
 
 if (!program.args.length) {
   program.outputHelp();
-  return;
+  process.exit(0); //eslint-disable-line
 }
 
 const command = program.args[0];
