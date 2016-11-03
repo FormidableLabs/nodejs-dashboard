@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/FormidableLabs/nodejs-dashboard#readme",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=0.10.0"
   },
   "dependencies": {
     "blessed": "^0.1.81",
