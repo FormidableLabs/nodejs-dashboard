@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 "use strict";
 
-const SocketIO = require("socket.io");
-const spawn = require("cross-spawn");
-const commander = require("commander");
-const path = require("path");
+var SocketIO = require("socket.io");
+var spawn = require("cross-spawn");
+var commander = require("commander");
+var path = require("path");
 
-const Dashboard = require("../lib/dashboard");
-const config = require("../lib/config");
-const appPkg = require(path.resolve("package.json"));
-const pkg = require("../package.json");
+var Dashboard = require("../lib/dashboard");
+var config = require("../lib/config");
+var appPkg = require(path.resolve("package.json"));
+var pkg = require("../package.json");
 
-const appName = appPkg.name || "node";
-const program = new commander.Command(pkg.name);
+var appName = appPkg.name || "node";
+var program = new commander.Command(pkg.name);
 
 program.version(pkg.version);
 program.option("-p, --port [port]", "Socket listener port");
@@ -25,46 +25,46 @@ if (!program.args.length) {
   return;
 }
 
-const command = program.args[0];
-const args = program.args.slice(1);
+var command = program.args[0];
+var args = program.args.slice(1);
 
-const port = program.port || config.PORT;
-const eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
+var port = program.port || config.PORT;
+var eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
 
 process.env[config.PORT_KEY] = port;
 process.env[config.BLOCKED_THRESHOLD_KEY] = eventDelay;
 
-const child = spawn(command, args, {
+var child = spawn(command, args, {
   env: process.env,
   stdio: [null, null, null, null],
   detached: true
 });
 
-console.log(`Waiting for client connection on ${port}...`); //eslint-disable-line
+console.log("Waiting for client connection on %d...", port); //eslint-disable-line
 
-const server = new SocketIO(port);
+var server = new SocketIO(port);
 
-const dashboard = new Dashboard({ appName, program });
+var dashboard = new Dashboard({ appName: appName, program: program });
 
-server.on("connection", (socket) => {
-  socket.on("metrics", (data) => {
+server.on("connection", function (socket) {
+  socket.on("metrics", function (data) {
     dashboard.onEvent({ type: "metrics", data: JSON.parse(data) });
   });
 
-  socket.on("error", (err) => {
+  socket.on("error", function (err) {
     console.error("Received error from agent, exiting: ", err); //eslint-disable-line
     process.exit(1); //eslint-disable-line
   });
 });
 
-child.stdout.on("data", (data) => {
+child.stdout.on("data", function (data) {
   dashboard.onEvent({ type: "stdout", data: data.toString("utf8") });
 });
 
-child.stderr.on("data", (data) => {
+child.stderr.on("data", function (data) {
   dashboard.onEvent({ type: "stderr", data: data.toString("utf8") });
 });
 
-process.on("exit", () => {
+process.on("exit", function () {
   process.kill(process.platform === "win32" ? child.pid : -child.pid);
 });
