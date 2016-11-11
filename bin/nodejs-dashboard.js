@@ -30,6 +30,7 @@ var args = program.args.slice(1);
 
 var port = program.port || config.PORT;
 var eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
+var scrollback = program.scrollback || config.SCROLLBACK;
 
 process.env[config.PORT_KEY] = port;
 process.env[config.BLOCKED_THRESHOLD_KEY] = eventDelay;
@@ -44,7 +45,7 @@ console.log("Waiting for client connection on %d...", port); //eslint-disable-li
 
 var server = new SocketIO(port);
 
-var dashboard = new Dashboard({ appName: appName, program: program });
+var dashboard = new Dashboard({ appName: appName, program: program, scrollback: scrollback });
 
 server.on("connection", function (socket) {
   socket.on("metrics", function (data) {
