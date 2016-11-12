@@ -92,10 +92,11 @@ Usage: nodejs-dashboard [options] -- [node] [script] [arguments]
 ```
 Options:
 
-  -h, --help             output usage information
-  -V, --version          output the version number
-  -p, --port [port]      Socket listener port
-  -e, --eventdelay [ms]  Minimum threshold for event loop reporting, default 10ms
+  -h, --help               output usage information
+  -V, --version            output the version number
+  -p, --port [port]        Socket listener port
+  -e, --eventdelay [ms]    Minimum threshold for event loop reporting, default 10ms
+  -s, --scrollback [count] Maximum scroll history for log windows
 ```
 
 #####`--port`
@@ -103,5 +104,8 @@ Under the hood the dashboard utilizes SocketIO with a default port of `9838`. If
 
 #####`--eventdelay`
 This tunes the minimum threshold for reporting event loop delays. The default value is `10ms`. Any delay below this value will be reported at `0`.
+
+#####`--scrollback`
+Specifies the maximum number of lines that log windows (e.g. stdout, stderr) will buffer in order to scroll backwards and see the history. The default is 1000 lines.
 
 To gracefully exit and terminate the spawned process use one of:  `Ctrl + C`, `Q`, or `ESC`.

@@ -17,6 +17,7 @@ var program = new commander.Command(pkg.name);
 program.version(pkg.version);
 program.option("-p, --port [port]", "Socket listener port");
 program.option("-e, --eventdelay [ms]", "Minimum threshold for event loop reporting, default 10ms");
+program.option("-s, --scrollback [count]", "Maximum scroll history for log windows");
 program.usage("[options] -- [node] [script] [arguments]");
 program.parse(process.argv);
 
