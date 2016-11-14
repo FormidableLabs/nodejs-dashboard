@@ -13,7 +13,7 @@ describe("dashboard-agent", function () {
   var server;
   var agent;
   var TEST_PORT = 12345;
-  var REPORTING_THRESHOLD = 1500;
+  var MAX_EVENT_LOOP_DELAY = 10;
 
   before(function () {
     process.env[config.PORT_KEY] = TEST_PORT;
@@ -31,22 +31,12 @@ describe("dashboard-agent", function () {
   });
 
   describe("initialization", function () {
-    var clock;
-    before(function () {
-      clock = sinon.useFakeTimers();
-    });
-
-    after(function () {
-      clock.restore();
-    });
 
     it("should use environment variables for configuration", function (done) {
       var checkMetrics = function (metrics) {
         expect(metrics).to.be.exist;
-        expect(metrics.eventLoop.delay).to.equal(0);
+        expect(metrics.eventLoop.delay).to.be.at.most(MAX_EVENT_LOOP_DELAY);
       };
-
-      clock.tick(REPORTING_THRESHOLD);
 
       server.on("connection", function (socket) {
         expect(socket).to.be.defined;
