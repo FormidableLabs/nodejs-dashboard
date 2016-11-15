@@ -92,15 +92,19 @@ Usage: nodejs-dashboard [options] -- [node] [script] [arguments]
 ```
 Options:
 
-  -h, --help               output usage information
-  -V, --version            output the version number
-  -p, --port [port]        Socket listener port
-  -e, --eventdelay [ms]    Minimum threshold for event loop reporting, default 10ms
-  -s, --scrollback [count] Maximum scroll history for log windows
+  -h, --help                 output usage information
+  -V, --version              output the version number
+  -p, --port [port]          Socket listener port
+  -r, --refreshinterval [ms] Metrics refresh interval, default 1000ms
+  -e, --eventdelay [ms]      Minimum threshold for event loop reporting, default 10ms
+  -s, --scrollback [count]   Maximum scroll history for log windows
 ```
 
 #####`--port`
 Under the hood the dashboard utilizes SocketIO with a default port of `9838`. If this conflicts with an existing service you can optionally change this value.
+
+#####`--refreshinterval`
+Specifies the interval in milliseconds that the metrics should be refreshed. The default is 1000 ms (1 second).
 
 #####`--eventdelay`
 This tunes the minimum threshold for reporting event loop delays. The default value is `10ms`. Any delay below this value will be reported at `0`.

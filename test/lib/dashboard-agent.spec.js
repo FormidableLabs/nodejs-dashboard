@@ -18,6 +18,7 @@ describe("dashboard-agent", function () {
   before(function () {
     process.env[config.PORT_KEY] = TEST_PORT;
     process.env[config.BLOCKED_THRESHOLD_KEY] = 1;
+    process.env[config.REFRESH_INTERVAL_KEY] = 10;
   });
 
   beforeEach(function () {
