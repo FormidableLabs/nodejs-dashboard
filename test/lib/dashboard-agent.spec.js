@@ -43,6 +43,7 @@ describe("dashboard-agent", function () {
         expect(socket).to.be.defined;
         socket.on("error", done);
         socket.on("metrics", function (data) { //eslint-disable-line max-nested-callbacks
+	  socket.removeAllListeners("metrics");
           checkMetrics(JSON.parse(data));
           done();
         });
