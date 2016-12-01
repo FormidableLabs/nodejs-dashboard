@@ -16,7 +16,9 @@ var program = new commander.Command(pkg.name);
 
 program.version(pkg.version);
 program.option("-p, --port [port]", "Socket listener port");
+program.option("-r, --refreshinterval [ms]", "Metrics refresh interval, default 1000ms");
 program.option("-e, --eventdelay [ms]", "Minimum threshold for event loop reporting, default 10ms");
+program.option("-s, --scrollback [count]", "Maximum scroll history for log windows");
 program.usage("[options] -- [node] [script] [arguments]");
 program.parse(process.argv);
 
@@ -29,9 +31,12 @@ var command = program.args[0];
 var args = program.args.slice(1);
 
 var port = program.port || config.PORT;
+var refreshInterval = program.refreshinterval || config.REFRESH_INTERVAL;
 var eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
+var scrollback = program.scrollback || config.SCROLLBACK;
 
 process.env[config.PORT_KEY] = port;
+process.env[config.REFRESH_INTERVAL_KEY] = refreshInterval;
 process.env[config.BLOCKED_THRESHOLD_KEY] = eventDelay;
 
 var child = spawn(command, args, {
@@ -44,7 +49,7 @@ console.log("Waiting for client connection on %d...", port); //eslint-disable-li
 
 var server = new SocketIO(port);
 
-var dashboard = new Dashboard({ appName: appName, program: program });
+var dashboard = new Dashboard({ appName: appName, program: program, scrollback: scrollback });
 
 server.on("connection", function (socket) {
   socket.on("metrics", function (data) {

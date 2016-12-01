@@ -8,7 +8,7 @@ var _ = require("lodash");
 var slowFunc = function (count) {
   var begin = Date.now();
 
-  var values = _.times(count, _.random(0, count));
+  var values = _.times(count, function(n) { return _.random(0, count); });
   values = _.sortBy(values);
 
   return Date.now() - begin;
