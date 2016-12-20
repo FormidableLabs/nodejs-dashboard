@@ -98,7 +98,7 @@ Options:
   -p, --port [port]          Socket listener port
   -r, --refreshinterval [ms] Metrics refresh interval, default 1000ms
   -V, --version              output the version number
-  -s, --scrollback [count]   Maximum scroll history for log windows  
+  -s, --scrollback [count]   Maximum scroll history for log windows
 ```
 
 #####`--port`
