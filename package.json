@@ -1,6 +1,6 @@
 {
   "name": "nodejs-dashboard",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "",
   "bin": "bin/nodejs-dashboard.js",
   "main": "index.js",
