@@ -15,11 +15,29 @@ var appName = appPkg.name || "node";
 var program = new commander.Command(pkg.name);
 
 program.version(pkg.version);
-program.option("-p, --port [port]", "Socket listener port");
-program.option("-r, --refreshinterval [ms]", "Metrics refresh interval, default 1000ms");
-program.option("-e, --eventdelay [ms]", "Minimum threshold for event loop reporting, default 10ms");
-program.option("-s, --scrollback [count]", "Maximum scroll history for log windows");
+
+program.option("-p, --port [port]",
+ "Socket listener port",
+ config.PORT);
+
+program.option("-r, --refreshinterval [ms]",
+ "Metrics refresh interval, default 1000ms",
+ config.REFRESH_INTERVAL);
+
+program.option("-e, --eventdelay [ms]",
+ "Minimum threshold for event loop reporting, default 10ms",
+  config.BLOCKED_THRESHOLD);
+
+program.option("-s, --scrollback [count]",
+ "Maximum scroll history for log windows",
+config.SCROLLBACK);
+
+program.option("-i, --interleave, default false",
+ "Interleave stderr/stdout output",
+ config.INTERLEAVE);
+
 program.usage("[options] -- [node] [script] [arguments]");
+
 program.parse(process.argv);
 
 if (!program.args.length) {
@@ -30,14 +48,12 @@ if (!program.args.length) {
 var command = program.args[0];
 var args = program.args.slice(1);
 
-var port = program.port || config.PORT;
-var refreshInterval = program.refreshinterval || config.REFRESH_INTERVAL;
-var eventDelay = program.eventdelay || config.BLOCKED_THRESHOLD;
-var scrollback = program.scrollback || config.SCROLLBACK;
+var port = program.port;
 
 process.env[config.PORT_KEY] = port;
-process.env[config.REFRESH_INTERVAL_KEY] = refreshInterval;
-process.env[config.BLOCKED_THRESHOLD_KEY] = eventDelay;
+process.env[config.REFRESH_INTERVAL_KEY] = program.refreshinterval;
+process.env[config.BLOCKED_THRESHOLD_KEY] = program.eventdelay;
+
 
 var child = spawn(command, args, {
   env: process.env,
@@ -49,7 +65,12 @@ console.log("Waiting for client connection on %d...", port); //eslint-disable-li
 
 var server = new SocketIO(port);
 
-var dashboard = new Dashboard({ appName: appName, program: program, scrollback: scrollback });
+var dashboard = new Dashboard({
+  appName: appName,
+  program: program,
+  scrollback: program.scrollback,
+  interleave: program.interleave
+});
 
 server.on("connection", function (socket) {
   socket.on("metrics", function (data) {
