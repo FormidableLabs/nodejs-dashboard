@@ -92,11 +92,12 @@ Usage: nodejs-dashboard [options] -- [node] [script] [arguments]
 ```
 Options:
 
+  -e, --eventdelay [ms]      Minimum threshold for event loop reporting, default 10ms
   -h, --help                 output usage information
-  -V, --version              output the version number
+  -i, --interleave           Interleave stderr/stdout output
   -p, --port [port]          Socket listener port
   -r, --refreshinterval [ms] Metrics refresh interval, default 1000ms
-  -e, --eventdelay [ms]      Minimum threshold for event loop reporting, default 10ms
+  -V, --version              output the version number
   -s, --scrollback [count]   Maximum scroll history for log windows
 ```
 
