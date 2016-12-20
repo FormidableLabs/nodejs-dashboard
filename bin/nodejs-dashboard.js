@@ -16,6 +16,14 @@ var program = new commander.Command(pkg.name);
 
 program.version(pkg.version);
 
+program.option("-e, --eventdelay [ms]",
+ "Minimum threshold for event loop reporting, default 10ms",
+  config.BLOCKED_THRESHOLD);
+
+program.option("-i, --interleave, default false",
+ "Interleave stderr/stdout output",
+ config.INTERLEAVE);
+
 program.option("-p, --port [port]",
  "Socket listener port",
  config.PORT);
@@ -24,17 +32,11 @@ program.option("-r, --refreshinterval [ms]",
  "Metrics refresh interval, default 1000ms",
  config.REFRESH_INTERVAL);
 
-program.option("-e, --eventdelay [ms]",
- "Minimum threshold for event loop reporting, default 10ms",
-  config.BLOCKED_THRESHOLD);
 
 program.option("-s, --scrollback [count]",
  "Maximum scroll history for log windows",
 config.SCROLLBACK);
 
-program.option("-i, --interleave, default false",
- "Interleave stderr/stdout output",
- config.INTERLEAVE);
 
 program.usage("[options] -- [node] [script] [arguments]");
 
