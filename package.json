@@ -31,8 +31,7 @@
     "pidusage": "^1.0.8",
     "pretty-bytes": "^3.0.1",
     "socket.io": "^1.4.8",
-    "socket.io-client": "^1.4.8",
-    "socketio": "^1.0.0"
+    "socket.io-client": "^1.4.8"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
