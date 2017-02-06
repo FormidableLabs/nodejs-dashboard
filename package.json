@@ -13,10 +13,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test-only": "mocha -c --require test/setup.js --recursive test/**/*.spec.js",
     "test": "npm run lint && npm run test-only",
+    "test-only": "mocha -c --require test/setup.js --recursive **/*.spec.js",
     "test:app": "./bin/nodejs-dashboard.js node test/app/index.js",
-    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive --require test/setup.js test/**/*.spec.js"
+    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive --require test/setup.js **/*.spec.js"
   },
   "repository": {
     "type": "git",
