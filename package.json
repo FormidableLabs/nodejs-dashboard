@@ -1,7 +1,14 @@
 {
   "name": "nodejs-dashboard",
   "version": "0.3.0",
-  "description": "",
+  "description": "Telemetry dashboard for node.js apps from the terminal!",
+  "keywords": [
+    "dashboard",
+    "telemetry",
+    "terminal",
+    "realtime",
+    "statistics"
+  ],
   "bin": "bin/nodejs-dashboard.js",
   "main": "index.js",
   "scripts": {
