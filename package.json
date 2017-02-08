@@ -13,10 +13,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test-only": "mocha -c --recursive test/**/*.spec.js",
+    "test-only": "mocha -c --require test/setup.js --recursive test/**/*.spec.js",
     "test": "npm run lint && npm run test-only",
     "test:app": "./bin/nodejs-dashboard.js node test/app/index.js",
-    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive test/**/*.spec.js"
+    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive --require test/setup.js test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -52,6 +52,7 @@
     "eslint-plugin-import": "^1.16.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.1",
-    "sinon": "^1.17.6"
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0"
   }
 }
