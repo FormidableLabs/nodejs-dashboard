@@ -13,7 +13,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha --recursive ./test/**/*.spec.js"
+    "test": "mocha -c --recursive test/**/*.spec.js",
+    "check": "npm run lint && npm test",
+    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -47,6 +49,7 @@
     "eslint-config-formidable": "^2.0.1",
     "eslint-plugin-filenames": "^1.1.0",
     "eslint-plugin-import": "^1.16.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.1.1",
     "sinon": "^1.17.6"
   }

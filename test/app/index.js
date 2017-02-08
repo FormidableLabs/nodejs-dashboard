@@ -1,5 +1,6 @@
-/* eslint-disable */
 "use strict";
+
+/* eslint-disable no-console, no-magic-numbers */
 
 require("../../index");
 
@@ -8,12 +9,11 @@ var _ = require("lodash");
 var slowFunc = function (count) {
   var begin = Date.now();
 
-  var values = _.times(count, function(n) { return _.random(0, count); });
+  var values = _.times(count, function () { return _.random(0, count); });
   values = _.sortBy(values);
 
   return Date.now() - begin;
-
-}
+};
 
 var bigBuffer = new Buffer(200000000);
 
@@ -25,7 +25,7 @@ setInterval(function () {
 
 setInterval(function () {
   console.log("Slow call started...");
-  var  duration = slowFunc(_.random(1000,100000));
+  var duration = slowFunc(_.random(1000, 100000));
   console.log("Completed in: ", duration);
 }, 3000);
 
@@ -33,8 +33,6 @@ setInterval(function () {
   console.log("Filling buffer...");
   bigBuffer.fill(2);
 }, 5000);
-
-
 
 setInterval(function () {
   console.error("bummer shoulda read the dox :(", new Error().stack);
