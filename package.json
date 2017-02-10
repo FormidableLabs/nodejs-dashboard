@@ -14,6 +14,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha -c --recursive test/**/*.spec.js",
+    "test:app": "./bin/nodejs-dashboard.js node test/app/index.js",
     "check": "npm run lint && npm test",
     "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive test/**/*.spec.js"
   },
