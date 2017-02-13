@@ -11,6 +11,7 @@ describe("StreamView", function () {
 
   var sandbox;
   var testContainer;
+  var options;
 
   before(function () {
     sandbox = sinon.sandbox.create();
@@ -18,6 +19,12 @@ describe("StreamView", function () {
 
   beforeEach(function () {
     testContainer = utils.getTestContainer(sandbox);
+    options = {
+      layoutConfig: {
+        getPosition: sandbox.stub()
+      },
+      parent: testContainer
+    };
   });
 
   afterEach(function () {
@@ -26,37 +33,34 @@ describe("StreamView", function () {
 
   describe("constructor", function () {
 
-    it("should create a log node and listen for given events", function () {
+    it("should require events option", function () {
+      expect(function () {
+        new StreamView(options); // eslint-disable-line no-new
+      }).to.throw("StreamView requires array of events to log");
+    });
 
-      var streamView = new StreamView({
-        parent: testContainer,
-        events: ["stdout", "stderr"],
-        position: {}
-      });
+    it("should create a log node and listen for given events", function () {
+      options.events = ["stdout", "stderr"];
+      var streamView = new StreamView(options);
 
       expect(streamView).to.have.property("node").that.is.an.instanceof(blessed.log);
       expect(streamView.node).to.have.deep.property("options.label", " stdout / stderr ");
-      expect(testContainer.screen.on).to.have.been.calledTwice
-        .and.calledWithExactly("stdout", sinon.match.func)
+      expect(testContainer.screen.on).to.have.been
+        .calledWithExactly("stdout", sinon.match.func)
         .and.calledWithExactly("stderr", sinon.match.func);
     });
   });
 
-  describe("resize", function () {
+  describe("log", function () {
 
-    it("should set new position on node and call parent render", function () {
-      var streamView = new StreamView({
-        parent: testContainer,
-        events: ["stdout", "stderr"],
-        position: {}
-      });
-      expect(testContainer.render).to.have.not.been.called;
+    it("should strip trailing newline before logging data", function () {
+      options.events = ["stdout"];
+      var streamView = new StreamView(options);
 
-      var newPosition = { left: "30%" };
-      streamView.resize(newPosition);
-
-      expect(streamView.node).to.have.property("position", newPosition);
-      expect(testContainer.render).to.have.been.calledOnce;
+      sandbox.stub(streamView.node, "log");
+      streamView.log("something\nmultiline\n");
+      expect(streamView.node.log).to.have.been.calledOnce
+        .and.calledWithExactly("something\nmultiline");
     });
   });
 });

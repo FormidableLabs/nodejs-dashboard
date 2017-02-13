@@ -3,8 +3,9 @@
 var expect = require("chai").expect;
 var sinon = require("sinon");
 
-var EventLoopView = require("../../../lib/views/eventloop-view");
+var BaseView = require("../../../lib/views/base-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
+var EventLoopView = require("../../../lib/views/eventloop-view");
 var utils = require("../../utils");
 
 describe("EventLoopView", function () {
@@ -22,8 +23,10 @@ describe("EventLoopView", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
-      limit: 10,
-      position: { left: "75%" }
+      layoutConfig: {
+        limit: 10,
+        getPosition: sandbox.stub().returns({ left: "75%" })
+      }
     };
   });
 
@@ -37,10 +40,11 @@ describe("EventLoopView", function () {
       var eventLoop = new EventLoopView(options);
       expect(eventLoop).to.be.an.instanceof(EventLoopView);
       expect(eventLoop).to.be.an.instanceof(BaseLineGraph);
+      expect(eventLoop).to.be.an.instanceof(BaseView);
 
       expect(eventLoop).to.have.property("label", "event loop delay");
       expect(eventLoop).to.have.property("unit", "ms");
-      expect(eventLoop).to.have.property("highwater", true);
+      expect(eventLoop).to.have.property("highwaterSeries");
     });
   });
 

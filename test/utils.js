@@ -1,5 +1,6 @@
 "use strict";
 
+var assert = require("assert");
 var blessed = require("blessed");
 var contrib = require("blessed-contrib");
 
@@ -13,6 +14,8 @@ exports.tryCatch = function (done, func) {
 };
 
 exports.getTestContainer = function (sandbox) {
+  assert(sandbox, "getTestContainer requires sandbox");
+
   var mockScreen = {
     on: sandbox.stub(),
     append: sandbox.stub(),
@@ -33,6 +36,7 @@ exports.getTestContainer = function (sandbox) {
 
 // stub functions that require an active screen
 exports.stubWidgets = function (sandbox) {
+  assert(sandbox, "stubWidgets requires sandbox");
   sandbox.stub(blessed.element.prototype, "setContent");
   sandbox.stub(blessed.element.prototype, "setLabel");
   sandbox.stub(contrib.line.prototype, "setData");

@@ -5,6 +5,7 @@ var expect = require("chai").expect;
 var _ = require("lodash");
 var sinon = require("sinon");
 
+var BaseView = require("../../../lib/views/base-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
 var utils = require("../../utils");
 
@@ -23,9 +24,11 @@ describe("BaseLineGraph", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
-      limit: 10,
       label: "graph A",
-      position: { left: "75%" }
+      layoutConfig: {
+        getPosition: function () { return { top: "10%" }; },
+        limit: 10
+      }
     };
   });
 
@@ -39,16 +42,25 @@ describe("BaseLineGraph", function () {
       sandbox.stub(BaseLineGraph.prototype, "_createGraph");
     });
 
-    it("should accept limit option", function () {
-      var limit = 22;
-      var baseGraph = new BaseLineGraph(_.merge(options, { limit: limit }));
-      expect(baseGraph).to.have.property("limit", limit);
+    it("should require label option", function () {
+      delete options.label;
+      expect(function () {
+        new BaseLineGraph(options); // eslint-disable-line no-new
+      }).to.throw("BaseLineGraph requires 'label' option");
+    });
+
+    it("should use limit from layoutConfig", function () {
+      var limit = 7;
+      options.layoutConfig.limit = limit;
+      var baseGraph = new BaseLineGraph(options);
+      expect(baseGraph).to.have.deep.property("layoutConfig.limit", limit);
       expect(baseGraph).to.have.property("maxLimit", limit);
       expect(baseGraph).to.have.property("values").that.deep.equals(_.times(limit, _.constant(0)));
     });
 
     it("should create graph and set up event listener", function () {
       var baseGraph = new BaseLineGraph(options);
+      expect(baseGraph).to.be.an.instanceof(BaseView);
       expect(baseGraph._createGraph).to.have.been.calledOnce;
       expect(testContainer.screen.on).to.have.been.calledWithExactly("metrics", sinon.match.func);
     });
@@ -64,103 +76,81 @@ describe("BaseLineGraph", function () {
     });
   });
 
-  describe("resize", function () {
+  describe("setLayout", function () {
 
-    it("should call _setLimit and _setPosition", function () {
+    it("should call _handleLimitChanged and recalculatePosition", function () {
       var baseGraph = new BaseLineGraph(options);
-      sandbox.spy(baseGraph, "_setLimit");
-      sandbox.spy(baseGraph, "_setPosition");
-      var position = { left: "75%" };
-      var limit = 10;
-      baseGraph.resize(position, limit);
-      expect(baseGraph._setPosition).to.have.been.calledOnce.and.calledWithExactly(position);
-      expect(baseGraph._setLimit).to.have.been.calledOnce.and.calledWithExactly(limit);
+      sandbox.spy(baseGraph, "_handleLimitChanged");
+      sandbox.spy(baseGraph, "recalculatePosition");
+      baseGraph.setLayout(options.layoutConfig);
+      expect(baseGraph.recalculatePosition).to.have.been.calledOnce;
+      expect(baseGraph._handleLimitChanged).to.have.been.calledOnce;
     });
   });
 
-  describe("_setPosition", function () {
+  describe("recalculatePosition", function () {
 
     it("should set new position and recreate node", function () {
       var baseGraph = new BaseLineGraph(options);
 
-      sandbox.stub(baseGraph, "_createGraph");
       sandbox.spy(testContainer, "remove");
-      var newPosition = { top: "20%" };
-      baseGraph._setPosition(newPosition);
+      sandbox.spy(testContainer, "append");
+      sandbox.spy(baseGraph.node, "setBack");
+      sandbox.stub(baseGraph, "getPosition").returns({ top: "20%" });
+      baseGraph.recalculatePosition();
 
-      expect(baseGraph).to.have.property("position", newPosition);
+      expect(baseGraph.node).to.have.property("position").that.deep.equals({ top: "20%" });
       expect(testContainer.remove).to.have.been.calledOnce;
-      expect(baseGraph._createGraph).to.have.been.calledOnce;
-    });
-
-    it("should do nothing if position is undefined", function () {
-      var baseGraph = new BaseLineGraph(options);
-      var originalPosition = baseGraph.position;
-
-      sandbox.stub(baseGraph, "_createGraph");
-      baseGraph._setPosition();
-
-      expect(baseGraph).to.have.property("position", originalPosition);
-      expect(baseGraph._createGraph).to.have.not.been.called;
+      expect(testContainer.append).to.have.been.calledOnce;
+      expect(baseGraph.node.setBack).to.have.been.calledOnce;
     });
 
     it("should do nothing if position is unchanged", function () {
-      options.position = { top: "10%" };
+      options.layoutConfig.getPosition = function () { return { top: "10%" }; };
       var baseGraph = new BaseLineGraph(options);
-      var originalPosition = baseGraph.position;
+      var originalPosition = baseGraph.node.position;
 
-      sandbox.stub(baseGraph, "_createGraph");
-      baseGraph._setPosition({ top: "10%" });
+      sandbox.spy(testContainer, "remove");
+      sandbox.stub(baseGraph, "getPosition").returns({ top: "10%" });
+      baseGraph.recalculatePosition();
 
-      expect(baseGraph).to.have.property("position", originalPosition);
-      expect(baseGraph._createGraph).to.have.not.been.called;
+      expect(baseGraph.node).to.have.property("position", originalPosition);
+      expect(testContainer.remove).to.have.not.been.called;
     });
   });
 
-  describe("_setLimit", function () {
+  describe("_handleLimitChanged", function () {
 
-    it("should update limit and backfill values", function () {
-      options.limit = 3;
+    it("should update x series and backfill values", function () {
+      var originalLimit = 3;
+      var newLimit = 7;
+
+      options.layoutConfig.limit = originalLimit;
       var baseGraph = new BaseLineGraph(options);
+      expect(baseGraph).to.have.property("maxLimit", originalLimit);
       baseGraph.values = [8, 7, 6]; // eslint-disable-line no-magic-numbers
 
-      var newLimit = 7;
-      baseGraph._setLimit(newLimit);
+      baseGraph.layoutConfig.limit = newLimit;
+      sandbox.spy(Math, "max");
+      baseGraph._handleLimitChanged();
 
-      expect(baseGraph).to.have.property("limit", newLimit);
+      expect(Math.max).to.have.been.calledOnce;
       expect(baseGraph).to.have.property("maxLimit", newLimit);
       // eslint-disable-next-line no-magic-numbers
       expect(baseGraph).to.have.property("values").that.deep.equals([ 0, 0, 0, 0, 8, 7, 6 ]);
     });
 
-    it("should do nothing if limit is undefined", function () {
-      var limit = 7;
-      options.limit = limit;
-      var baseGraph = new BaseLineGraph(options);
-      var originalValues = baseGraph.values;
-
-      sandbox.stub(Math, "max");
-      baseGraph._setLimit();
-
-      expect(baseGraph).to.have.property("limit", limit);
-      expect(baseGraph).to.have.property("maxLimit", limit);
-      expect(baseGraph).to.have.property("values", originalValues);
-      expect(Math.max).to.have.not.been.called;
-    });
-
     it("should do nothing if limit is unchanged", function () {
-      var limit = 7;
-      options.limit = limit;
       var baseGraph = new BaseLineGraph(options);
+      var originalLayoutConfig = baseGraph.layoutConfig;
       var originalValues = baseGraph.values;
 
-      sandbox.stub(Math, "max");
-      baseGraph._setLimit(limit);
+      sandbox.spy(Math, "max");
+      baseGraph._handleLimitChanged();
 
-      expect(baseGraph).to.have.property("limit", limit);
-      expect(baseGraph).to.have.property("maxLimit", limit);
-      expect(baseGraph).to.have.property("values", originalValues);
       expect(Math.max).to.have.not.been.called;
+      expect(baseGraph).to.have.property("maxLimit", originalLayoutConfig.limit);
+      expect(baseGraph).to.have.property("values", originalValues);
     });
   });
 
@@ -169,7 +159,7 @@ describe("BaseLineGraph", function () {
     /* eslint-disable no-magic-numbers */
 
     it("should update values and label", function () {
-      options.limit = 4;
+      options.layoutConfig.limit = 4;
       options.label = "cpu";
       options.unit = "%";
       var baseGraph = new BaseLineGraph(options);
@@ -188,7 +178,7 @@ describe("BaseLineGraph", function () {
     });
 
     it("should update highwater series", function () {
-      options.limit = 3;
+      options.layoutConfig.limit = 3;
       options.highwater = true;
       var baseGraph = new BaseLineGraph(options);
 
@@ -209,13 +199,17 @@ describe("BaseLineGraph", function () {
     });
 
     it("should update series correctly when values length > limit", function () {
-      options.limit = 5;
+      options.layoutConfig.limit = 5;
       options.highwater = true;
       var baseGraph = new BaseLineGraph(options);
-      baseGraph._setLimit(3);
-      baseGraph.update(27);
+
+      baseGraph.layoutConfig.limit = 3;
+      baseGraph._handleLimitChanged();
+
+      baseGraph.update(27, 27);
       expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 0, 0, 27]);
       expect(baseGraph).to.have.deep.property("series.y").that.deep.equals([0, 0, 27]);
+      expect(baseGraph).to.have.deep.property("highwaterSeries.y").that.deep.equals([27, 27, 27]);
     });
 
     /* eslint-enable no-magic-numbers */
@@ -225,32 +219,33 @@ describe("BaseLineGraph", function () {
 
     it("should create a blessed-contrib line graph", function () {
       sandbox.spy(testContainer, "append");
-      options.limit = 8;
+      options.layoutConfig.limit = 8;
       sandbox.stub(BaseLineGraph.prototype, "_createGraph");
       var baseGraph = new BaseLineGraph(options);
       BaseLineGraph.prototype._createGraph.restore();
 
       expect(baseGraph).to.not.have.property("node");
 
-      baseGraph._createGraph();
+      baseGraph._createGraph(options);
 
       expect(baseGraph).to.have.property("node").that.is.an.instanceof(contrib.line);
       expect(baseGraph.node).to.have.deep.property("options.label", " graph A ");
-      expect(baseGraph.node).to.have.deep.property("options.position", options.position);
       expect(baseGraph.node).to.have.deep.property("options.maxY", undefined);
+      expect(baseGraph.node).to.have.deep.property("options.position")
+        .that.deep.equals(options.layoutConfig.getPosition(options.parent));
 
       expect(testContainer.append).to.have.been.calledOnce.and.calledWithExactly(baseGraph.node);
     });
 
     it("should create a series and trim values based on limit", function () {
       sandbox.stub(BaseLineGraph.prototype, "_createGraph");
-      options.limit = 4;
+      options.layoutConfig.limit = 4;
       var baseGraph = new BaseLineGraph(options);
       BaseLineGraph.prototype._createGraph.restore();
 
       baseGraph.values = [2, 3, 4, 5, 6, 7, 8, 9]; // eslint-disable-line no-magic-numbers
 
-      baseGraph._createGraph();
+      baseGraph._createGraph(options);
 
       expect(baseGraph).to.have.property("series").that.deep.equals({
         x: ["3", "2", "1", "0"],
@@ -268,7 +263,7 @@ describe("BaseLineGraph", function () {
       BaseLineGraph.prototype._createGraph.restore();
 
       expect(baseGraph).to.not.have.property("highwaterSeries");
-      baseGraph._createGraph();
+      baseGraph._createGraph(options);
 
       expect(baseGraph).to.have.property("highwaterSeries").that.deep.equals({
         x: ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0"],

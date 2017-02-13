@@ -12,6 +12,7 @@ describe("MemoryView", function () {
 
   var sandbox;
   var testContainer;
+  var options;
 
   before(function () {
     sandbox = sinon.sandbox.create();
@@ -20,6 +21,12 @@ describe("MemoryView", function () {
   beforeEach(function () {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
+    options = {
+      layoutConfig: {
+        getPosition: sandbox.stub()
+      },
+      parent: testContainer
+    };
   });
 
   afterEach(function () {
@@ -32,27 +39,23 @@ describe("MemoryView", function () {
     it("should create a box with two gauges and listen for metrics event", function () {
       var append = sandbox.spy(blessed.node.prototype, "append");
 
-      var memory = new MemoryView({
-        parent: testContainer,
-        position: {}
-      });
+      var memory = new MemoryView(options);
 
       expect(memory).to.have.property("node").that.is.an.instanceof(blessed.box);
       expect(memory.node).to.have.deep.property("options.label", " memory ");
-      expect(append.firstCall).to.have.been.calledOn(testContainer)
+      expect(append.thirdCall).to.have.been.calledOn(testContainer)
         .and.calledWithExactly(memory.node);
 
-      expect(testContainer.screen.on).to.have.been.calledOnce
-        .and.calledWithExactly("metrics", sinon.match.func);
+      expect(testContainer.screen.on).to.have.been.calledWithExactly("metrics", sinon.match.func);
 
       expect(memory).to.have.property("heapGauge").that.is.an.instanceof(contrib.gauge);
       expect(memory.heapGauge).to.have.deep.property("options.label", "heap");
-      expect(append.secondCall).to.have.been.calledOn(memory.node)
+      expect(append.firstCall).to.have.been.calledOn(memory.node)
         .and.calledWithExactly(memory.heapGauge);
 
       expect(memory).to.have.property("rssGauge").that.is.an.instanceof(contrib.gauge);
       expect(memory.rssGauge).to.have.deep.property("options.label", "resident");
-      expect(append.thirdCall).to.have.been.calledOn(memory.node)
+      expect(append.secondCall).to.have.been.calledOn(memory.node)
         .and.calledWithExactly(memory.rssGauge);
     });
   });
@@ -60,10 +63,7 @@ describe("MemoryView", function () {
   describe("onEvent", function () {
 
     it("should call update for each gauge", function () {
-      var memory = new MemoryView({
-        parent: testContainer,
-        position: {}
-      });
+      var memory = new MemoryView(options);
 
       expect(memory).to.have.property("heapGauge").that.is.an.instanceof(contrib.gauge);
       expect(memory).to.have.property("rssGauge").that.is.an.instanceof(contrib.gauge);
@@ -88,10 +88,7 @@ describe("MemoryView", function () {
   describe("update", function () {
 
     it("should update label and call setPercent for rssGauge", function () {
-      var memory = new MemoryView({
-        parent: testContainer,
-        position: {}
-      });
+      var memory = new MemoryView(options);
       var used = 50000;
       var total = 60300000;
       var pct = Math.floor(100 * used / total); // eslint-disable-line no-magic-numbers
@@ -104,10 +101,7 @@ describe("MemoryView", function () {
     });
 
     it("should update label and call setStack for heapGauge", function () {
-      var memory = new MemoryView({
-        parent: testContainer,
-        position: {}
-      });
+      var memory = new MemoryView(options);
       var used = 500;
       var total = 2500;
 

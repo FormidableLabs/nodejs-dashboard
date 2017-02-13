@@ -22,8 +22,10 @@ describe("CpuView", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
-      limit: 10,
-      position: { left: "75%" }
+      layoutConfig: {
+        limit: 10,
+        getPosition: sandbox.stub().returns({ left: "75%" })
+      }
     };
   });
 
@@ -40,7 +42,8 @@ describe("CpuView", function () {
 
       expect(cpu).to.have.property("label", "cpu utilization");
       expect(cpu).to.have.property("unit", "%");
-      expect(cpu).to.have.property("maxY", 100); // eslint-disable-line no-magic-numbers
+      var MAX_PERCENT = 100;
+      expect(cpu).to.have.deep.property("node.options.maxY", MAX_PERCENT);
     });
   });
 
