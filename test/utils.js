@@ -29,6 +29,10 @@ exports.getTestContainer = function (sandbox) {
     _listenKeys: sandbox.stub(),
     _listenMouse: sandbox.stub()
   };
+  // prevent "Error: no active screen"
+  blessed.Screen.total = 1;
+  blessed.Screen.global = mockScreen;
+
   var container = blessed.box({ parent: mockScreen });
   sandbox.stub(container, "render");
   return container;
