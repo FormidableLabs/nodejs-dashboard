@@ -5,3 +5,5 @@ var sinonChai = require("sinon-chai");
 
 chai.use(sinonChai);
 chai.config.includeStack = true;
+
+require("object.assign").shim();
