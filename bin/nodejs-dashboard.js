@@ -18,9 +18,9 @@ program.option("-e, --eventdelay [ms]",
  "Minimum threshold for event loop reporting, default 10ms",
   config.BLOCKED_THRESHOLD);
 
-program.option("-i, --interleave, default false",
- "Interleave stderr/stdout output",
- config.INTERLEAVE);
+program.option("-l, --layouts [file]",
+ "Path to file with layouts",
+ config.LAYOUTS);
 
 program.option("-p, --port [port]",
  "Socket listener port",
@@ -67,7 +67,7 @@ var dashboard = new Dashboard({
   appName: appName,
   program: program,
   scrollback: program.scrollback,
-  interleave: program.interleave
+  layoutsFile: program.layouts
 });
 
 server.on("connection", function (socket) {
