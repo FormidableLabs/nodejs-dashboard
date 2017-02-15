@@ -1,0 +1,98 @@
+{
+  "type": "array",
+  "items": {
+    "$ref": "#/definitions/layout"
+  },
+  "definitions": {
+    "layout": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/panel"
+      }
+    },
+    "panel": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "$ref": "#/definitions/position"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "oneOf": [{
+              "$ref": "#/definitions/streamView"
+            }, {
+              "$ref": "#/definitions/memoryView"
+            }, {
+              "$ref": "#/definitions/lineGraphView"
+            }]
+          }
+        }
+      },
+      "required": ["views"]
+    },
+    "streamView": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "enum": ["stdout", "stderr", "stdouterr"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["name"]
+    },
+    "memoryView": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "enum": ["memory"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["name"]
+    },
+    "lineGraphView": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "enum": ["cpu", "eventLoop"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["name", "limit"]
+    },
+    "position": {
+      "oneOf": [{
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": ["size"],
+        "additionalProperties": false
+      }, {
+        "type": "object",
+        "properties": {
+          "grow": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["grow"],
+        "additionalProperties": false
+      }]
+    }
+  }
+}
