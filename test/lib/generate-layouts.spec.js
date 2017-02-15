@@ -1,7 +1,13 @@
-"use strict";
+/* eslint-disable strict */
 
 var expect = require("chai").expect;
-var mock = require("mock-fs");
+
+// Strict mode leads to odd bug in Node < 0.12
+var mockRequire = require("mock-require");
+
+var mock = function (path, obj) {
+  return mockRequire(process.cwd() + "/" + path, obj);
+};
 
 var generateLayouts = require("../../lib/generate-layouts");
 
@@ -12,153 +18,147 @@ var parent = {
 
 describe("generate-layouts", function () {
   beforeEach(function () {
-    mock({
-      fake: {
-        "empty-layout": "[]",
-        "broken-json-layout": "broken json",
-        "fill-view-layout": JSON.stringify([[
+    mock("fake/empty-layout", []);
+    mock("fake/invalid-config-layout", { invalid: "config" });
+    mock("fake/fill-view-layout", [[
+      {
+        views: [
           {
-            views: [
-              {
-                name: "fill"
-              }
-            ]
+            name: "fill"
           }
-        ]]),
-        "exact-width-panel-layout": JSON.stringify([[
+        ]
+      }
+    ]]);
+    mock("fake/exact-width-panel-layout", [[
+      {
+        position: {
+          size: 11
+        },
+        views: [
+          {
+            name: "exact-width"
+          }
+        ]
+      }
+    ]]);
+    mock("fake/grow-panels-layout", [[
+      {
+        position: {
+          grow: 2
+        },
+        views: [
+          {
+            name: "left"
+          }
+        ]
+      },
+      {
+        position: {
+          grow: 3
+        },
+        views: [
+          {
+            name: "right"
+          }
+        ]
+      }
+    ]]);
+    mock("fake/mixed-panels-layout", [[
+      {
+        position: {
+          grow: 2
+        },
+        views: [
+          {
+            name: "left"
+          }
+        ]
+      },
+      {
+        position: {
+          size: 4
+        },
+        views: [
+          {
+            name: "center"
+          }
+        ]
+      },
+      {
+        position: {
+          grow: 3
+        },
+        views: [
+          {
+            name: "right"
+          }
+        ]
+      }
+    ]]);
+    mock("fake/exact-height-view-layout", [[
+      {
+        views: [
           {
             position: {
               size: 11
             },
-            views: [
-              {
-                name: "exact-width"
-              }
-            ]
+            name: "exact-height"
           }
-        ]]),
-        "grow-panels-layout": JSON.stringify([[
+        ]
+      }
+    ]]);
+    mock("fake/grow-views-layout", [[
+      {
+        views: [
           {
             position: {
               grow: 2
             },
-            views: [
-              {
-                name: "left"
-              }
-            ]
+            name: "top"
           },
           {
             position: {
               grow: 3
             },
-            views: [
-              {
-                name: "right"
-              }
-            ]
+            name: "bottom"
           }
-        ]]),
-        "mixed-panels-layout": JSON.stringify([[
+        ]
+      }
+    ]]);
+    mock("fake/mixed-views-layout", [[
+      {
+        views: [
           {
             position: {
               grow: 2
             },
-            views: [
-              {
-                name: "left"
-              }
-            ]
+            name: "top"
           },
           {
             position: {
               size: 4
             },
-            views: [
-              {
-                name: "center"
-              }
-            ]
+            name: "center"
           },
           {
             position: {
               grow: 3
             },
-            views: [
-              {
-                name: "right"
-              }
-            ]
+            name: "bottom"
           }
-        ]]),
-        "exact-height-view-layout": JSON.stringify([[
-          {
-            views: [
-              {
-                position: {
-                  size: 11
-                },
-                name: "exact-height"
-              }
-            ]
-          }
-        ]]),
-        "grow-views-layout": JSON.stringify([[
-          {
-            views: [
-              {
-                position: {
-                  grow: 2
-                },
-                name: "top"
-              },
-              {
-                position: {
-                  grow: 3
-                },
-                name: "bottom"
-              }
-            ]
-          }
-        ]]),
-        "mixed-views-layout": JSON.stringify([[
-          {
-            views: [
-              {
-                position: {
-                  grow: 2
-                },
-                name: "top"
-              },
-              {
-                position: {
-                  size: 4
-                },
-                name: "center"
-              },
-              {
-                position: {
-                  grow: 3
-                },
-                name: "bottom"
-              }
-            ]
-          }
-        ]])
+        ]
       }
-    });
+    ]]);
   });
-
-  afterEach(mock.restore);
 
   it("should fail on bad layouts", function () {
     expect(function () {
       generateLayouts("fake/layout-not-found");
-    }).to.throw(/no such file or directory/);
+    }).to.throw(/Cannot find module/);
 
     expect(function () {
-      generateLayouts("fake/broken-json-layout");
-    }).to.throw(/Unexpected token/);
+      generateLayouts("fake/invalid-config-layout");
+    }).to.throw("AssertionError: Layout config module should export an array");
   });
 
   it("should generate empty layout", function () {

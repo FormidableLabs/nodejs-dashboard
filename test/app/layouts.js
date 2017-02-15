@@ -1,4 +1,6 @@
-[
+"use strict";
+
+module.exports = [
   [
     {
       "views": [
@@ -35,4 +37,4 @@
       ]
     }
   ]
-]
+];

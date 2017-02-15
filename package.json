@@ -52,7 +52,7 @@
     "eslint-plugin-import": "^1.16.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.1",
-    "mock-fs": "^4.0.0",
+    "mock-require": "^2.0.1",
     "object.assign": "^4.0.4",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0"
