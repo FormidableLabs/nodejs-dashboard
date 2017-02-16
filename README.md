@@ -27,6 +27,12 @@ The dashboard agent needs to be required by your app. There are two ways to do t
 
 From within a `dev.index.js` script or other dev entry point simply require the `nodejs-dashboard` module.
 
+```js
+// dev.index.js
+require("nodejs-dashboard");
+require("./index");
+```
+
 To launch: `nodejs-dashboard node dev.index.js`
 
 #### Including via preload argument
@@ -80,8 +86,7 @@ Options:
 This tunes the minimum threshold for reporting event loop delays. The default value is `10ms`. Any delay below this value will be reported at `0`.
 
 ##### `--layouts`
-
-Optionally supply a custom layout configuration (for details, see [below](#customizing-layouts)). Default: `layouts/default.js`
+Optionally supply a custom layout configuration (for details, see [below](#customizing-layouts)). Default: [`lib/default-layout-config.js`](./lib/default-layout-config.js)
 
 ##### `--port`
 Under the hood the dashboard utilizes SocketIO with a default port of `9838`. If this conflicts with an existing service you can optionally change this value.
@@ -94,7 +99,7 @@ Specifies the maximum number of lines that log windows (e.g. stdout, stderr) wil
 
 ### Customizing layouts
 
-See `layouts/default.js` or `test/app/layouts.js` for examples.
+See [`lib/default-layout-config.js`](./lib/default-layout-config.js) and [`test/app/layouts.js`](./test/app/layouts.js) for examples.
 
 A layouts config file should export an array of layouts:
 - Each layout is an array of panels
