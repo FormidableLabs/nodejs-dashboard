@@ -231,7 +231,7 @@ describe("BaseLineGraph", function () {
       expect(baseGraph).to.have.property("node").that.is.an.instanceof(contrib.line);
       expect(baseGraph.node).to.have.deep.property("options.label", " graph A ");
       expect(baseGraph.node).to.have.deep.property("options.maxY", undefined);
-      expect(baseGraph.node).to.have.deep.property("options.position")
+      expect(baseGraph.node).to.have.property("position")
         .that.deep.equals(options.layoutConfig.getPosition(options.parent));
 
       expect(testContainer.append).to.have.been.calledOnce.and.calledWithExactly(baseGraph.node);

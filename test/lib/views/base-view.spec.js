@@ -5,6 +5,7 @@ var sinon = require("sinon");
 
 var BaseView = require("../../../lib/views/base-view");
 var utils = require("../../utils");
+var blessed = require("blessed");
 
 describe("BaseView", function () {
 
@@ -41,9 +42,6 @@ describe("BaseView", function () {
     it("should require layoutConfig with getPosition function", function () {
       var msg = "View requires layoutConfig option with getPosition function";
       expect(function () {
-        new BaseView({ parent: testContainer }); // eslint-disable-line no-new
-      }).to.throw(msg);
-      expect(function () {
         new BaseView({ parent: testContainer, layoutConfig: {} }); // eslint-disable-line no-new
       }).to.throw(msg);
     });
@@ -56,7 +54,7 @@ describe("BaseView", function () {
         .and.calledWithExactly("resize", sinon.match.func);
 
       var resizeHandler = testContainer.screen.on.firstCall.args[1];
-      baseView.node = {};
+      baseView.node = blessed.element();
       resizeHandler();
       expect(baseView.recalculatePosition).to.have.been.calledOnce;
     });
@@ -80,7 +78,7 @@ describe("BaseView", function () {
     it("should set node position", function () {
       var baseView = new BaseView(options);
 
-      baseView.node = {};
+      baseView.node = blessed.element();
       var newPosition = { top: "50%" };
       sandbox.stub(baseView, "getPosition").returns(newPosition);
 
@@ -95,6 +93,12 @@ describe("BaseView", function () {
       var baseView = new BaseView(options);
       var layoutConfig = {};
       sandbox.stub(baseView, "recalculatePosition");
+
+      expect(function () {
+        baseView.setLayout(layoutConfig);
+      }).to.throw("View requires layoutConfig option with getPosition function");
+
+      layoutConfig = { getPosition: function () {} };
 
       baseView.setLayout(layoutConfig);
 

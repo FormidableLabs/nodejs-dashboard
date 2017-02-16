@@ -37,6 +37,7 @@
     "blocked": "^1.2.1",
     "commander": "^2.9.0",
     "cross-spawn": "^4.0.2",
+    "jsonschema": "^1.1.1",
     "lodash": "^4.16.2",
     "pidusage": "^1.0.8",
     "pretty-bytes": "^3.0.1",
@@ -52,6 +53,8 @@
     "eslint-plugin-import": "^1.16.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.1",
+    "mock-require": "^2.0.1",
+    "object.assign": "^4.0.4",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0"
   }
