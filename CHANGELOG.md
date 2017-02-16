@@ -2,44 +2,41 @@
 
 ## [Unreleased]
 
-- Improve views positioning, rerender on screen resize [\#51]
-- Support multiple layouts [\#53]
-- Fix log autoscroll disabling [\#56]
-- Test coverage [\#52], tests for views [\#57]
-- Travis CI [\#54]
-- Add description and keywords [\#49]
+- **Added:** Support multiple customizable layouts [\#53], [\#59] - see README
+- **Removed**: `-i, --interleave` option - now available through layouts
+- **Changed**: Line graphs in default layout show 30s instead of 10s of data [\#59]
+- **Changed**: Improve views positioning, rerender on screen resize [\#51]
+- **Fixed**: Properly disable autoscroll if user has scrolled up [\#56]
+- *Internal*: Add description and keywords to package.json [\#49]
+- *Internal*: Test coverage [\#52], set up travis [\#54], add tests for views [\#57]
 
 ## [v0.3.0] - 2016-12-20
 
-- Add interleave mode for stdout/stderr [\#47]
+- **Added**: interleave mode for stdout/stderr [\#47]
 
 ## [v0.2.1] - 2016-12-01
 
-- Bug memoryleak [\#45]
+- **Fixed**: Memory leak bug [\#45]
 
 ## [v0.2.0] - 2016-11-03
 
-- Convert to es5 syntax [\#44]
-- es5 changes [\#43]
+- **Added**: Support older versions of node (0.10+) by converting to es5 syntax [\#43], [\#44]
 
 ## [v0.1.2] - 2016-10-20
 
-- Updating docs for global install usage [\#37]
-- Round cpu percentage to nearest decimal. [\#35]
-- Chore better tests [\#34]
-- Chore readme examples [\#28]
-- Fixed extra space in README [\#25]
+- **Changed**: Round cpu percentage to nearest decimal [\#35]
+- **Docs**: Add examples to README [\#28], describe global install usage [\#37]
+- *Internal*: Better tests [\#34]
 
 ## [v0.1.1] - 2016-10-14
 
-- limit node version in package.json [\#18]
-- Update docs to include exit keybindings. [\#11]
-- Small update to readme [\#4]
+- **Changed**: Limit node version in package.json [\#18]
+- **Docs**: Update README [\#4], include exit keybindings [\#11]
 
 ## v0.1.0 - 2016-10-11
-- Test scaffolding and basic reporter integration test [\#3]
-- Remove dependency on root-require and update package.json references [\#2]
-- Update readme styling [\#1]
+- **Docs**: Update readme styling [\#1]
+- *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
+- *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
 [Unreleased]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...HEAD
 [v0.3.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.1...v0.3.0
@@ -48,6 +45,7 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#59]: https://github.com/FormidableLabs/nodejs-dashboard/pull/59
 [\#57]: https://github.com/FormidableLabs/nodejs-dashboard/pull/57
 [\#56]: https://github.com/FormidableLabs/nodejs-dashboard/pull/56
 [\#54]: https://github.com/FormidableLabs/nodejs-dashboard/pull/54
