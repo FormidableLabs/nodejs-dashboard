@@ -27,7 +27,9 @@ describe("BaseLineGraph", function () {
       label: "graph A",
       layoutConfig: {
         getPosition: function () { return { top: "10%" }; },
-        limit: 10
+        view: {
+          limit: 10
+        }
       }
     };
   });
@@ -42,16 +44,9 @@ describe("BaseLineGraph", function () {
       sandbox.stub(BaseLineGraph.prototype, "_createGraph");
     });
 
-    it("should require label option", function () {
-      delete options.label;
-      expect(function () {
-        new BaseLineGraph(options); // eslint-disable-line no-new
-      }).to.throw("BaseLineGraph requires 'label' option");
-    });
-
     it("should use limit from layoutConfig", function () {
       var limit = 7;
-      options.layoutConfig.limit = limit;
+      options.layoutConfig.view.limit = limit;
       var baseGraph = new BaseLineGraph(options);
       expect(baseGraph).to.have.deep.property("layoutConfig.limit", limit);
       expect(baseGraph).to.have.property("maxLimit", limit);
@@ -73,18 +68,6 @@ describe("BaseLineGraph", function () {
       expect(function () {
         baseGraph.onEvent();
       }).to.throw("BaseLineGraph onEvent should be overwritten");
-    });
-  });
-
-  describe("setLayout", function () {
-
-    it("should call _handleLimitChanged and recalculatePosition", function () {
-      var baseGraph = new BaseLineGraph(options);
-      sandbox.spy(baseGraph, "_handleLimitChanged");
-      sandbox.spy(baseGraph, "recalculatePosition");
-      baseGraph.setLayout(options.layoutConfig);
-      expect(baseGraph.recalculatePosition).to.have.been.calledOnce;
-      expect(baseGraph._handleLimitChanged).to.have.been.calledOnce;
     });
   });
 

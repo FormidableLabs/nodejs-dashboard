@@ -34,31 +34,71 @@
     "streamView": {
       "type": "object",
       "properties": {
-        "name": {
-          "enum": ["stdout", "stderr", "stdouterr"]
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["log"]
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "fgColor": {
+          "type": "string"
+        },
+        "bgColor": {
+          "type": "string"
+        },
+        "scrollback": {
+          "type": "number",
+          "minimum": 0
+        },
+        "streams": {
+          "type": "array",
+          "items": {
+            "enum": ["stdout", "stderr"]
+          }
+        },
+        "exclude": {
+          "type": "string"
+        },
+        "include": {
+          "type": "string"
         },
         "position": {
           "$ref": "#/definitions/position"
         }
       },
-      "required": ["name"]
+      "required": ["type"]
     },
     "memoryView": {
       "type": "object",
       "properties": {
-        "name": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
           "enum": ["memory"]
         },
         "position": {
           "$ref": "#/definitions/position"
         }
       },
-      "required": ["name"]
+      "required": ["type"]
     },
     "lineGraphView": {
       "type": "object",
       "properties": {
-        "name": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
           "enum": ["cpu", "eventLoop"]
         },
         "position": {
@@ -69,7 +109,7 @@
           "minimum": 0
         }
       },
-      "required": ["name", "limit"]
+      "required": ["type"]
     },
     "position": {
       "oneOf": [{

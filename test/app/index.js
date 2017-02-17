@@ -37,3 +37,12 @@ setInterval(function () {
 setInterval(function () {
   console.error("bummer shoulda read the dox :(", new Error().stack);
 }, 5000);
+
+var progress = 0;
+setInterval(function () {
+  console.log("[STATUS] Progress: ", progress++);
+}, 3000);
+
+setInterval(function () {
+  console.error("[STATUS] PROGRESS ERROR! (", progress, ")");
+}, 7000);

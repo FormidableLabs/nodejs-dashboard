@@ -1,4 +1,4 @@
-/* eslint-disable strict */
+/* eslint-disable strict, no-magic-numbers */
 
 var expect = require("chai").expect;
 
@@ -24,7 +24,7 @@ describe("generate-layouts", function () {
       {
         views: [
           {
-            name: "stdout"
+            type: "memory"
           }
         ]
       }
@@ -36,7 +36,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stdout"
+            type: "memory"
           }
         ]
       }
@@ -48,7 +48,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stdout"
+            type: "memory"
           }
         ]
       },
@@ -58,7 +58,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stderr"
+            type: "memory"
           }
         ]
       }
@@ -70,7 +70,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stdout"
+            type: "memory"
           }
         ]
       },
@@ -80,7 +80,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stdouterr"
+            type: "memory"
           }
         ]
       },
@@ -90,7 +90,7 @@ describe("generate-layouts", function () {
         },
         views: [
           {
-            name: "stderr"
+            type: "memory"
           }
         ]
       }
@@ -102,7 +102,7 @@ describe("generate-layouts", function () {
             position: {
               size: 11
             },
-            name: "stdout"
+            type: "memory"
           }
         ]
       }
@@ -114,13 +114,13 @@ describe("generate-layouts", function () {
             position: {
               grow: 2
             },
-            name: "stdout"
+            type: "memory"
           },
           {
             position: {
               grow: 3
             },
-            name: "stderr"
+            type: "memory"
           }
         ]
       }
@@ -132,23 +132,27 @@ describe("generate-layouts", function () {
             position: {
               grow: 2
             },
-            name: "stdout"
+            type: "memory"
           },
           {
             position: {
               size: 4
             },
-            name: "stdouterr"
+            type: "memory"
           },
           {
             position: {
               grow: 3
             },
-            name: "stderr"
+            type: "memory"
           }
         ]
       }
     ]]);
+  });
+
+  it("should validate default layout", function () {
+    expect(generateLayouts("lib/default-layout-config.js")).to.be.an("array");
   });
 
   it("should fail on bad layouts", function () {
@@ -167,8 +171,8 @@ describe("generate-layouts", function () {
 
   it("should create fullscreen view", function () {
     var layouts = generateLayouts("fake/fill-view-layout");
-    expect(layouts[0]).to.have.deep.property("stdout.getPosition").that.is.a("function");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0]).to.have.property("getPosition").that.is.a("function");
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: parent.width,
@@ -178,7 +182,7 @@ describe("generate-layouts", function () {
 
   it("should create exact width panel", function () {
     var layouts = generateLayouts("fake/exact-width-panel-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: 11,
@@ -188,13 +192,13 @@ describe("generate-layouts", function () {
 
   it("should create growing panels", function () {
     var layouts = generateLayouts("fake/grow-panels-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: 7,
       height: parent.height
     });
-    expect(layouts[0].stderr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][1].getPosition(parent)).to.be.deep.equal({
       left: 7,
       top: 0,
       width: 10,
@@ -204,19 +208,19 @@ describe("generate-layouts", function () {
 
   it("should create mixed width panels", function () {
     var layouts = generateLayouts("fake/mixed-panels-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: 6,
       height: parent.height
     });
-    expect(layouts[0].stdouterr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][1].getPosition(parent)).to.be.deep.equal({
       left: 6,
       top: 0,
       width: 4,
       height: parent.height
     });
-    expect(layouts[0].stderr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][2].getPosition(parent)).to.be.deep.equal({
       left: 10,
       top: 0,
       width: 7,
@@ -226,7 +230,7 @@ describe("generate-layouts", function () {
 
   it("should create exact height view", function () {
     var layouts = generateLayouts("fake/exact-height-view-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: parent.width,
@@ -236,13 +240,13 @@ describe("generate-layouts", function () {
 
   it("should create growing views", function () {
     var layouts = generateLayouts("fake/grow-views-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: parent.width,
       height: 6
     });
-    expect(layouts[0].stderr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][1].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 6,
       width: parent.width,
@@ -252,19 +256,19 @@ describe("generate-layouts", function () {
 
   it("should create mixed height views", function () {
     var layouts = generateLayouts("fake/mixed-views-layout");
-    expect(layouts[0].stdout.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][0].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 0,
       width: parent.width,
       height: 4
     });
-    expect(layouts[0].stdouterr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][1].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 4,
       width: parent.width,
       height: 4
     });
-    expect(layouts[0].stderr.getPosition(parent)).to.be.deep.equal({
+    expect(layouts[0][2].getPosition(parent)).to.be.deep.equal({
       left: 0,
       top: 8,
       width: parent.width,

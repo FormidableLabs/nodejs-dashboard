@@ -86,24 +86,4 @@ describe("BaseView", function () {
       expect(baseView.node).to.have.property("position", newPosition);
     });
   });
-
-  describe("setLayout", function () {
-
-    it("should set layoutConfig property and call recalculatePosition", function () {
-      var baseView = new BaseView(options);
-      var layoutConfig = {};
-      sandbox.stub(baseView, "recalculatePosition");
-
-      expect(function () {
-        baseView.setLayout(layoutConfig);
-      }).to.throw("View requires layoutConfig option with getPosition function");
-
-      layoutConfig = { getPosition: function () {} };
-
-      baseView.setLayout(layoutConfig);
-
-      expect(baseView.layoutConfig).to.equal(layoutConfig);
-      expect(baseView.recalculatePosition).to.have.been.calledOnce;
-    });
-  });
 });
