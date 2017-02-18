@@ -1,6 +1,6 @@
 {
   "name": "nodejs-dashboard",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Telemetry dashboard for node.js apps from the terminal!",
   "keywords": [
     "dashboard",
