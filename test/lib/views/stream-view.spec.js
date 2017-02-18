@@ -6,6 +6,7 @@ var blessed = require("blessed");
 
 var StreamView = require("../../../lib/views/stream-view");
 var utils = require("../../utils");
+var LogProvider = require("../../../lib/providers/log-provider");
 
 describe("StreamView", function () {
 
@@ -18,13 +19,16 @@ describe("StreamView", function () {
   });
 
   beforeEach(function () {
+    utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     options = {
+      logProvider: new LogProvider(testContainer.screen),
       layoutConfig: {
         getPosition: sandbox.stub()
       },
       parent: testContainer
     };
+    sandbox.stub(StreamView.prototype, "log");
   });
 
   afterEach(function () {
@@ -33,14 +37,14 @@ describe("StreamView", function () {
 
   describe("constructor", function () {
 
-    it("should require events option", function () {
+    it("should require logProvider", function () {
+      options.logProvider = undefined;
       expect(function () {
         new StreamView(options); // eslint-disable-line no-new
-      }).to.throw("StreamView requires array of events to log");
+      }).to.throw("StreamView requires logProvider");
     });
 
     it("should create a log node and listen for given events", function () {
-      options.events = ["stdout", "stderr"];
       var streamView = new StreamView(options);
 
       expect(streamView).to.have.property("node").that.is.an.instanceof(blessed.log);
@@ -54,13 +58,52 @@ describe("StreamView", function () {
   describe("log", function () {
 
     it("should strip trailing newline before logging data", function () {
-      options.events = ["stdout"];
       var streamView = new StreamView(options);
 
+      StreamView.prototype.log.restore();
       sandbox.stub(streamView.node, "log");
       streamView.log("something\nmultiline\n");
       expect(streamView.node.log).to.have.been.calledOnce
         .and.calledWithExactly("something\nmultiline");
+    });
+
+    it("should filter logs with include", function () {
+      StreamView.prototype.log.restore();
+
+      options.layoutConfig.view = {
+        include: "^THIS"
+      };
+      var streamView = new StreamView(options);
+      sandbox.stub(streamView.node, "log");
+
+      streamView.log("THIS should be included\nbut not THIS one\nor that one\n");
+      expect(streamView.node.log).to.have.been.calledOnce
+        .and.calledWithExactly("THIS should be included");
+
+      options.layoutConfig.view = {
+        include: "^THIS(.*)"
+      };
+      streamView = new StreamView(options);
+      sandbox.stub(streamView.node, "log");
+
+      streamView.log("THIS should be included\nbut not THIS one\nor that one\n");
+      expect(streamView.node.log).to.have.been.calledOnce
+        .and.calledWithExactly(" should be included");
+    });
+
+    it("should filter logs with exclude", function () {
+      StreamView.prototype.log.restore();
+
+      options.layoutConfig.view = {
+        exclude: "^THIS"
+      };
+      var streamView = new StreamView(options);
+      sandbox.stub(streamView.node, "log");
+
+      streamView.log("THIS should be included\nbut not THIS one\nor that one\n");
+      expect(streamView.node.log).to.have.been.calledTwice
+        .and.calledWithExactly("but not THIS one")
+        .and.calledWithExactly("or that one");
     });
   });
 });

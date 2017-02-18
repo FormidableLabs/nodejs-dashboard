@@ -7,6 +7,7 @@ var sinon = require("sinon");
 
 var MemoryView = require("../../../lib/views/memory-view");
 var utils = require("../../utils");
+var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
 describe("MemoryView", function () {
 
@@ -22,6 +23,7 @@ describe("MemoryView", function () {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     options = {
+      metricsProvider: new MetricsProvider(testContainer.screen),
       layoutConfig: {
         getPosition: sandbox.stub()
       },

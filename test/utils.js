@@ -45,4 +45,7 @@ exports.stubWidgets = function (sandbox) {
   sandbox.stub(blessed.element.prototype, "setLabel");
   sandbox.stub(contrib.line.prototype, "setData");
   sandbox.stub(contrib.gauge.prototype, "setData");
+
+  sandbox.stub(blessed.scrollablebox.prototype, "getScrollHeight");
+  sandbox.stub(blessed.element.prototype, "_getHeight");
 };

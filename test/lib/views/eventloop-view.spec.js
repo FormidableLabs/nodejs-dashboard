@@ -7,6 +7,7 @@ var BaseView = require("../../../lib/views/base-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
 var EventLoopView = require("../../../lib/views/eventloop-view");
 var utils = require("../../utils");
+var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
 describe("EventLoopView", function () {
 
@@ -23,6 +24,7 @@ describe("EventLoopView", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
+      metricsProvider: new MetricsProvider(testContainer.screen),
       layoutConfig: {
         limit: 10,
         getPosition: sandbox.stub().returns({ left: "75%" })

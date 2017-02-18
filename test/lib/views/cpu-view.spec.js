@@ -6,6 +6,7 @@ var sinon = require("sinon");
 var CpuView = require("../../../lib/views/cpu-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
 var utils = require("../../utils");
+var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
 describe("CpuView", function () {
 
@@ -22,6 +23,7 @@ describe("CpuView", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
+      metricsProvider: new MetricsProvider(testContainer.screen),
       layoutConfig: {
         limit: 10,
         getPosition: sandbox.stub().returns({ left: "75%" })
