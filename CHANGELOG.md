@@ -1,6 +1,6 @@
 # Change log
 
-## [Unreleased]
+## [v0.4.0] - 2016-12-20
 
 - **Added:** Support multiple customizable layouts [\#53], [\#59] - see README
 - **Removed**: `-i, --interleave` option - now available through layouts
@@ -38,7 +38,7 @@
 - *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
 - *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
-[Unreleased]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...HEAD
+[v0.4.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.2...v0.2.0
