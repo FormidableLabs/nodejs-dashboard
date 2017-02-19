@@ -40,9 +40,13 @@ setInterval(function () {
 
 var progress = 0;
 setInterval(function () {
-  console.log("[STATUS] Progress: ", progress++);
+  console.log("[STATUS] Status update: ", progress);
 }, 3000);
 
 setInterval(function () {
-  console.error("[STATUS] PROGRESS ERROR! (", progress, ")");
+  console.error("[STATUS] STATUS ERROR! (", progress, ")");
 }, 7000);
+
+setInterval(function () {
+  console.log("[PROGRESS] ", progress++);
+}, 1000);

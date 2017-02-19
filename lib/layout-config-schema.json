@@ -25,6 +25,8 @@
               "$ref": "#/definitions/memoryView"
             }, {
               "$ref": "#/definitions/lineGraphView"
+            }, {
+              "$ref": "#/definitions/customView"
             }]
           }
         }
@@ -110,6 +112,18 @@
         }
       },
       "required": ["type"]
+    },
+    "customView": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["module"]
     },
     "position": {
       "oneOf": [{
