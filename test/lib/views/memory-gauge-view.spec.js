@@ -41,7 +41,7 @@ describe("MemoryGaugeView", function () {
     it("should create a box with two gauges and listen for metrics event", function () {
       var append = sandbox.spy(blessed.node.prototype, "append");
 
-      var memory = new MemoryView(options);
+      var memory = new MemoryGaugeView(options);
 
       expect(memory).to.have.property("node").that.is.an.instanceof(blessed.box);
       expect(memory.node).to.have.deep.property("options.label", " memory ");
@@ -65,7 +65,7 @@ describe("MemoryGaugeView", function () {
   describe("onEvent", function () {
 
     it("should call update for each gauge", function () {
-      var memory = new MemoryView(options);
+      var memory = new MemoryGaugeView(options);
 
       expect(memory).to.have.property("heapGauge").that.is.an.instanceof(contrib.gauge);
       expect(memory).to.have.property("rssGauge").that.is.an.instanceof(contrib.gauge);
@@ -90,7 +90,7 @@ describe("MemoryGaugeView", function () {
   describe("update", function () {
 
     it("should update label and call setPercent for rssGauge", function () {
-      var memory = new MemoryView(options);
+      var memory = new MemoryGaugeView(options);
       var used = 50000;
       var total = 60300000;
       var pct = Math.floor(100 * used / total); // eslint-disable-line no-magic-numbers
@@ -103,7 +103,7 @@ describe("MemoryGaugeView", function () {
     });
 
     it("should update label and call setStack for heapGauge", function () {
-      var memory = new MemoryView(options);
+      var memory = new MemoryGaugeView(options);
       var used = 500;
       var total = 2500;
 
