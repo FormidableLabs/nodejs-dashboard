@@ -78,7 +78,6 @@ Options:
   -l, --layouts [file]        Path to file with layouts
   -p, --port [port]           Socket listener port
   -r, --refreshinterval [ms]  Metrics refresh interval, default 1000ms
-  -s, --scrollback [count]    Maximum scroll history for log windows
   -V, --version               output the version number
 ```
 

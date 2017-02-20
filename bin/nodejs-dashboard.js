@@ -30,10 +30,6 @@ program.option("-r, --refreshinterval [ms]",
  "Metrics refresh interval, default 1000ms",
  config.REFRESH_INTERVAL);
 
-program.option("-s, --scrollback [count]",
- "Maximum scroll history for log windows",
-config.SCROLLBACK);
-
 program.version(pkg.version);
 program.usage("[options] -- [node] [script] [arguments]");
 program.parse(process.argv);
@@ -66,7 +62,6 @@ var server = new SocketIO(port);
 var dashboard = new Dashboard({
   appName: appName,
   program: program,
-  scrollback: program.scrollback,
   layoutsFile: program.layouts
 });
 
