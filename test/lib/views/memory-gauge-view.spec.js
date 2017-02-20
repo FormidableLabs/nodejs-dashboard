@@ -5,11 +5,11 @@ var contrib = require("blessed-contrib");
 var expect = require("chai").expect;
 var sinon = require("sinon");
 
-var MemoryView = require("../../../lib/views/memory-view");
+var MemoryGaugeView = require("../../../lib/views/memory-gauge-view");
 var utils = require("../../utils");
 var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
-describe("MemoryView", function () {
+describe("MemoryGaugeView", function () {
 
   var sandbox;
   var testContainer;
