@@ -101,9 +101,8 @@ describe("StreamView", function () {
       sandbox.stub(streamView.node, "log");
 
       streamView.log("THIS should be included\nbut not THIS one\nor that one\n");
-      expect(streamView.node.log).to.have.been.calledTwice
-        .and.calledWithExactly("but not THIS one")
-        .and.calledWithExactly("or that one");
+      expect(streamView.node.log).to.have.been.calledOnce
+        .and.calledWithExactly("but not THIS one\nor that one");
     });
   });
 });
