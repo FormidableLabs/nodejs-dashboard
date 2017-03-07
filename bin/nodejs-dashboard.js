@@ -10,25 +10,51 @@ var Dashboard = require("../lib/dashboard");
 var config = require("../lib/config");
 var appPkg = require(path.resolve("package.json"));
 var pkg = require("../package.json");
+var parseSettings = require("../lib/parse-settings");
 
 var appName = appPkg.name || "node";
 var program = new commander.Command(pkg.name);
 
+// Mimic commander sintax errors (with offsets) for consistency
+/* eslint-disable no-console */
+var exitWithError = function () {
+  var args = Array.prototype.slice.call(arguments);
+  console.error();
+  console.error.apply(console, [" "].concat(args));
+  console.error();
+  process.exit(1); // eslint-disable-line no-process-exit
+};
+/* eslint-enable no-console */
+
 program.option("-e, --eventdelay [ms]",
- "Minimum threshold for event loop reporting, default 10ms",
+  "Minimum threshold for event loop reporting, default 10ms",
   config.BLOCKED_THRESHOLD);
 
 program.option("-l, --layouts [file]",
- "Path to file with layouts",
- config.LAYOUTS);
+  "Path to file with layouts",
+  config.LAYOUTS);
 
 program.option("-p, --port [port]",
- "Socket listener port",
- config.PORT);
+  "Socket listener port",
+  config.PORT);
 
 program.option("-r, --refreshinterval [ms]",
- "Metrics refresh interval, default 1000ms",
- config.REFRESH_INTERVAL);
+  "Metrics refresh interval, default 1000ms",
+  config.REFRESH_INTERVAL);
+
+program.option("-s, --settings [settings]",
+  "Overrides layout settings for given view types",
+  function (settings) {
+    var res = parseSettings(settings);
+
+    if (res.error) {
+      exitWithError(res.error);
+    }
+
+    return res.result;
+  },
+  {}
+);
 
 program.version(pkg.version);
 program.usage("[options] -- [node] [script] [arguments]");
@@ -62,7 +88,8 @@ var server = new SocketIO(port);
 var dashboard = new Dashboard({
   appName: appName,
   program: program,
-  layoutsFile: program.layouts
+  layoutsFile: program.layouts,
+  settings: program.settings
 });
 
 server.on("connection", function (socket) {
@@ -71,8 +98,7 @@ server.on("connection", function (socket) {
   });
 
   socket.on("error", function (err) {
-    console.error("Received error from agent, exiting: ", err); //eslint-disable-line
-    process.exit(1); //eslint-disable-line
+    exitWithError("Received error from agent, exiting: ", err);
   });
 });
 
