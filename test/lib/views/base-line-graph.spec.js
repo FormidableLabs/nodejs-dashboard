@@ -107,7 +107,7 @@ describe("BaseLineGraph", function () {
 
     it("should update values and label", function () {
       options.layoutConfig.view.limit = 4;
-      options.layoutConfig.view.title = "cpu";
+      options.layoutConfig.view.title = "cpu ({value})";
       options.unit = "%";
       var baseGraph = new BaseLineGraph(options);
       expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 0, 0]);
@@ -126,6 +126,7 @@ describe("BaseLineGraph", function () {
 
     it("should update highwater series", function () {
       options.layoutConfig.view.limit = 3;
+      options.layoutConfig.view.title = "graph A ({value}), high ({high})";
       options.highwater = true;
       var baseGraph = new BaseLineGraph(options);
 

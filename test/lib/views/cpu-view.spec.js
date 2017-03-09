@@ -42,7 +42,6 @@ describe("CpuView", function () {
       expect(cpu).to.be.an.instanceof(CpuView);
       expect(cpu).to.be.an.instanceof(BaseLineGraph);
 
-      expect(cpu).to.have.property("label", "cpu utilization");
       expect(cpu).to.have.property("unit", "%");
       var MAX_PERCENT = 100;
       expect(cpu).to.have.deep.property("node.options.maxY", MAX_PERCENT);

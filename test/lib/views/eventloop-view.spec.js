@@ -44,7 +44,6 @@ describe("EventLoopView", function () {
       expect(eventLoop).to.be.an.instanceof(BaseLineGraph);
       expect(eventLoop).to.be.an.instanceof(BaseView);
 
-      expect(eventLoop).to.have.property("label", "event loop delay");
       expect(eventLoop).to.have.property("unit", "ms");
       expect(eventLoop).to.have.property("highwaterSeries");
     });
