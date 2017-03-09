@@ -6,6 +6,7 @@ var sinon = require("sinon");
 var CpuView = require("../../../lib/views/cpu-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
 var utils = require("../../utils");
+var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
 describe("CpuView", function () {
 
@@ -22,6 +23,7 @@ describe("CpuView", function () {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
+      metricsProvider: new MetricsProvider(testContainer.screen),
       layoutConfig: {
         limit: 10,
         getPosition: sandbox.stub().returns({ left: "75%" })
@@ -40,7 +42,6 @@ describe("CpuView", function () {
       expect(cpu).to.be.an.instanceof(CpuView);
       expect(cpu).to.be.an.instanceof(BaseLineGraph);
 
-      expect(cpu).to.have.property("label", "cpu utilization");
       expect(cpu).to.have.property("unit", "%");
       var MAX_PERCENT = 100;
       expect(cpu).to.have.deep.property("node.options.maxY", MAX_PERCENT);

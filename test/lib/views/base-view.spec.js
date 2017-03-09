@@ -64,12 +64,15 @@ describe("BaseView", function () {
 
     it("should return result of layoutConfig getPosition", function () {
       var baseView = new BaseView(options);
+      baseView.node = blessed.element();
       expect(options.layoutConfig.getPosition).to.have.not.been.called;
 
-      var pos = baseView.getPosition();
-      expect(baseView.layoutConfig.getPosition).to.have.been.calledOnce
+      baseView.recalculatePosition();
+      expect(options.layoutConfig.getPosition).to.have.been.calledOnce
         .and.calledWithExactly(testContainer);
-      expect(pos).to.equal(baseView.layoutConfig.getPosition.firstCall.returnValue);
+      expect(baseView._getPosition(testContainer)).to.equal(
+        options.layoutConfig.getPosition.firstCall.returnValue
+      );
     });
   });
 
@@ -80,30 +83,10 @@ describe("BaseView", function () {
 
       baseView.node = blessed.element();
       var newPosition = { top: "50%" };
-      sandbox.stub(baseView, "getPosition").returns(newPosition);
+      baseView._getPosition = sandbox.stub().returns(newPosition);
 
       baseView.recalculatePosition();
       expect(baseView.node).to.have.property("position", newPosition);
-    });
-  });
-
-  describe("setLayout", function () {
-
-    it("should set layoutConfig property and call recalculatePosition", function () {
-      var baseView = new BaseView(options);
-      var layoutConfig = {};
-      sandbox.stub(baseView, "recalculatePosition");
-
-      expect(function () {
-        baseView.setLayout(layoutConfig);
-      }).to.throw("View requires layoutConfig option with getPosition function");
-
-      layoutConfig = { getPosition: function () {} };
-
-      baseView.setLayout(layoutConfig);
-
-      expect(baseView.layoutConfig).to.equal(layoutConfig);
-      expect(baseView.recalculatePosition).to.have.been.calledOnce;
     });
   });
 });

@@ -3,35 +3,51 @@
 module.exports = [
   [
     {
-      "views": [
+      views: [
         {
-          "name": "cpu",
-          "limit": 30
+          type: "cpu",
+          limit: 30
         },
         {
-          "name": "eventLoop",
-          "limit": 30
+          type: "eventLoop",
+          limit: 30
         },
         {
-          "name": "memory",
-          "position": {
-            "size": 15
+          type: "memory",
+          position: {
+            size: 15
           }
         }
       ]
     },
     {
-      "position": {
-        "grow": 3
+      position: {
+        grow: 3
       },
-      "views": [
+      views: [
         {
-          "name": "stdout"
+          type: "log",
+          streams: ["stdout"],
+          exclude: "^\\[STATUS\\]"
         },
         {
-          "name": "stderr",
-          "position": {
-            "size": 15
+          type: "log",
+          streams: ["stderr"],
+          exclude: "^\\[STATUS\\]",
+          position: {
+            size: 15
+          }
+        },
+        {
+          type: "log",
+          title: "status",
+          borderColor: "light-blue",
+          fgColor: "",
+          bgColor: "",
+          streams: ["stdout", "stderr"],
+          include: "^\\[STATUS\\](.*)",
+          position: {
+            size: 3
           }
         }
       ]
