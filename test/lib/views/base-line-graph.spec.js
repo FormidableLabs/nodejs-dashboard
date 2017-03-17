@@ -111,7 +111,7 @@ describe("BaseLineGraph", function () {
 
     it("should update series and label", function () {
       options.layoutConfig.view.limit = 4;
-      options.layoutConfig.view.title = "cpu ({value})";
+      options.layoutConfig.view.title = "cpu";
       options.unit = "%";
       var baseGraph = new BaseLineGraph(options);
       expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0, 0]);
