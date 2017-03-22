@@ -44,8 +44,9 @@ describe("EventLoopView", function () {
       expect(eventLoop).to.be.an.instanceof(BaseLineGraph);
       expect(eventLoop).to.be.an.instanceof(BaseView);
 
+      expect(eventLoop).to.have.property("label", " event loop ");
       expect(eventLoop).to.have.property("unit", "ms");
-      expect(eventLoop).to.have.property("highwaterSeries");
+      expect(eventLoop).to.have.property("series").that.has.keys("delay", "high");
     });
   });
 
@@ -57,7 +58,8 @@ describe("EventLoopView", function () {
 
       var data = { delay: 24, high: 24.346 };
       eventLoop.onEvent({ eventLoop: data });
-      expect(eventLoop.update).to.have.been.calledOnce.and.calledWithExactly(data.delay, data.high);
+      expect(eventLoop.update).to.have.been.calledOnce
+        .and.calledWithExactly({ delay: data.delay, high: data.high });
     });
   });
 });

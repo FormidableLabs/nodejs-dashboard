@@ -101,7 +101,7 @@
           "type": "string"
         },
         "type": {
-          "enum": ["cpu", "eventLoop"]
+          "enum": ["cpu", "eventLoop", "memoryGraph"]
         },
         "position": {
           "$ref": "#/definitions/position"

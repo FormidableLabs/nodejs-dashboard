@@ -55,10 +55,10 @@ describe("CpuView", function () {
       sandbox.spy(cpu, "update");
 
       cpu.onEvent({ cpu: { utilization: 3.24346 } });
-      expect(cpu.update).to.have.been.calledOnce.and.calledWithExactly("3.2");
+      expect(cpu.update).to.have.been.calledOnce.and.calledWithExactly({ cpu: "3.2" });
 
       cpu.onEvent({ cpu: { utilization: 9 } });
-      expect(cpu.update).to.have.been.calledTwice.and.calledWithExactly("9.0");
+      expect(cpu.update).to.have.been.calledTwice.and.calledWithExactly({ cpu: "9.0" });
     });
   });
 });

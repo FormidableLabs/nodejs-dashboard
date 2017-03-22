@@ -8,7 +8,7 @@ A layouts config file should export an array of layouts:
   - `position`: optional, see below
   - `views`: array of views
 - A view is an object identifying one of the existing `___View` classes to be displayed. Its properties are:
-  - `type`: one of `log`, `cpu`, `memory`, `eventloop`
+  - `type`: one of `log`, `cpu`, `memory`, `memoryGraph`, `eventloop`
   - `title`: optional view title (default value depends on view type)
   - `borderColor`: view border color
   - `position`: optional, see below

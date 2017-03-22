@@ -26,6 +26,9 @@ describe("BaseLineGraph", function () {
     options = {
       parent: testContainer,
       metricsProvider: new MetricsProvider(testContainer.screen),
+      series: {
+        a: { label: "" }
+      },
       layoutConfig: {
         getPosition: function () { return { top: "10%" }; },
         view: {
@@ -51,7 +54,8 @@ describe("BaseLineGraph", function () {
       options.layoutConfig.view.limit = limit;
       var baseGraph = new BaseLineGraph(options);
       expect(baseGraph).to.have.property("limit", limit);
-      expect(baseGraph).to.have.property("values").that.deep.equals(_.times(limit, _.constant(0)));
+      expect(baseGraph).to.have.deep.property("series.a.y")
+        .that.deep.equals(_.times(limit, _.constant(0)));
     });
 
     it("should create graph and set up event listener", function () {
@@ -105,40 +109,39 @@ describe("BaseLineGraph", function () {
 
     /* eslint-disable no-magic-numbers */
 
-    it("should update values and label", function () {
+    it("should update series and label", function () {
       options.layoutConfig.view.limit = 4;
-      options.layoutConfig.view.title = "cpu ({value})";
+      options.layoutConfig.view.title = "cpu";
       options.unit = "%";
       var baseGraph = new BaseLineGraph(options);
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 0, 0]);
-      expect(baseGraph).to.have.deep.property("series.y").that.deep.equals(baseGraph.values);
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0, 0]);
 
-      baseGraph.update(29);
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 0, 29]);
-      expect(baseGraph).to.have.deep.property("series.y").that.deep.equals(baseGraph.values);
+      baseGraph.update({ a: 29 });
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0, 29]);
       expect(baseGraph.node.setLabel).to.have.been.calledWith(" cpu (29%) ");
 
-      baseGraph.update(8);
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 29, 8]);
-      expect(baseGraph).to.have.deep.property("series.y").that.deep.equals(baseGraph.values);
+      baseGraph.update({ a: 8 });
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 29, 8]);
       expect(baseGraph.node.setLabel).to.have.been.calledWith(" cpu (8%) ");
     });
 
     it("should update highwater series", function () {
       options.layoutConfig.view.limit = 3;
-      options.layoutConfig.view.title = "graph A ({value}), high ({high})";
-      options.highwater = true;
+      options.series.high = {
+        highwater: true
+      };
       var baseGraph = new BaseLineGraph(options);
 
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 0]);
-      expect(baseGraph).to.have.property("highwaterSeries").that.deep.equals({
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0]);
+      expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
         x: ["2", "1", "0"],
+        y: [0, 0, 0],
         style: { line: "red" }
       });
 
-      baseGraph.update(2, 4);
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 2]);
-      expect(baseGraph).to.have.property("highwaterSeries").that.deep.equals({
+      baseGraph.update({ a: 2, high: 4 });
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 2]);
+      expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
         x: ["2", "1", "0"],
         y: [4, 4, 4],
         style: { line: "red" }
@@ -146,15 +149,16 @@ describe("BaseLineGraph", function () {
       expect(baseGraph.node.setLabel).to.have.been.calledWith(" graph A (2), high (4) ");
     });
 
-    it("should update series correctly when values length > limit", function () {
+    it("should update series without exceeding limit", function () {
       options.layoutConfig.view.limit = 3;
-      options.highwater = true;
+      options.series.high = {
+        highwater: true
+      };
       var baseGraph = new BaseLineGraph(options);
 
-      baseGraph.update(27, 27);
-      expect(baseGraph).to.have.property("values").that.deep.equals([0, 0, 27]);
-      expect(baseGraph).to.have.deep.property("series.y").that.deep.equals([0, 0, 27]);
-      expect(baseGraph).to.have.deep.property("highwaterSeries.y").that.deep.equals([27, 27, 27]);
+      baseGraph.update({ a: 27, high: 27 });
+      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 27]);
+      expect(baseGraph).to.have.deep.property("series.high.y").that.deep.equals([27, 27, 27]);
     });
 
     /* eslint-enable no-magic-numbers */
@@ -180,35 +184,6 @@ describe("BaseLineGraph", function () {
         .that.deep.equals(options.layoutConfig.getPosition(options.parent));
 
       expect(testContainer.append).to.have.been.calledOnce.and.calledWithExactly(baseGraph.node);
-    });
-
-    it("should create a series and trim values based on limit", function () {
-      sandbox.stub(BaseLineGraph.prototype, "_createGraph");
-      options.layoutConfig.view.limit = 4;
-      var baseGraph = new BaseLineGraph(options);
-      BaseLineGraph.prototype._createGraph.restore();
-
-      baseGraph._createGraph(options);
-
-      _.each([2, 3, 4, 5, 6, 7, 8, 9], function (n) { // eslint-disable-line no-magic-numbers
-        baseGraph.update(n);
-      });
-
-      expect(baseGraph).to.have.property("series").that.deep.equals({
-        x: ["3", "2", "1", "0"],
-        y: [6, 7, 8, 9] // eslint-disable-line no-magic-numbers
-      });
-    });
-
-    it("should initialize highwater series if option is set", function () {
-      sandbox.stub(BaseLineGraph.prototype, "_createGraph");
-      options.highwater = true;
-      var baseGraph = new BaseLineGraph(options);
-
-      expect(baseGraph).to.have.property("highwaterSeries").that.deep.equals({
-        x: ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0"],
-        style: { line: "red" }
-      });
     });
   });
 });
