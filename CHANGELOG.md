@@ -1,6 +1,10 @@
 # Change log
 
-## [v0.4.0] - 2016-12-20
+## [v0.4.1] - 2017-03-21
+- **Added:** Historical memory usage graph [\#63]
+- **Added:** Support for log filtering - see README [\#62]
+
+## [v0.4.0] - 2017-02-18
 
 - **Added:** Support multiple customizable layouts [\#53], [\#59] - see README
 - **Removed**: `-i, --interleave` option - now available through layouts
@@ -38,6 +42,7 @@
 - *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
 - *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
+[v0.4.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.0...v0.2.1
@@ -45,6 +50,8 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#63]: https://github.com/FormidableLabs/nodejs-dashboard/pull/63
+[\#62]: https://github.com/FormidableLabs/nodejs-dashboard/pull/62
 [\#59]: https://github.com/FormidableLabs/nodejs-dashboard/pull/59
 [\#57]: https://github.com/FormidableLabs/nodejs-dashboard/pull/57
 [\#56]: https://github.com/FormidableLabs/nodejs-dashboard/pull/56
