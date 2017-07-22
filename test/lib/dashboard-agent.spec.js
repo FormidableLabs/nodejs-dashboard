@@ -75,7 +75,7 @@ describe("dashboard-agent", function () {
         expect(metrics.cpu.utilization).to.equal(60);
       };
 
-      var stubProcess = sinon.stub(process, "memoryUsage", function () {
+      sandbox.stub(process, "memoryUsage", function () {
         return {
           systemTotal: 20,
           rss: 30,
@@ -84,7 +84,7 @@ describe("dashboard-agent", function () {
         };
       });
 
-      var stubPUsage = sinon.stub(pusage, "stat", function (processId, callback) {
+      sandbox.stub(pusage, "stat", function (processId, callback) {
         expect(processId).to.equal(process.pid);
         expect(callback).to.be.a("function");
 
@@ -95,9 +95,6 @@ describe("dashboard-agent", function () {
         tryCatch(done, function () {
           expect(err).to.be.null;
           checkMetrics(metrics);
-
-          stubProcess.restore();
-          stubPUsage.restore();
         });
       });
     });
