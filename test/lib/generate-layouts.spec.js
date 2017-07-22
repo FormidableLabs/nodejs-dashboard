@@ -22,7 +22,7 @@ var parent = {
 };
 
 describe("generate-layouts", function () {
-  beforeEach(function (done) {
+  beforeEach(function () {
     mock("fake/empty-layout", []);
     mock("fake/invalid-config-layout", { invalid: "config" });
     mock("fake/fill-view-layout", [[
@@ -154,8 +154,6 @@ describe("generate-layouts", function () {
         ]
       }
     ]]);
-
-    done();
   });
 
   it("should validate default layout", function () {
