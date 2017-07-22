@@ -16,7 +16,6 @@ describe("MetricsProvider", function () {
   var testContainer;
   var metricsProvider;
 
-  var stubNow;
   var mockStart = 1000000;
   var mockNow = 1000000;
   var mockTimeInterval = 2500;
@@ -27,9 +26,7 @@ describe("MetricsProvider", function () {
   var mockMetrics = [];
   var mockMetricCount;
 
-  before(function (done) {
-    sandbox = sinon.sandbox.create();
-
+  before(function () {
     // generate some fake metrics for processing
     mockMetricCount =
       Math.ceil(Math.random() * 500 + metricsRequiredToAchieveHighestAggregation);
@@ -45,40 +42,35 @@ describe("MetricsProvider", function () {
         }
       });
     }
-
-    done();
   });
 
-  after(function (done) {
-    done();
-  });
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
 
-  beforeEach(function (done) {
     mockNow = mockStart;
 
-    stubNow = sinon.stub(Date, "now", function () {
+    sandbox.stub(Date, "now", function () {
       mockNow += mockTimeInterval;
       return mockNow - mockTimeInterval;
     });
 
     testContainer = utils.getTestContainer(sandbox);
     metricsProvider = new MetricsProvider(testContainer.screen);
-
-    done();
   });
 
-  afterEach(function (done) {
-    stubNow.restore();
+  afterEach(function () {
     sandbox.restore();
-
-    done();
   });
 
   describe("constructor", function () {
-    it("builds an aggregation container from configuration", function (done) {
+    it("builds an aggregation container from configuration", function () {
       expect(metricsProvider).to.be.an.instanceOf(MetricsProvider);
 
-      expect(Object.keys(metricsProvider._aggregation)).to.deep.equal(AGGREGATE_TIME_LEVELS);
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .which.is.an("object")
+        .with.keys(AGGREGATE_TIME_LEVELS);
 
       var index = 0;
       _.each(metricsProvider._aggregation, function (value, key) {
@@ -95,52 +87,69 @@ describe("MetricsProvider", function () {
           });
       });
 
-      expect(metricsProvider.aggregationLevels)
-        .to.be.an("array")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("aggregationLevels")
+        .which.is.an("array")
         .that.deep.equals(AGGREGATE_TIME_LEVELS);
 
-      expect(metricsProvider.minimumAggregationInterval)
-        .to.be.a("number")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("minimumAggregationInterval")
+        .which.is.a("number")
         .that.equals(+AGGREGATE_TIME_LEVELS[0]);
 
-      expect(metricsProvider.highestAggregationKey)
-        .to.be.a("string")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("highestAggregationKey")
+        .which.is.a("string")
         .that.equals(AGGREGATE_TIME_LEVELS.slice(-1)[0]);
 
-      expect(metricsProvider.zoomLevel)
-        .to.be.a("number")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("zoomLevel")
+        .which.is.a("number")
         .that.equals(-1);
 
-      expect(metricsProvider.zoomLevelKey).to.be.undefined;
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("zoomLevelKey")
+        .that.is.undefined;
 
-      expect(metricsProvider._startTime)
-        .to.be.a("number")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_startTime")
+        .which.is.a("number")
         .that.equals(mockStart);
 
-      expect(metricsProvider._lastAggregation)
-        .to.be.a("number")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_lastAggregation")
+        .which.is.a("number")
         .that.equals(mockStart);
 
-      expect(metricsProvider._metrics)
-        .to.be.an("array")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_metrics")
+        .which.is.an("array")
         .that.deep.equals([]);
-
-      done();
     });
   });
 
   describe("_onMetrics", function () {
     // due to the quantity of data processed, notice the .timeout at the bottom - this allows
     // for a longer running test
-    it("retains metrics received, while aggregating them into time buckets", function (done) {
+    it("retains metrics received, while aggregating them into time buckets", function () {
       // load with mock metric data already computed
       _.each(mockMetrics, function (value) {
         metricsProvider._onMetrics(value);
       });
 
       // the number of data points retained must match the number provided
-      expect(metricsProvider._metrics)
-        .to.be.an("array")
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_metrics")
+        .which.is.an("array")
         .that.has.lengthOf(mockMetricCount);
 
       // now, examine each metric
@@ -182,7 +191,7 @@ describe("MetricsProvider", function () {
               .to.be.an("object")
               .with.property("__timeIndices")
               .with.property(level)
-              .to.be.a("number")
+              .which.is.a("number")
               .that.equals(timeIndex);
           });
         }
@@ -190,9 +199,11 @@ describe("MetricsProvider", function () {
 
       _.each(metricsProvider._aggregation, function (value, key) {
         _.each(value.data, function (row, index) {
+          // reverse-engineer the start and end of this time band
           var startTimeBand = index * Math.floor(+key / mockTimeInterval) - 1;
           var endTimeBand = startTimeBand + Math.floor(+key / mockTimeInterval);
 
+          // the first time band is offset by a time interval (call to Date.now at start)
           if (index === 0) {
             startTimeBand = 0;
           }
@@ -206,37 +217,39 @@ describe("MetricsProvider", function () {
             valueB: 0
           };
 
-          _.each(metricsProvider._metrics.slice(startTimeBand, endTimeBand), function (metric) {
-            averageA.valueA += metric.metricA.valueA / (endTimeBand - startTimeBand);
+          var metricCount = endTimeBand - startTimeBand;
 
-            averageB.valueA += metric.metricB.valueA / (endTimeBand - startTimeBand);
-            averageB.valueB += metric.metricB.valueB / (endTimeBand - startTimeBand);
+          // recompute the average manually
+          _.each(metricsProvider._metrics.slice(startTimeBand, endTimeBand), function (metric) {
+            averageA.valueA += metric.metricA.valueA / metricCount;
+
+            averageB.valueA += metric.metricB.valueA / metricCount;
+            averageB.valueB += metric.metricB.valueB / metricCount;
           });
 
+          // verify
           expect(row)
             .to.be.an("object")
             .with.property("metricA")
             .with.property("valueA")
-            .that.is.a("number")
+            .which.is.a("number")
             .that.equals(+averageA.valueA.toFixed(1));
 
           expect(row)
             .to.be.an("object")
             .with.property("metricB")
             .with.property("valueA")
-            .that.is.a("number")
+            .which.is.a("number")
             .that.equals(+averageB.valueA.toFixed(1));
 
           expect(row)
             .to.be.an("object")
             .with.property("metricB")
             .with.property("valueB")
-            .that.is.a("number")
+            .which.is.a("number")
             .that.equals(+averageB.valueB.toFixed(1));
         });
       });
-
-      done();
     }).timeout(10000);
   });
 });

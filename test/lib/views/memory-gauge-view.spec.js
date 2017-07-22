@@ -1,10 +1,7 @@
 "use strict";
 
-var chai = require("chai");
+var expect = require("chai").expect;
 var sinon = require("sinon");
-var sinonChai = require("sinon-chai");
-var expect = chai.expect;
-chai.use(sinonChai);
 
 var blessed = require("blessed");
 var contrib = require("blessed-contrib");
@@ -86,8 +83,8 @@ describe("MemoryGaugeView", function () {
       memory.onEvent({ mem: mem });
 
       expect(memory.update).to.have.been.calledTwice
-        .and.to.been.calledWithExactly(memory.heapGauge, mem.heapUsed, mem.heapTotal)
-        .and.to.been.calledWithExactly(memory.rssGauge, mem.rss, mem.systemTotal);
+        .and.to.have.been.calledWithExactly(memory.heapGauge, mem.heapUsed, mem.heapTotal)
+        .and.to.have.been.calledWithExactly(memory.rssGauge, mem.rss, mem.systemTotal);
     });
   });
 
