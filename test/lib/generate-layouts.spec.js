@@ -5,8 +5,13 @@ var expect = require("chai").expect;
 // Strict mode leads to odd bug in Node < 0.12
 var mockRequire = require("mock-require");
 
+// to ensure cross-platform consistency with mixed Posix & Win32 paths, use normalize()
+// ideally, this would be taken care of as a fix for mockRequire.
+// see https://github.com/boblauer/mock-require/issues/20
+var normalize = require("path").normalize;
+
 var mock = function (path, obj) {
-  return mockRequire(process.cwd() + "/" + path, obj);
+  return mockRequire(normalize(process.cwd() + "/" + path), obj);
 };
 
 var generateLayouts = require("../../lib/generate-layouts");
@@ -17,7 +22,7 @@ var parent = {
 };
 
 describe("generate-layouts", function () {
-  beforeEach(function () {
+  beforeEach(function (done) {
     mock("fake/empty-layout", []);
     mock("fake/invalid-config-layout", { invalid: "config" });
     mock("fake/fill-view-layout", [[
@@ -149,6 +154,8 @@ describe("generate-layouts", function () {
         ]
       }
     ]]);
+
+    done();
   });
 
   it("should validate default layout", function () {

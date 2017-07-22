@@ -1,7 +1,10 @@
 "use strict";
 
-var expect = require("chai").expect;
+var chai = require("chai");
 var sinon = require("sinon");
+var sinonChai = require("sinon-chai");
+var expect = chai.expect;
+chai.use(sinonChai);
 
 var BaseView = require("../../../lib/views/base-view");
 var utils = require("../../utils");

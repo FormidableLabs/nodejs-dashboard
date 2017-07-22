@@ -1,9 +1,13 @@
 "use strict";
 
-var contrib = require("blessed-contrib");
-var expect = require("chai").expect;
-var _ = require("lodash");
+var chai = require("chai");
 var sinon = require("sinon");
+var sinonChai = require("sinon-chai");
+var expect = chai.expect;
+chai.use(sinonChai);
+
+var contrib = require("blessed-contrib");
+var _ = require("lodash");
 
 var BaseView = require("../../../lib/views/base-view");
 var BaseLineGraph = require("../../../lib/views/base-line-graph");
@@ -134,7 +138,7 @@ describe("BaseLineGraph", function () {
 
       expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0]);
       expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
-        x: ["2", "1", "0"],
+        x: ["2s", "1s", "0s"],
         y: [0, 0, 0],
         style: { line: "red" }
       });
@@ -142,7 +146,7 @@ describe("BaseLineGraph", function () {
       baseGraph.update({ a: 2, high: 4 });
       expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 2]);
       expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
-        x: ["2", "1", "0"],
+        x: ["2s", "1s", "0s"],
         y: [4, 4, 4],
         style: { line: "red" }
       });

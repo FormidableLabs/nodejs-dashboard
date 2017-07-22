@@ -1,3 +1,5 @@
+/* eslint-disable no-magic-numbers */
+
 "use strict";
 
 var expect = require("chai").expect;
@@ -64,18 +66,38 @@ describe("dashboard-agent", function () {
 
       var checkMetrics = function (metrics) {
         expect(metrics).to.be.an("object");
-        expect(metrics.eventLoop).to.deep.equal({ delay: 0, high: 0 });
-        expect(metrics.mem.systemTotal).to.be.above(0);
-        expect(metrics.mem.rss).to.be.above(0);
-        expect(metrics.mem.heapTotal).to.be.above(0);
-        expect(metrics.mem.heapUsed).to.be.above(0);
-        expect(metrics.cpu.utilization).to.be.above(0);
+        expect(metrics.eventLoop.delay).to.be.a("number");
+        expect(metrics.eventLoop.high).to.be.a("number");
+        expect(metrics.mem.systemTotal).to.equal(20);
+        expect(metrics.mem.rss).to.equal(30);
+        expect(metrics.mem.heapTotal).to.equal(40);
+        expect(metrics.mem.heapUsed).to.equal(50);
+        expect(metrics.cpu.utilization).to.equal(60);
       };
+
+      var stubProcess = sinon.stub(process, "memoryUsage", function () {
+        return {
+          systemTotal: 20,
+          rss: 30,
+          heapTotal: 40,
+          heapUsed: 50
+        };
+      });
+
+      var stubPUsage = sinon.stub(pusage, "stat", function (processId, callback) {
+        expect(processId).to.equal(process.pid);
+        expect(callback).to.be.a("function");
+
+        callback(null, { cpu: 60 });
+      });
 
       agent._getStats(function (err, metrics) {
         tryCatch(done, function () {
           expect(err).to.be.null;
           checkMetrics(metrics);
+
+          stubProcess.restore();
+          stubPUsage.restore();
         });
       });
     });
