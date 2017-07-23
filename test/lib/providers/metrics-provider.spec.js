@@ -21,7 +21,7 @@ describe("MetricsProvider", function () {
   var mockTimeInterval = 2500;
 
   var metricsRequiredToAchieveHighestAggregation =
-    +AGGREGATE_TIME_LEVELS.slice(-1)[0] / mockTimeInterval;
+    _.last(AGGREGATE_TIME_LEVELS) / mockTimeInterval;
 
   var mockMetrics = [];
   var mockMetricCount;
@@ -82,7 +82,7 @@ describe("MetricsProvider", function () {
           .to.be.an("object")
           .that.deep.equals({
             data: [],
-            lastIndex: 0,
+            lastTimeIndex: undefined,
             nextAggregateIndex: 0
           });
       });
@@ -103,7 +103,7 @@ describe("MetricsProvider", function () {
         .to.be.an("object")
         .with.property("highestAggregationKey")
         .which.is.a("string")
-        .that.equals(AGGREGATE_TIME_LEVELS.slice(-1)[0]);
+        .that.equals(_.last(AGGREGATE_TIME_LEVELS));
 
       expect(metricsProvider)
         .to.be.an("object")
@@ -124,9 +124,15 @@ describe("MetricsProvider", function () {
 
       expect(metricsProvider)
         .to.be.an("object")
-        .with.property("_lastAggregation")
+        .with.property("_lastAggregationTime")
         .which.is.a("number")
         .that.equals(mockStart);
+
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_lastAggregationIndex")
+        .which.is.a("number")
+        .that.equals(0);
 
       expect(metricsProvider)
         .to.be.an("object")
@@ -171,30 +177,6 @@ describe("MetricsProvider", function () {
           .with.property("metricB")
           .with.property("valueB")
           .that.equals(mockMetrics[index].metricB.valueB);
-
-        // verify the memory deallocation logic is working
-        if (index < metricsRequiredToAchieveHighestAggregation - 1) {
-          expect(value)
-            .to.not.have.property("__timeIndices");
-        }
-
-        // for those that are not deallocated, verify those properties
-        if (index >= metricsRequiredToAchieveHighestAggregation - 1) {
-          expect(value)
-            .to.have.property("__timeIndices");
-
-          _.each(AGGREGATE_TIME_LEVELS, function (level) {
-            // reverse-engineer the expected time index
-            var timeIndex = Math.floor((index + 1) * mockTimeInterval / +level);
-
-            expect(value)
-              .to.be.an("object")
-              .with.property("__timeIndices")
-              .with.property(level)
-              .which.is.a("number")
-              .that.equals(timeIndex);
-          });
-        }
       });
 
       _.each(metricsProvider._aggregation, function (value, key) {
