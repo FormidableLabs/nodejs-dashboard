@@ -95,12 +95,6 @@ describe("MetricsProvider", function () {
 
       expect(metricsProvider)
         .to.be.an("object")
-        .with.property("minimumAggregationInterval")
-        .which.is.a("number")
-        .that.equals(+AGGREGATE_TIME_LEVELS[0]);
-
-      expect(metricsProvider)
-        .to.be.an("object")
         .with.property("highestAggregationKey")
         .which.is.a("string")
         .that.equals(_.last(AGGREGATE_TIME_LEVELS));
@@ -119,12 +113,6 @@ describe("MetricsProvider", function () {
       expect(metricsProvider)
         .to.be.an("object")
         .with.property("_startTime")
-        .which.is.a("number")
-        .that.equals(mockStart);
-
-      expect(metricsProvider)
-        .to.be.an("object")
-        .with.property("_lastAggregationTime")
         .which.is.a("number")
         .that.equals(mockStart);
 
