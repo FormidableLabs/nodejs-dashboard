@@ -454,7 +454,9 @@ describe("MetricsProvider", function () {
 
         expect(data)
           .to.be.an("object")
-          .that.deep.equals(_.last(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data));
+          .that.deep.equals(
+            _.last(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data)
+          );
       });
 
       metricsProvider._onMetrics(mockMetrics[3]);

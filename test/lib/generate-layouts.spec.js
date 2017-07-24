@@ -5,13 +5,11 @@ var expect = require("chai").expect;
 // Strict mode leads to odd bug in Node < 0.12
 var mockRequire = require("mock-require");
 
-// to ensure cross-platform consistency with mixed Posix & Win32 paths, use normalize()
-// ideally, this would be taken care of as a fix for mockRequire.
-// see https://github.com/boblauer/mock-require/issues/20
-var normalize = require("path").normalize;
+// to ensure cross-platform consistency with mixed Posix & Win32 paths, use path.resolve()
+var resolve = require("path").resolve;
 
 var mock = function (path, obj) {
-  return mockRequire(normalize(process.cwd() + "/" + path), obj);
+  return mockRequire(resolve(path), obj);
 };
 
 var generateLayouts = require("../../lib/generate-layouts");

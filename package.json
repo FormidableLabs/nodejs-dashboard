@@ -1,6 +1,6 @@
 {
   "name": "nodejs-dashboard",
-  "version": "0.5.0",
+  "version": "0.4.1",
   "description": "Telemetry dashboard for node.js apps from the terminal!",
   "keywords": [
     "dashboard",
@@ -15,7 +15,7 @@
     "lint": "eslint .",
     "test": "npm run lint && npm run test-only",
     "test-only": "mocha -c --require test/setup.js --recursive ./test",
-    "test-app": "./bin/nodejs-dashboard.js node test/app/index.js",
+    "test-app": "node bin/nodejs-dashboard.js -- node test/app/index.js",
     "coverage": "istanbul cover --include-all-sources node_modules/mocha/bin/_mocha -- -c --recursive --require test/setup.js ./test"
   },
   "repository": {
