@@ -1,5 +1,8 @@
 # Change log
 
+## [v0.5.1] - 2017-07-24
+- **Added:** Longer history for graphs [\#64]
+
 ## [v0.4.1] - 2017-03-21
 - **Added:** Historical memory usage graph [\#63]
 - **Added:** Support for log filtering - see README [\#62]
