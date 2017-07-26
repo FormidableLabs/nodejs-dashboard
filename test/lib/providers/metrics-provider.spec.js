@@ -3,7 +3,6 @@
 "use strict";
 
 var expect = require("chai").expect;
-var lpad = require("left-pad");
 var sinon = require("sinon");
 var _ = require("lodash");
 
@@ -520,8 +519,8 @@ describe("MetricsProvider", function () {
         years + "y"
         + days + "d "
         + hours + ":"
-        + lpad(minutes, 2, "0") + ":"
-        + lpad(seconds, 2, "0");
+        + _.padStart(minutes, 2, "0") + ":"
+        + _.padStart(seconds, 2, "0");
 
       expect(axis[0])
         .to.be.a("string")
