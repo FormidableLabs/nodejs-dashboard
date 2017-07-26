@@ -3,6 +3,7 @@
 "use strict";
 
 var expect = require("chai").expect;
+var lpad = require("left-pad");
 var sinon = require("sinon");
 var _ = require("lodash");
 
@@ -478,9 +479,8 @@ describe("MetricsProvider", function () {
       var limit = 10;
       var axis = metricsProvider.getXAxis(limit);
 
-      var expected = _.reverse(_.times(limit, function (index) {
-        return index + "s";
-      }));
+      var expected =
+        _.reverse([":00", ":01", ":02", ":03", ":04", ":05", ":06", ":07", ":08", ":09"]);
 
       expect(axis)
         .to.be.an("array")
@@ -495,11 +495,37 @@ describe("MetricsProvider", function () {
       metricsProvider.adjustZoomLevel(2);
 
       axis = metricsProvider.getXAxis(limit);
-      expected = _.reverse(["0s", "10s", "20s", "30s", "40s", "50s", "1m", "1.2m", "1.3m", "1.5m"]);
+      expected =
+        _.reverse([":00", ":10", ":20", ":30", ":40", ":50", "1:00", "1:10", "1:20", "1:30"]);
 
       expect(axis)
         .to.be.an("array")
         .that.deep.equals(expected);
+
+      // override zoom (hours)
+      metricsProvider.zoomLevelKey = _.last(AGGREGATE_TIME_LEVELS);
+
+      // there are 8,760 hours in a day, getting an axis of 10,000 will get us full coverage
+      axis = metricsProvider.getXAxis(10000);
+
+      // here is the expected (use 9999 not 10000 because the last axis element is zero-based)
+      var years = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60 * 24 * 365.25));
+      var days = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60 * 24) % 365.25);
+      var hours = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60) % 24);
+      var minutes = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60) % 60);
+      var seconds = Math.floor(metricsProvider.zoomLevelKey * 9999 / 1000 % 60);
+
+      // build a label
+      var label =
+        years + "y"
+        + days + "d "
+        + hours + ":"
+        + lpad(minutes, 2, "0") + ":"
+        + lpad(seconds, 2, "0");
+
+      expect(axis[0])
+        .to.be.a("string")
+        .that.equals(label);
     });
   });
 });

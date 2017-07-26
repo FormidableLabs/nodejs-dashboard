@@ -135,7 +135,7 @@ describe("BaseLineGraph", function () {
 
       expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0]);
       expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
-        x: ["2s", "1s", "0s"],
+        x: [":02", ":01", ":00"],
         y: [0, 0, 0],
         style: { line: "red" }
       });
@@ -143,7 +143,7 @@ describe("BaseLineGraph", function () {
       baseGraph.update({ a: 2, high: 4 });
       expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 2]);
       expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
-        x: ["2s", "1s", "0s"],
+        x: [":02", ":01", ":00"],
         y: [4, 4, 4],
         style: { line: "red" }
       });

@@ -38,6 +38,7 @@
     "commander": "^2.9.0",
     "cross-spawn": "^4.0.2",
     "jsonschema": "^1.1.1",
+    "left-pad": "^1.1.3",
     "lodash": "^4.16.2",
     "pidusage": "^1.0.8",
     "pretty-bytes": "^3.0.1",
