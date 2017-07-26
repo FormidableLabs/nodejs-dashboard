@@ -29,7 +29,7 @@ describe("MetricsProvider", function () {
 
     mockStart = 10000000;
     mockNow = mockStart;
-    mockTimeInterval = 2500;
+    mockTimeInterval = 500;
 
     stubNow = sandbox.stub(Date, "now", function () {
       var currentTime = mockNow;
@@ -85,7 +85,8 @@ describe("MetricsProvider", function () {
           .that.deep.equals({
             data: [],
             lastTimeIndex: undefined,
-            lastAggregateIndex: 0
+            lastAggregateIndex: 0,
+            scrollOffset: 0
           });
       });
 
@@ -105,12 +106,13 @@ describe("MetricsProvider", function () {
         .to.be.an("object")
         .with.property("zoomLevel")
         .which.is.a("number")
-        .that.equals(-1);
+        .that.equals(0);
 
       expect(metricsProvider)
         .to.be.an("object")
         .with.property("zoomLevelKey")
-        .that.is.undefined;
+        .which.is.a("string")
+        .that.equals(AGGREGATE_TIME_LEVELS[0]);
 
       expect(metricsProvider)
         .to.be.an("object")
@@ -393,12 +395,13 @@ describe("MetricsProvider", function () {
         .to.be.an("object")
         .with.property("zoomLevel")
         .which.is.a("number")
-        .that.equals(-1);
+        .that.equals(0);
 
       expect(metricsProvider)
         .to.be.an("object")
         .with.property("zoomLevelKey")
-        .that.is.undefined;
+        .which.is.a("string")
+        .that.equals(AGGREGATE_TIME_LEVELS[0]);
 
       // reset mock time
       mockTimeInterval = 2500;
@@ -416,13 +419,13 @@ describe("MetricsProvider", function () {
         .to.be.an("object")
         .with.property("zoomLevel")
         .which.is.a("number")
-        .that.equals(0);
+        .that.equals(1);
 
       expect(metricsProvider)
         .to.be.an("object")
         .with.property("zoomLevelKey")
         .which.is.a("string")
-        .that.equals(AGGREGATE_TIME_LEVELS[0]);
+        .that.equals(AGGREGATE_TIME_LEVELS[1]);
 
       // zooming again should have no change
       metricsProvider.adjustZoomLevel(1);
@@ -431,13 +434,13 @@ describe("MetricsProvider", function () {
         .to.be.an("object")
         .with.property("zoomLevel")
         .which.is.a("number")
-        .that.equals(0);
+        .that.equals(1);
 
       expect(metricsProvider)
         .to.be.an("object")
         .with.property("zoomLevelKey")
         .which.is.a("string")
-        .that.equals(AGGREGATE_TIME_LEVELS[0]);
+        .that.equals(AGGREGATE_TIME_LEVELS[1]);
 
       // getting metrics should come from the aggregate now
       var metrics = metricsProvider.getMetrics(3);
@@ -455,7 +458,7 @@ describe("MetricsProvider", function () {
         expect(data)
           .to.be.an("object")
           .that.deep.equals(
-            _.last(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data)
+          _.last(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data)
           );
       });
 
@@ -501,8 +504,8 @@ describe("MetricsProvider", function () {
         .to.be.an("array")
         .that.deep.equals(expected);
 
-      // override zoom (hours)
-      metricsProvider.zoomLevelKey = _.last(AGGREGATE_TIME_LEVELS);
+      // max zoom
+      metricsProvider.setZoomLevel(AGGREGATE_TIME_LEVELS.length);
 
       // there are 8,760 hours in a day, getting an axis of 10,000 will get us full coverage
       axis = metricsProvider.getXAxis(10000);
@@ -525,6 +528,141 @@ describe("MetricsProvider", function () {
       expect(axis[0])
         .to.be.a("string")
         .that.equals(label);
+    });
+  });
+
+  describe("adjustScrollOffset", function () {
+    it("adjusts the scroll either relative or absolute", function () {
+      // add some data
+      _.each(_.slice(mockMetrics, 0, 100), metricsProvider._onMetrics.bind(metricsProvider));
+
+      // go left one
+      metricsProvider.adjustScrollOffset(-1);
+
+      // should be offset one
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(-1);
+
+      // go forward two
+      metricsProvider.adjustScrollOffset(+2);
+
+      // won't go above zero
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(0);
+
+      metricsProvider.adjustScrollOffset(-5);
+
+      // add some more data to verify that scroll offset adjusts
+      // 100 more elements at half-second time interval is 50 more aggregates
+      _.each(_.slice(mockMetrics, 101, 201), metricsProvider._onMetrics.bind(metricsProvider));
+
+      // previous offset should be adjusted by the number of additional aggregate
+      // elements
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(-55);
+
+      // test out absolute position
+      metricsProvider.adjustScrollOffset(-1, true);
+
+      // should be offset one
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(-1);
+
+      // reset
+      metricsProvider.resetGraphs();
+
+      // now try to go way left
+      metricsProvider.adjustScrollOffset(-5000);
+
+      // should be offset
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(-5000);
+
+      // getting metrics now will correct the offset considering limit
+      metricsProvider.getMetrics(30);
+
+      expect(metricsProvider)
+        .to.be.an("object")
+        .with.property("_aggregation")
+        .with.property(metricsProvider.zoomLevelKey)
+        .which.is.an("object")
+        .with.property("scrollOffset")
+        .which.is.a("number")
+        .that.equals(30 - metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data.length);
+    });
+  });
+
+  describe("startGraphs", function () {
+    it("offsets at the end or the beginning of the data set", function () {
+      // load some data
+      _.each(_.slice(mockMetrics, 0, 100), metricsProvider._onMetrics.bind(metricsProvider));
+
+      sandbox.stub(metricsProvider, "adjustScrollOffset", function (direction) {
+        var length = metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data.length;
+
+        length = direction < 0 ? -length : +length;
+
+        expect(direction)
+          .to.be.a("number")
+          .that.equals(length);
+      });
+
+      metricsProvider.startGraphs(-1);
+      metricsProvider.startGraphs(+1);
+    });
+  });
+
+  describe("resetGraphs", function () {
+    it("resets zoom level and scroll offsets", function () {
+      sandbox.stub(metricsProvider, "setZoomLevel", function (zoom) {
+        expect(zoom)
+          .to.be.a("number")
+          .that.equals(0);
+      });
+
+      _.each(AGGREGATE_TIME_LEVELS, function (level) {
+        expect(metricsProvider)
+          .to.be.an("object")
+          .with.property("_aggregation")
+          .which.is.an("object")
+          .with.property(level)
+          .which.is.an("object")
+          .with.property("scrollOffset")
+          .which.is.a("number")
+          .that.equals(0);
+      });
+
+      metricsProvider.resetGraphs();
     });
   });
 });
