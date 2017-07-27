@@ -450,7 +450,11 @@ describe("MetricsProvider", function () {
         .that.deep.equals(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data);
 
       // receiving metrics now would cause an emit
-      sandbox.stub(metricsProvider, "emit", function (key, data) {
+      sandbox.stub(metricsProvider, "emit", function (key, data, discardEvent) {
+        if (discardEvent) {
+          return;
+        }
+
         expect(key)
           .to.be.a("string")
           .that.equals("metrics");
