@@ -53,6 +53,7 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#64]: https://github.com/FormidableLabs/nodejs-dashboard/pull/66
 [\#63]: https://github.com/FormidableLabs/nodejs-dashboard/pull/63
 [\#62]: https://github.com/FormidableLabs/nodejs-dashboard/pull/62
 [\#59]: https://github.com/FormidableLabs/nodejs-dashboard/pull/59
