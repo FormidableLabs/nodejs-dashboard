@@ -15,8 +15,8 @@
     "lint": "eslint .",
     "test": "npm run lint && npm run test-only",
     "test-only": "mocha -c --require test/setup.js --recursive ./test",
-    "test-app": "./bin/nodejs-dashboard.js node test/app/index.js",
-    "coverage": "istanbul cover --include-all-sources _mocha -- -c --recursive --require test/setup.js ./test"
+    "test-app": "node bin/nodejs-dashboard.js -- node test/app/index.js",
+    "coverage": "istanbul cover --include-all-sources node_modules/mocha/bin/_mocha -- -c --recursive --require test/setup.js ./test"
   },
   "repository": {
     "type": "git",

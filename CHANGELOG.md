@@ -1,5 +1,8 @@
 # Change log
 
+## [Unreleased] - 2017-07-24
+- **Added:** Longer history for graphs [\#64]
+
 ## [v0.4.1] - 2017-03-21
 - **Added:** Historical memory usage graph [\#63]
 - **Added:** Support for log filtering - see README [\#62]
@@ -50,6 +53,7 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#64]: https://github.com/FormidableLabs/nodejs-dashboard/pull/66
 [\#63]: https://github.com/FormidableLabs/nodejs-dashboard/pull/63
 [\#62]: https://github.com/FormidableLabs/nodejs-dashboard/pull/62
 [\#59]: https://github.com/FormidableLabs/nodejs-dashboard/pull/59

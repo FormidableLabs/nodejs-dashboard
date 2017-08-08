@@ -2,6 +2,7 @@
 
 var expect = require("chai").expect;
 var sinon = require("sinon");
+
 var blessed = require("blessed");
 
 var StreamView = require("../../../lib/views/stream-view");
