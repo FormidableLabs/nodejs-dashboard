@@ -69,11 +69,11 @@ describe("BaseLineGraph", function () {
 
   describe("onEvent", function () {
 
-    it("should throw an error because it's meant to be overwritten by child class", function () {
+    it("should throw an error because it's meant to be overridden by child class", function () {
       var baseGraph = new BaseLineGraph(options);
       expect(function () {
         baseGraph.onEvent();
-      }).to.throw("BaseLineGraph onEvent should be overwritten");
+      }).to.throw("BaseLineGraph onEvent should be overridden");
     });
   });
 
