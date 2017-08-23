@@ -1,6 +1,6 @@
 # Change log
 
-## [Unreleased] - 2017-08-08
+## [Unreleased] - 2017-08-23
 - **Added:** Goto User-Defined Time Index [\#68]
 - **Added:** Pause, Rewind and Fast Forward Graphs [\#67]
 - **Added:** Longer history for graphs [\#64]
