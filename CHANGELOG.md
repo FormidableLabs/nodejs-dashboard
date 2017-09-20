@@ -1,6 +1,7 @@
 # Change log
 
-## [Unreleased] - 2017-08-08
+## [Unreleased] - 2017-08-23
+- **Added:** Goto User-Defined Time Index [\#68]
 - **Added:** Pause, Rewind and Fast Forward Graphs [\#67]
 - **Added:** Longer history for graphs [\#64]
 
@@ -54,6 +55,7 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#68]: https://github.com/FormidableLabs/nodejs-dashboard/pull/72
 [\#67]: https://github.com/FormidableLabs/nodejs-dashboard/pull/70
 [\#64]: https://github.com/FormidableLabs/nodejs-dashboard/pull/66
 [\#63]: https://github.com/FormidableLabs/nodejs-dashboard/pull/63
