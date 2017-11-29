@@ -43,6 +43,20 @@ This method utilizes Node's `-r` flag to introduce the `nodejs-dashboard` module
 
 To launch: `nodejs-dashboard -- node -r nodejs-dashboard index.js`
 
+#### Fonts
+
+`nodejs-dashboard` uses the [Braille Unicode character set](https://en.wikipedia.org/wiki/Braille_Patterns#Chart) to show graphs via the [node-drawille](https://github.com/madbence/node-drawille) dependancy. Ensure your terminal program\'s font supports this character set.
+
+#### Environment variables
+
+`nodejs-dashboard` uses several environment variables to modify its behavior. This include some required values to prevent mangled output.
+
+Variable | Required | Source | Description |
+--- | --- | --- | --- |
+TERM | required | [blessed](https://github.com/chjj/blessed) | Terminal value matching terminal program |
+LANG | required | [blessed](https://github.com/chjj/blessed) | Matches encoding of terminal program to display font correctly |
+FORCE_COLOR | optional | [chalk](https://github.com/chalk/chalk) | Used to force color output by the subprocess |
+
 ### Usage
 
 Press `?` to see a list of keybindings. Use arrow keys to change the layout.
@@ -68,6 +82,10 @@ Most CLI interfaces provide a mechanism for launching other tools. If you're loo
 ```bash
 % nodemon --exec "nodejs-dashboard babel-node" src/index.js
 ```
+
+#### Docker and Docker Compose support
+
+`nodejs-dashboard` can run inside a container if that container has a [TTY](https://en.wikipedia.org/wiki/Pseudoterminal) allocated to it. The [Docker documentation](https://docs.docker.com/engine/reference/run/#foreground) shows how to run a container with an interactive terminal session. Additional the [Docker Compose documentation](https://docs.docker.com/compose/reference/run/) indicates that `docker-compose run` defaults to allocating a TTY and `docker-compose up` defaults to not allocating one.
 
 #### CLI options
 
