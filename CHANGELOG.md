@@ -1,9 +1,13 @@
 # Change log
 
-## [Unreleased] - 2017-08-23
+## [v0.4.3] - 2017-12-01
+- **Fixed:** Environment variable names on Linux.[\#76]
 - **Added:** Goto User-Defined Time Index [\#68]
 - **Added:** Pause, Rewind and Fast Forward Graphs [\#67]
 - **Added:** Longer history for graphs [\#64]
+
+## [v0.4.2] - 2017-12-01
+- **Not Published**: Bad release.
 
 ## [v0.4.1] - 2017-03-21
 - **Added:** Historical memory usage graph [\#63]
