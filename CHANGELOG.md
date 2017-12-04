@@ -1,12 +1,12 @@
 # Change log
 
 ## [v0.4.3] - 2017-12-01
-- **Fixed:** Environment variable names on Linux.[\#76]
+- **Fixed:** Environment variable names on Linux [\#76]
 - **Added:** Goto User-Defined Time Index [\#68]
 - **Added:** Pause, Rewind and Fast Forward Graphs [\#67]
 - **Added:** Longer history for graphs [\#64]
 
-## [v0.4.2] - 2017-12-01
+## v0.4.2 - 2017-12-01
 - **Not Published**: Bad release.
 
 ## [v0.4.1] - 2017-03-21
@@ -51,6 +51,7 @@
 - *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
 - *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
+[v0.4.3]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.1...v0.4.3
 [v0.4.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.2.1...v0.3.0
@@ -59,6 +60,7 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#76]: https://github.com/FormidableLabs/nodejs-dashboard/pull/76
 [\#68]: https://github.com/FormidableLabs/nodejs-dashboard/pull/72
 [\#67]: https://github.com/FormidableLabs/nodejs-dashboard/pull/70
 [\#64]: https://github.com/FormidableLabs/nodejs-dashboard/pull/66
