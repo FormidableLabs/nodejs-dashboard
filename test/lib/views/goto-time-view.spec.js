@@ -255,11 +255,10 @@ describe("GotoTimeView", function () {
   describe("form_onCancel", function () {
     it("hides the popup", function () {
       var gotoTimeView = new GotoTimeView(options);
-      var spyHide = sandbox.spy(gotoTimeView, "hide");
 
       gotoTimeView.form.emit("cancel");
 
-      expect(spyHide).to.have.been.calledOnce;
+      expect(gotoTimeView.isVisible()).to.be.false;
     });
   });
 
