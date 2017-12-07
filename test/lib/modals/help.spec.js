@@ -4,7 +4,7 @@ var blessed = require("blessed");
 var expect = require("chai").expect;
 var sinon = require("sinon");
 
-var HelpView = require("../../../lib/views/help");
+var HelpView = require("../../../lib/modals/help");
 var utils = require("../../utils");
 
 describe("HelpView", function () {
