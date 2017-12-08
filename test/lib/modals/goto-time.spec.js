@@ -6,7 +6,7 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var blessed = require("blessed");
 
-var GotoTimeView = require("../../../lib/views/goto-time-view");
+var GotoTimeView = require("../../../lib/modals/goto-time");
 var utils = require("../../utils");
 var MetricsProvider = require("../../../lib/providers/metrics-provider");
 
@@ -255,11 +255,10 @@ describe("GotoTimeView", function () {
   describe("form_onCancel", function () {
     it("hides the popup", function () {
       var gotoTimeView = new GotoTimeView(options);
-      var spyHide = sandbox.spy(gotoTimeView, "hide");
 
       gotoTimeView.form.emit("cancel");
 
-      expect(spyHide).to.have.been.calledOnce;
+      expect(gotoTimeView.isVisible()).to.be.false;
     });
   });
 
