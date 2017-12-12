@@ -6,58 +6,53 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var _ = require("lodash");
 
-var AGGREGATE_TIME_LEVELS = require("../../../lib/constants.js").AGGREGATE_TIME_LEVELS;
+var AGGREGATE_TIME_LEVELS = require("../../../lib/constants").AGGREGATE_TIME_LEVELS;
 
 var utils = require("../../utils");
 var MetricsProvider = require("../../../lib/providers/metrics-provider");
+
+
+var createMockMetric = function () {
+  return {
+    metricA: {
+      valueA: Math.random() * 100
+    },
+    metricB: {
+      valueA: Math.random() * 100,
+      valueB: Math.random() * 100
+    }
+  };
+};
 
 describe("MetricsProvider", function () {
   var sandbox;
   var testContainer;
   var metricsProvider;
 
-  var stubNow;
   var mockStart;
   var mockNow;
-  var mockTimeInterval;
-
-  var mockMetrics;
-  var mockMetricCount;
+  var fill;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
 
     mockStart = 10000000;
     mockNow = mockStart;
-    mockTimeInterval = 500;
+    sandbox.stub(Date, "now", function () { return mockNow; });
 
-    stubNow = sandbox.stub(Date, "now", function () {
-      var currentTime = mockNow;
-      mockNow += mockTimeInterval;
-      return currentTime;
-    });
+    fill = function (count, interval) {
+      var mockData = [];
+      for (var i = 0; i < count; ++i) {
+        mockNow += interval;
+        var mockMetric = createMockMetric();
+        metricsProvider._onMetrics(mockMetric);
+        mockData.push(mockMetric);
+      }
+      return mockData;
+    };
 
     testContainer = utils.getTestContainer(sandbox);
     metricsProvider = new MetricsProvider(testContainer.screen);
-
-    // generate some fake metrics for processing
-    var metricsRequiredToAchieveHighestAggregation =
-      +_.last(AGGREGATE_TIME_LEVELS) / mockTimeInterval;
-    mockMetrics = [];
-    mockMetricCount =
-      Math.ceil(Math.random() * 500 + metricsRequiredToAchieveHighestAggregation);
-
-    for (var index = 0; index < mockMetricCount; index++) {
-      mockMetrics.push({
-        metricA: {
-          valueA: Math.random() * 100
-        },
-        metricB: {
-          valueA: Math.random() * 100,
-          valueB: Math.random() * 100
-        }
-      });
-    }
   });
 
   afterEach(function () {
@@ -135,170 +130,14 @@ describe("MetricsProvider", function () {
   });
 
   describe("_onMetrics", function () {
-    // due to the quantity of data processed, notice the .timeout at the bottom - this allows
-    // for a longer running test
     it("retains metrics received, while aggregating them into time buckets", function () {
-      // this test case utilizes a uniform time-event approach to validation
-      // an event is generated exactly evenly until a sufficient number of them have
-      // been computed
+      // Fill in a single event so all future events result in a average calculation
+      var mockMetrics = fill(1, 1);
 
-      // given the uniform nature of this data set, the test case can verify the
-      // aggregation logic works by comparing raw input data to an expected average
-
-      // load with mock metric data already computed
-      _.each(mockMetrics, function (value) {
-        metricsProvider._onMetrics(value);
-      });
-
-      // the number of data points retained must match the number provided
-      expect(metricsProvider)
-        .to.be.an("object")
-        .with.property("_metrics")
-        .which.is.an("array")
-        .that.has.lengthOf(mockMetricCount);
-
-      // now, examine each metric
-      _.each(metricsProvider._metrics, function (value, index) {
-        expect(value)
-          .to.be.an("object")
-          .with.property("metricA")
-          .with.property("valueA")
-          .that.equals(mockMetrics[index].metricA.valueA);
-
-        expect(value)
-          .to.be.an("object")
-          .with.property("metricB")
-          .with.property("valueA")
-          .that.equals(mockMetrics[index].metricB.valueA);
-
-        expect(value)
-          .to.be.an("object")
-          .with.property("metricB")
-          .with.property("valueB")
-          .that.equals(mockMetrics[index].metricB.valueB);
-      });
-
-      _.each(metricsProvider._aggregation, function (value, key) {
-        _.each(value.data, function (row, index) {
-          // reverse-engineer the start and end of this time band
-          var startTimeBand = index * Math.floor(+key / mockTimeInterval) - 1;
-          var endTimeBand = startTimeBand + Math.floor(+key / mockTimeInterval);
-
-          // the first time band is offset by a time interval (call to Date.now at start)
-          if (index === 0) {
-            startTimeBand = 0;
-          }
-
-          var averageA = {
-            valueA: 0
-          };
-
-          var averageB = {
-            valueA: 0,
-            valueB: 0
-          };
-
-          var metricCount = endTimeBand - startTimeBand;
-
-          // recompute the average manually
-          _.each(metricsProvider._metrics.slice(startTimeBand, endTimeBand), function (metric) {
-            averageA.valueA += metric.metricA.valueA / metricCount;
-
-            averageB.valueA += metric.metricB.valueA / metricCount;
-            averageB.valueB += metric.metricB.valueB / metricCount;
-          });
-
-          // verify
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricA")
-            .with.property("valueA")
-            .which.is.a("number")
-            .that.equals(+averageA.valueA.toFixed(1));
-
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricB")
-            .with.property("valueA")
-            .which.is.a("number")
-            .that.equals(+averageB.valueA.toFixed(1));
-
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricB")
-            .with.property("valueB")
-            .which.is.a("number")
-            .that.equals(+averageB.valueB.toFixed(1));
-        });
-      });
-    }).timeout(10000);
-
-    it("aggregates data for non-uniform data sets too", function () {
-      // this test case differs from the previous in that instead of using a perfectly
-      // uniform set of data, this one computes "time bands", which represent events that
-      // occur sporadically, but still within a known number of data elements
-
-      // this is captured so that the averages can then still be compared against
-      // randomly computed data
-
-      // this data set will also produce gaps in time to test the gap logic
-
-      var mockMetricsThisTimeBand;
-      var timeBands = [];
-      var totalTimeBands = Math.ceil(+_.last(AGGREGATE_TIME_LEVELS) / +AGGREGATE_TIME_LEVELS[0]);
-      var maximumTimeGaps = 10;
-      var timeGaps = 0;
-
-      mockNow = mockStart;
-      var timeBandStart = mockNow;
-
-      mockMetrics = [];
-
-      stubNow.restore();
-
-      mockTimeInterval = +AGGREGATE_TIME_LEVELS[0];
-      stubNow = sandbox.stub(Date, "now", function () {
-        var currentTime = mockNow;
-        mockNow += Math.floor(mockTimeInterval / mockMetricsThisTimeBand) - 1;
-        return currentTime;
-      });
-
-      while (timeBands.length < totalTimeBands) {
-        mockMetricsThisTimeBand = Math.floor(Math.random() * 5);
-
-        if (timeGaps < maximumTimeGaps && Math.random() < 0.1) {
-          timeGaps++;
-          mockMetricsThisTimeBand = 0;
-        }
-
-        var timeBand = {
-          count: mockMetricsThisTimeBand,
-          data: [],
-          startIndex: mockMetrics.length,
-          endIndex: mockMetrics.length + mockMetricsThisTimeBand
-        };
-
-        for (var metricIndex = 0; metricIndex < timeBand.count; metricIndex++) {
-          var mockMetric = {
-            metricA: {
-              valueA: Math.random() * 100
-            },
-            metricB: {
-              valueA: Math.random() * 100,
-              valueB: Math.random() * 100
-            }
-          };
-
-          metricsProvider._onMetrics(mockMetric);
-          mockMetrics.push(mockMetric);
-
-          timeBand.data.push(mockMetric);
-        }
-
-        timeBands.push(timeBand);
-
-        mockNow = timeBandStart + mockTimeInterval * timeBands.length;
-      }
+      // Add an event at the 2nd time slot of the largest bucket
+      // This will cause an average calculation for all buckets
+      var maxZoomLevel = +AGGREGATE_TIME_LEVELS[AGGREGATE_TIME_LEVELS.length - 1];
+      mockMetrics = mockMetrics.concat(fill(1, maxZoomLevel));
 
       // the number of data points retained must match the number provided
       expect(metricsProvider)
@@ -328,61 +167,41 @@ describe("MetricsProvider", function () {
           .that.equals(mockMetrics[index].metricB.valueB);
       });
 
-      _.each(timeBands, function (value, index) {
-        var averageA = {
-          valueA: 0
-        };
+      // The 2nd event filled all average buckets with the first event
+      // Since there is only 1 event the average is the same values
+      _.each(metricsProvider._aggregation, function (value) {
+        expect(value.data)
+          .to.be.an("array")
+          .that.has.lengthOf(1);
 
-        var averageB = {
-          valueA: 0,
-          valueB: 0
-        };
+        var row = value.data[0];
+        var lastMock = mockMetrics[0];
+        var averageA = lastMock.metricA;
+        var averageB = lastMock.metricB;
 
-        var metricCount = value.endIndex - value.startIndex;
+        // verify
+        expect(row)
+          .to.be.an("object")
+          .with.property("metricA")
+          .with.property("valueA")
+          .which.is.a("number")
+          .that.equals(+averageA.valueA.toFixed(1));
 
-        // recompute the average manually
-        _.each(value.data, function (metric) {
-          if (metricCount === 0) {
-            return;
-          }
+        expect(row)
+          .to.be.an("object")
+          .with.property("metricB")
+          .with.property("valueA")
+          .which.is.a("number")
+          .that.equals(+averageB.valueA.toFixed(1));
 
-          averageA.valueA += metric.metricA.valueA / metricCount;
-
-          averageB.valueA += metric.metricB.valueA / metricCount;
-          averageB.valueB += metric.metricB.valueB / metricCount;
-        });
-
-        var row = metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data[index];
-
-        // the final row only becomes defined when a row after it (in time logic) appears
-        // so it stands to reason that the final row will be undefined
-        if (index >= metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data.length) {
-          expect(row).to.be.undefined;
-        } else {
-          // verify
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricA")
-            .with.property("valueA")
-            .which.is.a("number")
-            .that.equals(+averageA.valueA.toFixed(1));
-
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricB")
-            .with.property("valueA")
-            .which.is.a("number")
-            .that.equals(+averageB.valueA.toFixed(1));
-
-          expect(row)
-            .to.be.an("object")
-            .with.property("metricB")
-            .with.property("valueB")
-            .which.is.a("number")
-            .that.equals(+averageB.valueB.toFixed(1));
-        }
+        expect(row)
+          .to.be.an("object")
+          .with.property("metricB")
+          .with.property("valueB")
+          .which.is.a("number")
+          .that.equals(+averageB.valueB.toFixed(1));
       });
-    }).timeout(10000);
+    });
   });
 
   describe("adjustZoomLevel", function () {
@@ -403,13 +222,8 @@ describe("MetricsProvider", function () {
         .which.is.a("string")
         .that.equals(AGGREGATE_TIME_LEVELS[0]);
 
-      // reset mock time
-      mockTimeInterval = 2500;
-
-      // reuse some mockMetrics above
-      metricsProvider._onMetrics(mockMetrics[0]);  // 2500ms
-      metricsProvider._onMetrics(mockMetrics[1]);  // 5000ms
-      metricsProvider._onMetrics(mockMetrics[2]);  // 7500ms
+      // add some mock data
+      fill(2, 2500);
 
       // given the uniform data, this should allow for one higher
       // aggregation
@@ -466,17 +280,10 @@ describe("MetricsProvider", function () {
           );
       });
 
-      metricsProvider._onMetrics(mockMetrics[3]);
+      fill(1, 7500);
 
       // if time were to be skipped, some missing time slots should be generated too
-      metricsProvider._onMetrics(mockMetrics[4]);
-
-      // advance the time a few slots
-      mockNow += mockTimeInterval * 10;
-
-      metricsProvider._onMetrics(mockMetrics[4]);
-      metricsProvider._onMetrics(mockMetrics[5]);
-      metricsProvider._onMetrics(mockMetrics[6]);
+      fill(3, 25000);
     });
   });
 
@@ -493,9 +300,7 @@ describe("MetricsProvider", function () {
         .that.deep.equals(expected);
 
       // lets get some aggregation for another zoom level
-      _.each(_.slice(mockMetrics, 0, 100), function (value) {
-        metricsProvider._onMetrics(value);
-      });
+      fill(100, 500);
 
       // zoom
       metricsProvider.adjustZoomLevel(2);
@@ -538,7 +343,8 @@ describe("MetricsProvider", function () {
   describe("adjustScrollOffset", function () {
     it("adjusts the scroll either relative or absolute", function () {
       // add some data
-      _.each(_.slice(mockMetrics, 0, 100), metricsProvider._onMetrics.bind(metricsProvider));
+      fill(1, 0);
+      fill(1, 500);
 
       // go left one
       metricsProvider.adjustScrollOffset(-1);
@@ -569,8 +375,8 @@ describe("MetricsProvider", function () {
       metricsProvider.adjustScrollOffset(-5);
 
       // add some more data to verify that scroll offset adjusts
-      // 100 more elements at half-second time interval is 50 more aggregates
-      _.each(_.slice(mockMetrics, 101, 201), metricsProvider._onMetrics.bind(metricsProvider));
+      // 50 more elements at lowest time interval is 50 more aggregates
+      fill(50, +AGGREGATE_TIME_LEVELS[0]);
 
       // previous offset should be adjusted by the number of additional aggregate
       // elements
@@ -629,7 +435,7 @@ describe("MetricsProvider", function () {
   describe("startGraphs", function () {
     it("offsets at the end or the beginning of the data set", function () {
       // load some data
-      _.each(_.slice(mockMetrics, 0, 100), metricsProvider._onMetrics.bind(metricsProvider));
+      fill(100, 500);
 
       sandbox.stub(metricsProvider, "adjustScrollOffset", function (direction) {
         var length = metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data.length;
