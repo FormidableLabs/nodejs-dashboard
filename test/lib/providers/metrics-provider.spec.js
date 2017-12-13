@@ -6,7 +6,7 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var _ = require("lodash");
 
-var AGGREGATE_TIME_LEVELS = require("../../../lib/constants.js").AGGREGATE_TIME_LEVELS;
+var AGGREGATE_TIME_LEVELS = require("../../../lib/constants").AGGREGATE_TIME_LEVELS;
 
 var utils = require("../../utils");
 var MetricsProvider = require("../../../lib/providers/metrics-provider");
