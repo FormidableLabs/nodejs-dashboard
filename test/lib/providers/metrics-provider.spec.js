@@ -130,14 +130,9 @@ describe("MetricsProvider", function () {
   });
 
   describe("_onMetrics", function () {
-    it("retains metrics received, while aggregating them into time buckets", function () {
-      // Fill in a single event so all future events result in a average calculation
-      var mockMetrics = fill(1, 1);
-
-      // Add an event at the 2nd time slot of the largest bucket
-      // This will cause an average calculation for all buckets
-      var maxZoomLevel = +AGGREGATE_TIME_LEVELS[AGGREGATE_TIME_LEVELS.length - 1];
-      mockMetrics = mockMetrics.concat(fill(1, maxZoomLevel));
+    it("retains metrics received", function () {
+      // create some mock data
+      var mockMetrics = fill(10, 500);
 
       // the number of data points retained must match the number provided
       expect(metricsProvider)
@@ -166,6 +161,16 @@ describe("MetricsProvider", function () {
           .with.property("valueB")
           .that.equals(mockMetrics[index].metricB.valueB);
       });
+    });
+
+    it("aggregates metrics into time buckets", function () {
+      // Fill in a single event so all future events result in a average calculation
+      var mockMetrics = fill(1, 1);
+
+      // Add an event at the 2nd time slot of the largest bucket
+      // This will cause an average calculation for all buckets
+      var maxZoomLevel = +AGGREGATE_TIME_LEVELS[AGGREGATE_TIME_LEVELS.length - 1];
+      mockMetrics = mockMetrics.concat(fill(1, maxZoomLevel));
 
       // The 2nd event filled all average buckets with the first event
       // Since there is only 1 event the average is the same values
