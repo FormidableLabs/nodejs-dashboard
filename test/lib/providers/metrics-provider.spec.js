@@ -24,6 +24,18 @@ var createMockMetric = function () {
   };
 };
 
+var mapToAverage = function (metric) {
+  return {
+    metricA: {
+      valueA: +metric.metricA.valueA.toFixed(1)
+    },
+    metricB: {
+      valueA: +metric.metricB.valueA.toFixed(1),
+      valueB: +metric.metricB.valueB.toFixed(1)
+    }
+  };
+};
+
 describe("MetricsProvider", function () {
   var sandbox;
   var testContainer;
@@ -161,6 +173,61 @@ describe("MetricsProvider", function () {
           .with.property("valueB")
           .that.equals(mockMetrics[index].metricB.valueB);
       });
+    });
+
+    it("creates missing average even if first", function () {
+      var timeKey = AGGREGATE_TIME_LEVELS[0];
+      var timeLength = +timeKey;
+
+      // Fill 2 time slots skiping the first
+      // 2 slots are needed to cause average calculation
+      var mockMetrics = fill(2, timeLength);
+
+      expect(metricsProvider._aggregation[timeKey].data)
+        .to.be.an("array")
+        .that.eql([
+          {
+            metricA: {
+              valueA: 0
+            },
+            metricB: {
+              valueA: 0,
+              valueB: 0
+            }
+          },
+          mapToAverage(mockMetrics[0])
+        ]);
+    });
+
+    it("creates missing average in the middle", function () {
+      var timeKey = AGGREGATE_TIME_LEVELS[0];
+      var timeLength = +timeKey;
+
+      // Fill data until first average created
+      var mockMetrics = fill(2, timeLength - 1);
+
+      // Then add 1 more metric to split lastTimeIndex from lastAggregateIndex
+      mockMetrics = mockMetrics.concat(fill(1, timeLength * 2));
+
+      // Then skip a time slot and add 1 more metric
+      mockMetrics = mockMetrics.concat(fill(1, timeLength * 3));
+
+      expect(metricsProvider._aggregation[timeKey].data)
+        .to.be.an("array")
+        .that.eql([
+          mapToAverage(mockMetrics[0]),
+          mapToAverage(mockMetrics[1]),
+          {
+            metricA: {
+              valueA: 0
+            },
+            metricB: {
+              valueA: 0,
+              valueB: 0
+            }
+          },
+          mapToAverage(mockMetrics[2])
+        ]);
     });
 
     it("aggregates metrics into time buckets", function () {
