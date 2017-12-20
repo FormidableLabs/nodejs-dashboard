@@ -20,6 +20,8 @@
           "type": "array",
           "items": {
             "oneOf": [{
+              "$ref": "#/definitions/panel"
+            }, {
               "$ref": "#/definitions/streamView"
             }, {
               "$ref": "#/definitions/memoryView"
