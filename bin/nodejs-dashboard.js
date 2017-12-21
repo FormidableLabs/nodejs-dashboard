@@ -15,7 +15,7 @@ var parseSettings = require("../lib/parse-settings");
 var appName = appPkg.name || "node";
 var program = new commander.Command(pkg.name);
 
-// Mimic commander sintax errors (with offsets) for consistency
+// Mimic commander syntax errors (with offsets) for consistency
 /* eslint-disable no-console */
 var exitWithError = function () {
   var args = Array.prototype.slice.call(arguments);
