@@ -49,7 +49,7 @@ To launch: `nodejs-dashboard -- node -r nodejs-dashboard index.js`
 
 #### Environment variables
 
-`nodejs-dashboard` uses several environment variables to modify its behavior. This include some required values to prevent mangled output.
+`nodejs-dashboard` uses several environment variables to modify its behavior. These include some required values to prevent mangled output.
 
 Variable | Required | Source | Description |
 --- | --- | --- | --- |
