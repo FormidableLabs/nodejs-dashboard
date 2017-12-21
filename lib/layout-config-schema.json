@@ -27,6 +27,16 @@
               "$ref": "#/definitions/lineGraphView"
             }, {
               "$ref": "#/definitions/customView"
+            }, {
+              "$ref": "#/definitions/cpuDetailsView"
+            }, {
+              "$ref": "#/definitions/envDetailsView"
+            }, {
+              "$ref": "#/definitions/nodeDetailsView"
+            }, {
+              "$ref": "#/definitions/systemDetailsView"
+            }, {
+              "$ref": "#/definitions/userDetailsView"
             }]
           }
         }
@@ -124,6 +134,96 @@
         }
       },
       "required": ["module"]
+    },
+    "cpuDetailsView": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["cpuDetails"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["type"]
+    },
+    "envDetailsView": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["envDetails"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["type"]
+    },
+    "nodeDetailsView": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["nodeDetails"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["type"]
+    },
+    "systemDetailsView": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["systemDetails"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["type"]
+    },
+    "userDetailsView": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "type": {
+          "enum": ["userDetails"]
+        },
+        "position": {
+          "$ref": "#/definitions/position"
+        }
+      },
+      "required": ["type"]
     },
     "position": {
       "oneOf": [{
