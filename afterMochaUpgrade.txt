@@ -1,0 +1,172 @@
+
+> nodejs-dashboard@0.4.3 test-only /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+> mocha -c --require test/setup.js --recursive "./test/lib/**/*.spec.js" --exit
+
+
+[0m[0m
+[0m  dashboard-agent[0m
+[0m    initialization[0m
+    [32m  ✓[0m[90m should use environment variables for configuration[0m[33m (69ms)[0m
+[0m    reporting[0m
+    [32m  ✓[0m[90m should provide basic metrics[0m
+    [32m  ✓[0m[90m should report an event loop delay and cpu stats[0m
+    [32m  ✓[0m[90m should return an error when pusage fails[0m
+
+[0m  generate-layouts[0m
+  [32m  ✓[0m[90m should validate default layout[0m[31m (81ms)[0m
+  [32m  ✓[0m[90m should fail on bad layouts[0m
+  [32m  ✓[0m[90m should generate empty layout[0m
+  [32m  ✓[0m[90m should include a getPosition method[0m[33m (55ms)[0m
+
+[0m  parse-settings[0m
+  [32m  ✓[0m[90m should fail on invalid settings[0m
+  [32m  ✓[0m[90m should have valid setting path[0m
+  [32m  ✓[0m[90m should parse valid settings[0m
+
+[0m  LogProvider[0m
+  [32m  ✓[0m[90m should store logs[0m
+
+[0m  MetricsProvider[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m builds an aggregation container from configuration[0m
+[0m    _onMetrics[0m
+    [32m  ✓[0m[90m retains metrics received[0m
+    [32m  ✓[0m[90m creates missing average even if first[0m
+    [32m  ✓[0m[90m creates missing average in the middle[0m
+    [32m  ✓[0m[90m aggregates metrics into time buckets[0m
+[0m    adjustZoomLevel[0m
+    [32m  ✓[0m[90m allows for changing the zoom level[0m
+[0m    getXAxis[0m
+    [32m  ✓[0m[90m should return labels appropriate for their highest measure of time[0m[31m (101ms)[0m
+[0m    adjustScrollOffset[0m
+    [32m  ✓[0m[90m adjusts the scroll either relative or absolute[0m
+[0m    startGraphs[0m
+    [32m  ✓[0m[90m offsets at the end or the beginning of the data set[0m
+[0m    resetGraphs[0m
+    [32m  ✓[0m[90m resets zoom level and scroll offsets[0m
+
+[0m  BaseLineGraph[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should use limit from layoutConfig[0m
+    [32m  ✓[0m[90m should create graph and set up event listener[0m
+[0m    onEvent[0m
+    [32m  ✓[0m[90m should throw an error because it's meant to be overridden by child class[0m
+[0m    recalculatePosition[0m
+    [32m  ✓[0m[90m should set new position and recreate node[0m
+    [32m  ✓[0m[90m should do nothing if position is unchanged[0m
+[0m    update[0m
+    [32m  ✓[0m[90m should update series and label[0m
+    [32m  ✓[0m[90m should update highwater series[0m
+    [32m  ✓[0m[90m should update series without exceeding limit[0m
+[0m    _createGraph[0m
+    [32m  ✓[0m[90m should create a blessed-contrib line graph[0m
+
+[0m  BaseView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should require parent[0m
+    [32m  ✓[0m[90m should require layoutConfig with getPosition function[0m
+    [32m  ✓[0m[90m should set up resize listener that calls recalculatePosition[0m
+[0m    getPosition[0m
+    [32m  ✓[0m[90m should return result of layoutConfig getPosition[0m
+[0m    recalculatePosition[0m
+    [32m  ✓[0m[90m should set node position[0m
+
+[0m  CpuDetailsView[0m
+[0m    getDetails[0m
+    [32m  ✓[0m[90m should include labels[0m
+
+[0m  CpuView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should inherit from BaseLineGraph, with cpu graph options[0m
+[0m    onEvent[0m
+    [32m  ✓[0m[90m should call update with formatted cpu utilization[0m
+
+[0m  EnvDetailsView[0m
+[0m    getDetails[0m
+    [32m  ✓[0m[90m should include labels[0m
+
+[0m  EventLoopView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should inherit from BaseLineGraph, with eventLoop graph options[0m
+[0m    onEvent[0m
+    [32m  ✓[0m[90m should call update with event loop delay and high[0m
+
+[0m  GotoTimeView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should create a popup screen[0m
+[0m    screen_onMetrics[0m
+    [32m  ✓[0m[90m updates the time range label[0m
+[0m    node_onShow[0m
+    [32m  ✓[0m[90m saves focus and pops up the dialog[0m
+[0m    form_onReset[0m
+    [32m  ✓[0m[90m hides any error text being shown[0m
+[0m    textBox_onKey_enter[0m
+    [32m  ✓[0m[90m presses the accept button programmatically[0m
+[0m    textBox_onKey_escape[0m
+    [32m  ✓[0m[90m presses the cancel button programmatically[0m
+[0m    acceptButton_onKey_escape[0m
+    [32m  ✓[0m[90m presses the cancel button programmatically[0m
+[0m    cancelButton_onKey_escape[0m
+    [32m  ✓[0m[90m presses itself programmatically[0m
+[0m    acceptButton_onPress[0m
+    [32m  ✓[0m[90m submits the form[0m
+[0m    cancelButton_onPress[0m
+    [32m  ✓[0m[90m cancels the form[0m
+[0m    form_onSubmit[0m
+    [32m  ✓[0m[90m validates data received and hides when valid[0m
+    [32m  ✓[0m[90m validates data received and displays error when invalid[0m
+[0m    form_onCancel[0m
+    [32m  ✓[0m[90m hides the popup[0m
+[0m    toggle[0m
+    [32m  ✓[0m[90m toggles the visibility of the popup[0m
+[0m    hide[0m
+    [32m  ✓[0m[90m hides the popup and restores focus[0m
+[0m    isVisible[0m
+    [32m  ✓[0m[90m returns the visibility of the popup[0m
+
+[0m  HelpView[0m
+  [32m  ✓[0m[90m should create a box with text describing keybindings[0m
+
+[0m  MemoryGaugeView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should create a box with two gauges and listen for metrics event[0m
+[0m    onEvent[0m
+    [32m  ✓[0m[90m should call update for each gauge[0m
+[0m    update[0m
+    [32m  ✓[0m[90m should update label and call setPercent for rssGauge[0m
+    [32m  ✓[0m[90m should update label and call setStack for heapGauge[0m
+
+[0m  NodeDetailsView[0m
+[0m    getDetails[0m
+    [32m  ✓[0m[90m should include labels[0m
+
+[0m  Panel[0m
+[0m    layout panel[0m
+    [32m  ✓[0m[90m should create fullscreen view[0m
+    [32m  ✓[0m[90m should create exact width panel[0m
+    [32m  ✓[0m[90m should create growing panels[0m
+    [32m  ✓[0m[90m should create mixed width panels[0m
+    [32m  ✓[0m[90m should create exact height view[0m
+    [32m  ✓[0m[90m should create growing views[0m
+    [32m  ✓[0m[90m should create mixed height views[0m
+
+[0m  StreamView[0m
+[0m    constructor[0m
+    [32m  ✓[0m[90m should require logProvider[0m
+    [32m  ✓[0m[90m should create a log node and listen for given events[0m
+[0m    log[0m
+    [32m  ✓[0m[90m should strip trailing newline before logging data[0m
+    [32m  ✓[0m[90m should filter logs with include[0m
+    [32m  ✓[0m[90m should filter logs with exclude[0m
+
+[0m  SystemDetailsView[0m
+[0m    getDetails[0m
+    [32m  ✓[0m[90m should include labels[0m
+
+[0m  UserDetailsView[0m
+[0m    getDetails[0m
+    [32m  ✓[0m[90m should include labels[0m
+
+
+[92m [0m[32m 78 passing[0m[90m (1s)[0m
+

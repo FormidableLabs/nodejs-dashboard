@@ -1,0 +1,20 @@
+install	growl	critical	npm install --save-dev mocha@6.0.2	Command Injection	https://npmjs.com/advisories/146	mocha>growl	Y
+install	parsejson	high	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/528	socket.io>socket.io-client>engine.io-client>parsejson	Y
+install	parsejson	high	npm install socket.io-client@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/528	socket.io-client>engine.io-client>parsejson	Y
+install	request	moderate	npm install blessed-contrib@4.8.11	Remote Memory Exposure	https://npmjs.com/advisories/309	blessed-contrib>picture-tube>request	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>engine.io>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-adapter>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-client>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-client>engine.io-client>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-adapter>socket.io-parser>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-client>socket.io-parser>debug	Y
+install	debug	low	npm install socket.io@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io>socket.io-parser>debug	Y
+install	debug	low	npm install socket.io-client@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io-client>debug	Y
+install	debug	low	npm install socket.io-client@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io-client>engine.io-client>debug	Y
+install	debug	low	npm install socket.io-client@2.2.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	socket.io-client>socket.io-parser>debug	Y
+install	debug	low	npm install --save-dev mocha@6.0.2	Regular Expression Denial of Service	https://npmjs.com/advisories/534	mocha>debug	Y
+install	debug	low	npm install eslint-plugin-import@2.16.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	eslint-plugin-import>debug	Y
+install	debug	low	npm install eslint-plugin-import@2.16.0	Regular Expression Denial of Service	https://npmjs.com/advisories/534	eslint-plugin-import>eslint-import-resolver-node>debug	Y
+update	debug	low	npm update debug --depth 2	Regular Expression Denial of Service	https://npmjs.com/advisories/534	eslint>debug	N
+

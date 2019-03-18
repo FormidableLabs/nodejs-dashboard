@@ -1,0 +1,1192 @@
+{
+  "actions": [
+    {
+      "action": "install",
+      "module": "socket.io",
+      "target": "2.2.0",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "socket.io>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>engine.io>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-adapter>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-client>engine.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-adapter>socket.io-parser>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-client>socket.io-parser>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io>socket.io-parser>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 528,
+          "path": "socket.io>socket.io-client>engine.io-client>parsejson",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "socket.io-client",
+      "target": "2.2.0",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "socket.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io-client>engine.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io-client>socket.io-parser>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 528,
+          "path": "socket.io-client>engine.io-client>parsejson",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "mocha",
+      "target": "6.0.2",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "mocha>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 146,
+          "path": "mocha>growl",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "blessed-contrib",
+      "target": "4.8.11",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 309,
+          "path": "blessed-contrib>picture-tube>request",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "module": "eslint-plugin-import",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>eslint-import-resolver-node>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "target": "2.16.0",
+      "action": "install",
+      "isMajor": true
+    },
+    {
+      "action": "update",
+      "module": "debug",
+      "depth": 2,
+      "target": "2.6.9",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    }
+  ],
+  "advisories": {
+    "146": {
+      "findings": [
+        {
+          "version": "1.9.2",
+          "paths": [
+            "mocha>growl"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 146,
+      "created": "2016-09-06T12:49:40.000Z",
+      "updated": "2018-03-02T21:07:28.071Z",
+      "deleted": null,
+      "title": "Command Injection",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "growl",
+      "cves": [
+        "CVE-2017-16042"
+      ],
+      "vulnerable_versions": "<1.10.2",
+      "patched_versions": ">=1.10.2",
+      "overview": "Affected versions of `growl` do not properly sanitize input prior to passing it into a shell command, allowing for arbitrary command execution.",
+      "recommendation": "Update to version 1.10.2 or later.",
+      "references": "[Issue #60](https://github.com/tj/node-growl/issues/60)\n[PR #61](https://github.com/tj/node-growl/pull/61)",
+      "access": "public",
+      "severity": "critical",
+      "cwe": "CWE-94",
+      "metadata": {
+        "module_type": "CLI.Library",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/146"
+    },
+    "309": {
+      "findings": [
+        {
+          "version": "2.9.203",
+          "paths": [
+            "blessed-contrib>picture-tube>request"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 309,
+      "created": "2017-02-01T23:21:46.000Z",
+      "updated": "2018-03-21T19:54:36.915Z",
+      "deleted": null,
+      "title": "Remote Memory Exposure",
+      "found_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "reported_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "module_name": "request",
+      "cves": [
+        "CVE-2017-16026"
+      ],
+      "vulnerable_versions": ">=2.2.6 <2.47.0 || >2.51.0 <=2.67.0",
+      "patched_versions": ">=2.68.0",
+      "overview": "Affected versions of `request` will disclose local system memory to remote systems in certain circumstances. When a multipart request is made, and the type of `body` is `number`, then a buffer of that size will be allocated and sent to the remote server as the body.\n\n## Proof of Concept\n\n```\nvar request = require('request');\nvar http = require('http');\n\nvar serveFunction = function (req, res){\n\treq.on('data', function (data) {\n            console.log(data)\n        });\n\tres.end();\n};\nvar server = http.createServer(serveFunction);\nserver.listen(8000);\n\nrequest({\n\tmethod: \"POST\",\n\turi: 'http://localhost:8000',\n\tmultipart: [{body:500}]\n},function(err,res,body){});\n```",
+      "recommendation": "Update to version 2.68.0 or later\n",
+      "references": "[PR #2018](https://github.com/request/request/pull/2018)\n[Issue #1904](https://github.com/request/request/issues/1904)",
+      "access": "public",
+      "severity": "moderate",
+      "cwe": "CWE-201",
+      "metadata": {
+        "module_type": "Network.Library",
+        "exploitability": 2,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/309"
+    },
+    "528": {
+      "findings": [
+        {
+          "version": "0.0.3",
+          "paths": [
+            "socket.io>socket.io-client>engine.io-client>parsejson",
+            "socket.io-client>engine.io-client>parsejson"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 528,
+      "created": "2017-09-08T20:43:02.594Z",
+      "updated": "2018-04-09T00:18:57.149Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "parsejson",
+      "cves": [
+        "CVE-2017-16113"
+      ],
+      "vulnerable_versions": "<=0.0.3",
+      "patched_versions": "<0.0.0",
+      "overview": "Affected versions of `parsejson` are vulnerable to a regular expression denial of service when parsing untrusted user input.",
+      "recommendation": "The `parsejson` package has not been functionally updated since it was initially released.\n\nAdditionally, it provides functionality which is natively included in Node.js, and therefore the native `JSON.parse()` should be used, for both performance and security reasons.",
+      "references": "[Issue #4](https://github.com/get/parsejson/issues/4)",
+      "access": "public",
+      "severity": "high",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/528"
+    },
+    "534": {
+      "findings": [
+        {
+          "version": "2.3.3",
+          "paths": [
+            "socket.io>debug",
+            "socket.io>engine.io>debug",
+            "socket.io>socket.io-adapter>debug",
+            "socket.io>socket.io-client>debug",
+            "socket.io>socket.io-client>engine.io-client>debug",
+            "socket.io-client>debug",
+            "socket.io-client>engine.io-client>debug",
+            "eslint>debug",
+            "eslint-plugin-import>debug",
+            "eslint-plugin-import>eslint-import-resolver-node>debug"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "version": "2.2.0",
+          "paths": [
+            "socket.io>socket.io-adapter>socket.io-parser>debug",
+            "socket.io>socket.io-client>socket.io-parser>debug",
+            "socket.io>socket.io-parser>debug",
+            "socket.io-client>socket.io-parser>debug"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "version": "2.6.8",
+          "paths": [
+            "mocha>debug"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 534,
+      "created": "2017-09-25T18:55:55.956Z",
+      "updated": "2018-05-16T19:37:43.686Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "debug",
+      "cves": [
+        "CVE-2017-16137"
+      ],
+      "vulnerable_versions": "<= 2.6.8 || >= 3.0.0 <= 3.0.1",
+      "patched_versions": ">= 2.6.9 < 3.0.0 || >= 3.1.0",
+      "overview": "Affected versions of `debug` are vulnerable to regular expression denial of service when untrusted user input is passed into the `o` formatter. \n\nAs it takes 50,000 characters to block the event loop for 2 seconds, this issue is a low severity issue.",
+      "recommendation": "Version 2.x.x: Update to version 2.6.9 or later.\nVersion 3.x.x: Update to version 3.1.0 or later.\n",
+      "references": "- [Issue #501](https://github.com/visionmedia/debug/issues/501)\n- [PR #504](https://github.com/visionmedia/debug/pull/504)",
+      "access": "public",
+      "severity": "low",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/534"
+    }
+  },
+  "muted": [],
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 15,
+      "moderate": 1,
+      "high": 2,
+      "critical": 1
+    },
+    "dependencies": 291,
+    "devDependencies": 807,
+    "optionalDependencies": 5,
+    "totalDependencies": 1098
+  },
+  "runId": "23e7adee-8851-417b-9a2c-96f0832d2d32"
+}
+
+
++++++++++++++++ AUDIT 2 ++++++++
+++++++ SocketIO UPGRADE TO 2.2 +++++++
+{
+  "actions": [
+    {
+      "action": "install",
+      "module": "socket.io-client",
+      "target": "2.2.0",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "socket.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io-client>engine.io-client>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "socket.io-client>socket.io-parser>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 528,
+          "path": "socket.io-client>engine.io-client>parsejson",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "mocha",
+      "target": "6.0.2",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "mocha>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 146,
+          "path": "mocha>growl",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "blessed-contrib",
+      "target": "4.8.11",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 309,
+          "path": "blessed-contrib>picture-tube>request",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "module": "eslint-plugin-import",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>eslint-import-resolver-node>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "target": "2.16.0",
+      "action": "install",
+      "isMajor": true
+    },
+    {
+      "action": "update",
+      "module": "debug",
+      "depth": 2,
+      "target": "2.6.9",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint>debug",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    }
+  ],
+  "advisories": {
+    "146": {
+      "findings": [
+        {
+          "version": "1.9.2",
+          "paths": [
+            "mocha>growl"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 146,
+      "created": "2016-09-06T12:49:40.000Z",
+      "updated": "2018-03-02T21:07:28.071Z",
+      "deleted": null,
+      "title": "Command Injection",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "growl",
+      "cves": [
+        "CVE-2017-16042"
+      ],
+      "vulnerable_versions": "<1.10.2",
+      "patched_versions": ">=1.10.2",
+      "overview": "Affected versions of `growl` do not properly sanitize input prior to passing it into a shell command, allowing for arbitrary command execution.",
+      "recommendation": "Update to version 1.10.2 or later.",
+      "references": "[Issue #60](https://github.com/tj/node-growl/issues/60)\n[PR #61](https://github.com/tj/node-growl/pull/61)",
+      "access": "public",
+      "severity": "critical",
+      "cwe": "CWE-94",
+      "metadata": {
+        "module_type": "CLI.Library",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/146"
+    },
+    "309": {
+      "findings": [
+        {
+          "version": "2.9.203",
+          "paths": [
+            "blessed-contrib>picture-tube>request"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 309,
+      "created": "2017-02-01T23:21:46.000Z",
+      "updated": "2018-03-21T19:54:36.915Z",
+      "deleted": null,
+      "title": "Remote Memory Exposure",
+      "found_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "reported_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "module_name": "request",
+      "cves": [
+        "CVE-2017-16026"
+      ],
+      "vulnerable_versions": ">=2.2.6 <2.47.0 || >2.51.0 <=2.67.0",
+      "patched_versions": ">=2.68.0",
+      "overview": "Affected versions of `request` will disclose local system memory to remote systems in certain circumstances. When a multipart request is made, and the type of `body` is `number`, then a buffer of that size will be allocated and sent to the remote server as the body.\n\n## Proof of Concept\n\n```\nvar request = require('request');\nvar http = require('http');\n\nvar serveFunction = function (req, res){\n\treq.on('data', function (data) {\n            console.log(data)\n        });\n\tres.end();\n};\nvar server = http.createServer(serveFunction);\nserver.listen(8000);\n\nrequest({\n\tmethod: \"POST\",\n\turi: 'http://localhost:8000',\n\tmultipart: [{body:500}]\n},function(err,res,body){});\n```",
+      "recommendation": "Update to version 2.68.0 or later\n",
+      "references": "[PR #2018](https://github.com/request/request/pull/2018)\n[Issue #1904](https://github.com/request/request/issues/1904)",
+      "access": "public",
+      "severity": "moderate",
+      "cwe": "CWE-201",
+      "metadata": {
+        "module_type": "Network.Library",
+        "exploitability": 2,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/309"
+    },
+    "528": {
+      "findings": [
+        {
+          "version": "0.0.3",
+          "paths": [
+            "socket.io-client>engine.io-client>parsejson"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 528,
+      "created": "2017-09-08T20:43:02.594Z",
+      "updated": "2018-04-09T00:18:57.149Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "parsejson",
+      "cves": [
+        "CVE-2017-16113"
+      ],
+      "vulnerable_versions": "<=0.0.3",
+      "patched_versions": "<0.0.0",
+      "overview": "Affected versions of `parsejson` are vulnerable to a regular expression denial of service when parsing untrusted user input.",
+      "recommendation": "The `parsejson` package has not been functionally updated since it was initially released.\n\nAdditionally, it provides functionality which is natively included in Node.js, and therefore the native `JSON.parse()` should be used, for both performance and security reasons.",
+      "references": "[Issue #4](https://github.com/get/parsejson/issues/4)",
+      "access": "public",
+      "severity": "high",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/528"
+    },
+    "534": {
+      "findings": [
+        {
+          "version": "2.3.3",
+          "paths": [
+            "socket.io-client>debug",
+            "socket.io-client>engine.io-client>debug",
+            "eslint>debug",
+            "eslint-plugin-import>debug",
+            "eslint-plugin-import>eslint-import-resolver-node>debug"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "version": "2.2.0",
+          "paths": [
+            "socket.io-client>socket.io-parser>debug"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "version": "2.6.8",
+          "paths": [
+            "mocha>debug"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 534,
+      "created": "2017-09-25T18:55:55.956Z",
+      "updated": "2018-05-16T19:37:43.686Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "debug",
+      "cves": [
+        "CVE-2017-16137"
+      ],
+      "vulnerable_versions": "<= 2.6.8 || >= 3.0.0 <= 3.0.1",
+      "patched_versions": ">= 2.6.9 < 3.0.0 || >= 3.1.0",
+      "overview": "Affected versions of `debug` are vulnerable to regular expression denial of service when untrusted user input is passed into the `o` formatter. \n\nAs it takes 50,000 characters to block the event loop for 2 seconds, this issue is a low severity issue.",
+      "recommendation": "Version 2.x.x: Update to version 2.6.9 or later.\nVersion 3.x.x: Update to version 3.1.0 or later.\n",
+      "references": "- [Issue #501](https://github.com/visionmedia/debug/issues/501)\n- [PR #504](https://github.com/visionmedia/debug/pull/504)",
+      "access": "public",
+      "severity": "low",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/534"
+    }
+  },
+  "muted": [],
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 7,
+      "moderate": 1,
+      "high": 1,
+      "critical": 1
+    },
+    "dependencies": 278,
+    "devDependencies": 807,
+    "optionalDependencies": 5,
+    "totalDependencies": 1085
+  },
+  "runId": "0b0d7f0d-f25d-45f3-b63d-03e2c8e631e7"
+}
++++++++++++++++ AUDIT 3++++++++
+++++++ SocketIOClient UPGRADE TO 2.2 +++++++
+{
+  "actions": [
+    {
+      "action": "install",
+      "module": "mocha",
+      "target": "6.0.2",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 534,
+          "path": "mocha>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 146,
+          "path": "mocha>growl",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "action": "install",
+      "module": "blessed-contrib",
+      "target": "4.8.11",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 309,
+          "path": "blessed-contrib>picture-tube>request",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "module": "eslint-plugin-import",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>eslint-import-resolver-node>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "target": "2.16.0",
+      "action": "install",
+      "isMajor": true
+    },
+    {
+      "action": "update",
+      "module": "debug",
+      "depth": 2,
+      "target": "2.6.9",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    }
+  ],
+  "advisories": {
+    "146": {
+      "findings": [
+        {
+          "version": "1.9.2",
+          "paths": [
+            "mocha>growl"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 146,
+      "created": "2016-09-06T12:49:40.000Z",
+      "updated": "2018-03-02T21:07:28.071Z",
+      "deleted": null,
+      "title": "Command Injection",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "growl",
+      "cves": [
+        "CVE-2017-16042"
+      ],
+      "vulnerable_versions": "<1.10.2",
+      "patched_versions": ">=1.10.2",
+      "overview": "Affected versions of `growl` do not properly sanitize input prior to passing it into a shell command, allowing for arbitrary command execution.",
+      "recommendation": "Update to version 1.10.2 or later.",
+      "references": "[Issue #60](https://github.com/tj/node-growl/issues/60)\n[PR #61](https://github.com/tj/node-growl/pull/61)",
+      "access": "public",
+      "severity": "critical",
+      "cwe": "CWE-94",
+      "metadata": {
+        "module_type": "CLI.Library",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/146"
+    },
+    "309": {
+      "findings": [
+        {
+          "version": "2.9.203",
+          "paths": [
+            "blessed-contrib>picture-tube>request"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 309,
+      "created": "2017-02-01T23:21:46.000Z",
+      "updated": "2018-03-21T19:54:36.915Z",
+      "deleted": null,
+      "title": "Remote Memory Exposure",
+      "found_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "reported_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "module_name": "request",
+      "cves": [
+        "CVE-2017-16026"
+      ],
+      "vulnerable_versions": ">=2.2.6 <2.47.0 || >2.51.0 <=2.67.0",
+      "patched_versions": ">=2.68.0",
+      "overview": "Affected versions of `request` will disclose local system memory to remote systems in certain circumstances. When a multipart request is made, and the type of `body` is `number`, then a buffer of that size will be allocated and sent to the remote server as the body.\n\n## Proof of Concept\n\n```\nvar request = require('request');\nvar http = require('http');\n\nvar serveFunction = function (req, res){\n\treq.on('data', function (data) {\n            console.log(data)\n        });\n\tres.end();\n};\nvar server = http.createServer(serveFunction);\nserver.listen(8000);\n\nrequest({\n\tmethod: \"POST\",\n\turi: 'http://localhost:8000',\n\tmultipart: [{body:500}]\n},function(err,res,body){});\n```",
+      "recommendation": "Update to version 2.68.0 or later\n",
+      "references": "[PR #2018](https://github.com/request/request/pull/2018)\n[Issue #1904](https://github.com/request/request/issues/1904)",
+      "access": "public",
+      "severity": "moderate",
+      "cwe": "CWE-201",
+      "metadata": {
+        "module_type": "Network.Library",
+        "exploitability": 2,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/309"
+    },
+    "534": {
+      "findings": [
+        {
+          "version": "2.3.3",
+          "paths": [
+            "eslint>debug",
+            "eslint-plugin-import>debug",
+            "eslint-plugin-import>eslint-import-resolver-node>debug"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "version": "2.6.8",
+          "paths": [
+            "mocha>debug"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 534,
+      "created": "2017-09-25T18:55:55.956Z",
+      "updated": "2018-05-16T19:37:43.686Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "debug",
+      "cves": [
+        "CVE-2017-16137"
+      ],
+      "vulnerable_versions": "<= 2.6.8 || >= 3.0.0 <= 3.0.1",
+      "patched_versions": ">= 2.6.9 < 3.0.0 || >= 3.1.0",
+      "overview": "Affected versions of `debug` are vulnerable to regular expression denial of service when untrusted user input is passed into the `o` formatter. \n\nAs it takes 50,000 characters to block the event loop for 2 seconds, this issue is a low severity issue.",
+      "recommendation": "Version 2.x.x: Update to version 2.6.9 or later.\nVersion 3.x.x: Update to version 3.1.0 or later.\n",
+      "references": "- [Issue #501](https://github.com/visionmedia/debug/issues/501)\n- [PR #504](https://github.com/visionmedia/debug/pull/504)",
+      "access": "public",
+      "severity": "low",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/534"
+    }
+  },
+  "muted": [],
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 4,
+      "moderate": 1,
+      "high": 0,
+      "critical": 1
+    },
+    "dependencies": 277,
+    "devDependencies": 807,
+    "optionalDependencies": 5,
+    "totalDependencies": 1084
+  },
+  "runId": "135b9952-c04c-495a-96df-65150e001191"
+}
+
++++++++++++++++ AUDIT 4++++++++
+++++++ MOCHA UPGRADE TO 6 +++++++
+{
+  "actions": [
+    {
+      "action": "install",
+      "module": "blessed-contrib",
+      "target": "4.8.11",
+      "isMajor": true,
+      "resolves": [
+        {
+          "id": 309,
+          "path": "blessed-contrib>picture-tube>request",
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    },
+    {
+      "module": "eslint-plugin-import",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "eslint-plugin-import>eslint-import-resolver-node>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "target": "2.16.0",
+      "action": "install",
+      "isMajor": true
+    },
+    {
+      "action": "update",
+      "module": "debug",
+      "depth": 7,
+      "target": "2.6.9",
+      "resolves": [
+        {
+          "id": 534,
+          "path": "eslint>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>braces>snapdragon>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>extglob>expand-brackets>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>extglob>expand-brackets>snapdragon>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>extglob>snapdragon>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>nanomatch>snapdragon>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        },
+        {
+          "id": 534,
+          "path": "mocha>findup-sync>micromatch>snapdragon>debug",
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ]
+    }
+  ],
+  "advisories": {
+    "309": {
+      "findings": [
+        {
+          "version": "2.9.203",
+          "paths": [
+            "blessed-contrib>picture-tube>request"
+          ],
+          "dev": false,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 309,
+      "created": "2017-02-01T23:21:46.000Z",
+      "updated": "2018-03-21T19:54:36.915Z",
+      "deleted": null,
+      "title": "Remote Memory Exposure",
+      "found_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "reported_by": {
+        "name": "Feross Aboukhadijeh"
+      },
+      "module_name": "request",
+      "cves": [
+        "CVE-2017-16026"
+      ],
+      "vulnerable_versions": ">=2.2.6 <2.47.0 || >2.51.0 <=2.67.0",
+      "patched_versions": ">=2.68.0",
+      "overview": "Affected versions of `request` will disclose local system memory to remote systems in certain circumstances. When a multipart request is made, and the type of `body` is `number`, then a buffer of that size will be allocated and sent to the remote server as the body.\n\n## Proof of Concept\n\n```\nvar request = require('request');\nvar http = require('http');\n\nvar serveFunction = function (req, res){\n\treq.on('data', function (data) {\n            console.log(data)\n        });\n\tres.end();\n};\nvar server = http.createServer(serveFunction);\nserver.listen(8000);\n\nrequest({\n\tmethod: \"POST\",\n\turi: 'http://localhost:8000',\n\tmultipart: [{body:500}]\n},function(err,res,body){});\n```",
+      "recommendation": "Update to version 2.68.0 or later\n",
+      "references": "[PR #2018](https://github.com/request/request/pull/2018)\n[Issue #1904](https://github.com/request/request/issues/1904)",
+      "access": "public",
+      "severity": "moderate",
+      "cwe": "CWE-201",
+      "metadata": {
+        "module_type": "Network.Library",
+        "exploitability": 2,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/309"
+    },
+    "534": {
+      "findings": [
+        {
+          "version": "2.3.3",
+          "paths": [
+            "eslint>debug",
+            "eslint-plugin-import>debug",
+            "eslint-plugin-import>eslint-import-resolver-node>debug",
+            "mocha>findup-sync>micromatch>braces>snapdragon>debug",
+            "mocha>findup-sync>micromatch>extglob>expand-brackets>debug",
+            "mocha>findup-sync>micromatch>extglob>expand-brackets>snapdragon>debug",
+            "mocha>findup-sync>micromatch>extglob>snapdragon>debug",
+            "mocha>findup-sync>micromatch>nanomatch>snapdragon>debug",
+            "mocha>findup-sync>micromatch>snapdragon>debug"
+          ],
+          "dev": true,
+          "optional": false,
+          "bundled": false
+        }
+      ],
+      "id": 534,
+      "created": "2017-09-25T18:55:55.956Z",
+      "updated": "2018-05-16T19:37:43.686Z",
+      "deleted": null,
+      "title": "Regular Expression Denial of Service",
+      "found_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "reported_by": {
+        "name": "Cristian-Alexandru Staicu"
+      },
+      "module_name": "debug",
+      "cves": [
+        "CVE-2017-16137"
+      ],
+      "vulnerable_versions": "<= 2.6.8 || >= 3.0.0 <= 3.0.1",
+      "patched_versions": ">= 2.6.9 < 3.0.0 || >= 3.1.0",
+      "overview": "Affected versions of `debug` are vulnerable to regular expression denial of service when untrusted user input is passed into the `o` formatter. \n\nAs it takes 50,000 characters to block the event loop for 2 seconds, this issue is a low severity issue.",
+      "recommendation": "Version 2.x.x: Update to version 2.6.9 or later.\nVersion 3.x.x: Update to version 3.1.0 or later.\n",
+      "references": "- [Issue #501](https://github.com/visionmedia/debug/issues/501)\n- [PR #504](https://github.com/visionmedia/debug/pull/504)",
+      "access": "public",
+      "severity": "low",
+      "cwe": "CWE-400",
+      "metadata": {
+        "module_type": "",
+        "exploitability": 5,
+        "affected_components": ""
+      },
+      "url": "https://npmjs.com/advisories/534"
+    }
+  },
+  "muted": [],
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 9,
+      "moderate": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 277,
+    "devDependencies": 1908,
+    "optionalDependencies": 5,
+    "totalDependencies": 2185
+  },
+  "runId": "453fb459-0069-4bf8-81a3-8404afdf0e03"
+}
+
++++++++++++++++ AUDIT FINAL ++++++++
+++++++ NPM AUDIT ZERO VULNERABILITY +++++++
+{
+  "actions": [],
+  "advisories": {},
+  "muted": [],
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 213,
+    "devDependencies": 1908,
+    "optionalDependencies": 5,
+    "totalDependencies": 2121
+  },
+  "runId": "9bce6d08-1974-436d-a2c3-af20158e52c5"
+}

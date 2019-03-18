@@ -1,0 +1,104 @@
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- socket.io@1.7.4 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- socket.io@1.7.4 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- socket.io@2.2.0 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
++-- socket.io@2.2.0
+| `-- socket.io-client@2.2.0 
+`-- socket.io-client@1.7.4 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- mocha@3.5.3
+  `-- growl@1.9.2 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- mocha@3.5.3 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- mocha@6.0.2 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
++-- babel-eslint@6.1.2
+| `-- babel-traverse@6.26.0
+|   `-- debug@2.6.9 
++-- eslint@2.13.1
+| `-- debug@2.3.3 
++-- eslint-plugin-import@1.16.0
+| +-- debug@2.3.3  deduped
+| `-- eslint-import-resolver-node@0.2.3
+|   `-- debug@2.3.3  deduped
++-- mocha@6.0.2
+| +-- debug@3.2.6 
+| `-- findup-sync@2.0.0
+|   `-- micromatch@3.1.10
+|     +-- extglob@2.0.4
+|     | `-- expand-brackets@2.1.4
+|     |   `-- debug@2.3.3  deduped
+|     `-- snapdragon@0.8.2
+|       `-- debug@2.3.3  deduped
++-- socket.io@2.2.0
+| +-- debug@4.1.1 
+| +-- engine.io@3.3.2
+| | `-- debug@3.1.0 
+| +-- socket.io-client@2.2.0
+| | +-- debug@3.1.0 
+| | `-- engine.io-client@3.3.2
+| |   `-- debug@3.1.0 
+| `-- socket.io-parser@3.3.0
+|   `-- debug@3.1.0 
+`-- socket.io-client@2.2.0
+  +-- debug@3.1.0 
+  +-- engine.io-client@3.3.2
+  | `-- debug@3.1.0 
+  `-- socket.io-parser@3.3.0
+    `-- debug@3.1.0 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
++-- babel-eslint@6.1.2
+| `-- babel-traverse@6.26.0
+|   `-- debug@2.6.9 
++-- eslint@2.13.1
+| `-- debug@2.3.3 
++-- eslint-plugin-import@1.16.0
+| +-- debug@2.3.3  deduped
+| `-- eslint-import-resolver-node@0.2.3
+|   `-- debug@2.3.3  deduped
++-- mocha@6.0.2
+| +-- debug@3.2.6 
+| `-- findup-sync@2.0.0
+|   `-- micromatch@3.1.10
+|     +-- extglob@2.0.4
+|     | `-- expand-brackets@2.1.4
+|     |   `-- debug@2.3.3  deduped
+|     `-- snapdragon@0.8.2
+|       `-- debug@2.3.3  deduped
++-- socket.io@2.2.0
+| +-- debug@4.1.1 
+| +-- engine.io@3.3.2
+| | `-- debug@3.1.0 
+| +-- socket.io-client@2.2.0
+| | +-- debug@3.1.0 
+| | `-- engine.io-client@3.3.2
+| |   `-- debug@3.1.0 
+| `-- socket.io-parser@3.3.0
+|   `-- debug@3.1.0 
+`-- socket.io-client@2.2.0
+  +-- debug@3.1.0 
+  +-- engine.io-client@3.3.2
+  | `-- debug@3.1.0 
+  `-- socket.io-parser@3.3.0
+    `-- debug@3.1.0 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- blessed-contrib@3.5.5 
+
+nodejs-dashboard@0.4.3 /home/jayagopal/Documents/development/TheBogan/nodejs-dashboard
+`-- blessed-contrib@4.8.11
+  `-- UNMET PEER DEPENDENCY marked@0.4.0 
+
+npm ERR! peer dep missing: marked@^0.3.3, required by marked-terminal@1.7.0
