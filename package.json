@@ -47,7 +47,7 @@
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "chai": "^3.5.0",
-    "eslint": "^2.10.2",
+    "eslint": "^4.18.2",
     "eslint-config-formidable": "^2.0.1",
     "eslint-plugin-filenames": "^1.1.0",
     "eslint-plugin-import": "^1.16.0",
