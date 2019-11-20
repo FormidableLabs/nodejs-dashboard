@@ -1,30 +1,27 @@
 "use strict";
 
-var _ = require("lodash");
-var expect = require("chai").expect;
+const _ = require("lodash");
+const expect = require("chai").expect;
 
-var Panel = require("../../../lib/views/panel");
+const Panel = require("../../../lib/views/panel");
 
 /* eslint-disable no-magic-numbers */
-describe("Panel", function () {
-
-  var parent = {
+describe("Panel", () => {
+  const parent = {
     top: 0,
     left: 0,
     width: 17,
     height: 13
   };
 
-  var createPanel = function (layouts) {
-    var views = layouts.map(function (config) {
-      return _.merge({ type: "panel" }, config);
-    });
+  const createPanel = function (layouts) {
+    const views = layouts.map((config) => _.merge({ type: "panel" }, config));
 
     return new Panel({
       layoutConfig: {
         view: {
           type: "panel",
-          views: views
+          views
         },
         getPosition: _.identity
       },
@@ -32,9 +29,9 @@ describe("Panel", function () {
     });
   };
 
-  describe("layout panel", function () {
-    it("should create fullscreen view", function () {
-      var layouts = createPanel([{
+  describe("layout panel", () => {
+    it("should create fullscreen view", () => {
+      const layouts = createPanel([{
         views: [
           {
             type: "memory"
@@ -50,8 +47,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create exact width panel", function () {
-      var layouts = createPanel([{
+    it("should create exact width panel", () => {
+      const layouts = createPanel([{
         position: {
           size: 11
         },
@@ -69,8 +66,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create growing panels", function () {
-      var layouts = createPanel([
+    it("should create growing panels", () => {
+      const layouts = createPanel([
         {
           position: {
             grow: 2
@@ -106,8 +103,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create mixed width panels", function () {
-      var layouts = createPanel([
+    it("should create mixed width panels", () => {
+      const layouts = createPanel([
         {
           position: {
             grow: 2
@@ -159,8 +156,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create exact height view", function () {
-      var layouts = createPanel([
+    it("should create exact height view", () => {
+      const layouts = createPanel([
         {
           views: [
             {
@@ -180,8 +177,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create growing views", function () {
-      var layouts = createPanel([
+    it("should create growing views", () => {
+      const layouts = createPanel([
         {
           views: [
             {
@@ -213,8 +210,8 @@ describe("Panel", function () {
       });
     });
 
-    it("should create mixed height views", function () {
-      var layouts = createPanel([
+    it("should create mixed height views", () => {
+      const layouts = createPanel([
         {
           views: [
             {

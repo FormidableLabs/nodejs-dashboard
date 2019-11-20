@@ -4,49 +4,49 @@
 
 require("../../index");
 
-var _ = require("lodash");
+const _ = require("lodash");
 
-var slowFunc = function (count) {
-  var begin = Date.now();
+const slowFunc = function (count) {
+  const begin = Date.now();
 
-  var values = _.times(count, function () { return _.random(0, count); });
+  let values = _.times(count, () => _.random(0, count));
   values = _.sortBy(values);
 
   return Date.now() - begin;
 };
 
-var bigBuffer = new Buffer(200000000);
+const bigBuffer = new Buffer(200000000);
 
-var count = 1;
-setInterval(function () {
+let count = 1;
+setInterval(() => {
   console.log("Reporting from a test app, %d.", count);
   count++;
 }, 1000);
 
-setInterval(function () {
+setInterval(() => {
   console.log("Slow call started...");
-  var duration = slowFunc(_.random(1000, 100000));
+  const duration = slowFunc(_.random(1000, 100000));
   console.log("Completed in: ", duration);
 }, 3000);
 
-setInterval(function () {
+setInterval(() => {
   console.log("Filling buffer...");
   bigBuffer.fill(2);
 }, 5000);
 
-setInterval(function () {
+setInterval(() => {
   console.error("bummer shoulda read the dox :(", new Error().stack);
 }, 5000);
 
-var progress = 0;
-setInterval(function () {
+let progress = 0;
+setInterval(() => {
   console.log("[STATUS] Status update: ", progress);
 }, 3000);
 
-setInterval(function () {
+setInterval(() => {
   console.error("[STATUS] STATUS ERROR! (", progress, ")");
 }, 7000);
 
-setInterval(function () {
+setInterval(() => {
   console.log("[PROGRESS] ", progress++);
 }, 1000);
