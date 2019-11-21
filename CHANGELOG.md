@@ -1,5 +1,11 @@
 # Change log
 
+## [v0.5.0] - 2019-11-21
+
+- **Breaking**: Update node engines to `8`+
+- *Internal*: Upgrade all prod + dev dependencies
+- *Internal*: Update to es-next code from at least auto-fixes.
+
 ## [v0.4.3] - 2017-12-01
 - **Fixed:** Environment variable names on Linux [\#76]
 - **Added:** Goto User-Defined Time Index [\#68]
