@@ -1,22 +1,21 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var EnvDetailsView = require("../../../lib/views/env-details-view");
-var utils = require("../../utils");
+const EnvDetailsView = require("../../../lib/views/env-details-view");
+const utils = require("../../utils");
 
-describe("EnvDetailsView", function () {
+describe("EnvDetailsView", () => {
+  let sandbox;
+  let testContainer;
+  let view;
 
-  var sandbox;
-  var testContainer;
-  var view;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     view = new EnvDetailsView({
@@ -27,13 +26,13 @@ describe("EnvDetailsView", function () {
     });
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  describe("getDetails", function () {
-    it("should include labels", function () {
-      var details = view.getDetails();
+  describe("getDetails", () => {
+    it("should include labels", () => {
+      const details = view.getDetails();
       expect(details).to.be.an("array");
     });
   });

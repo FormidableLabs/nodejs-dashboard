@@ -1,25 +1,24 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var blessed = require("blessed");
+const blessed = require("blessed");
 
-var StreamView = require("../../../lib/views/stream-view");
-var utils = require("../../utils");
-var LogProvider = require("../../../lib/providers/log-provider");
+const StreamView = require("../../../lib/views/stream-view");
+const utils = require("../../utils");
+const LogProvider = require("../../../lib/providers/log-provider");
 
-describe("StreamView", function () {
+describe("StreamView", () => {
+  let sandbox;
+  let testContainer;
+  let options;
 
-  var sandbox;
-  var testContainer;
-  var options;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     options = {
@@ -32,34 +31,32 @@ describe("StreamView", function () {
     sandbox.stub(StreamView.prototype, "log");
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  describe("constructor", function () {
-
-    it("should require logProvider", function () {
+  describe("constructor", () => {
+    it("should require logProvider", () => {
       options.logProvider = undefined;
-      expect(function () {
+      expect(() => {
         new StreamView(options); // eslint-disable-line no-new
       }).to.throw("StreamView requires logProvider");
     });
 
-    it("should create a log node and listen for given events", function () {
-      var streamView = new StreamView(options);
+    it("should create a log node and listen for given events", () => {
+      const streamView = new StreamView(options);
 
       expect(streamView).to.have.property("node").that.is.an.instanceof(blessed.log);
-      expect(streamView.node).to.have.deep.property("options.label", " stdout / stderr ");
+      expect(streamView.node).to.have.nested.property("options.label", " stdout / stderr ");
       expect(testContainer.screen.on).to.have.been
         .calledWithExactly("stdout", sinon.match.func)
         .and.calledWithExactly("stderr", sinon.match.func);
     });
   });
 
-  describe("log", function () {
-
-    it("should strip trailing newline before logging data", function () {
-      var streamView = new StreamView(options);
+  describe("log", () => {
+    it("should strip trailing newline before logging data", () => {
+      const streamView = new StreamView(options);
 
       StreamView.prototype.log.restore();
       sandbox.stub(streamView.node, "log");
@@ -68,13 +65,13 @@ describe("StreamView", function () {
         .and.calledWithExactly("something\nmultiline");
     });
 
-    it("should filter logs with include", function () {
+    it("should filter logs with include", () => {
       StreamView.prototype.log.restore();
 
       options.layoutConfig.view = {
         include: "^THIS"
       };
-      var streamView = new StreamView(options);
+      let streamView = new StreamView(options);
       sandbox.stub(streamView.node, "log");
 
       streamView.log("THIS should be included\nbut not THIS one\nor that one\n");
@@ -92,13 +89,13 @@ describe("StreamView", function () {
         .and.calledWithExactly(" should be included");
     });
 
-    it("should filter logs with exclude", function () {
+    it("should filter logs with exclude", () => {
       StreamView.prototype.log.restore();
 
       options.layoutConfig.view = {
         exclude: "^THIS"
       };
-      var streamView = new StreamView(options);
+      const streamView = new StreamView(options);
       sandbox.stub(streamView.node, "log");
 
       streamView.log("THIS should be included\nbut not THIS one\nor that one\n");

@@ -1,9 +1,7 @@
-{
-  "env": {
-    "mocha":true
-  },
-  "rules": {
-    "max-nested-callbacks": [2, 5],
-    "no-unused-expressions": 0
-  }
-}
+---
+env:
+  mocha: true
+
+rules:
+  max-nested-callbacks: ["error", 5]
+  no-unused-expressions: "off"

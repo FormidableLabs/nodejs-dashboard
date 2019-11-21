@@ -1,23 +1,22 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var BaseView = require("../../../lib/views/base-view");
-var utils = require("../../utils");
-var blessed = require("blessed");
+const BaseView = require("../../../lib/views/base-view");
+const utils = require("../../utils");
+const blessed = require("blessed");
 
-describe("BaseView", function () {
+describe("BaseView", () => {
+  let sandbox;
+  let testContainer;
+  let options;
 
-  var sandbox;
-  var testContainer;
-  var options;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     testContainer = utils.getTestContainer(sandbox);
     options = {
       parent: testContainer,
@@ -27,43 +26,43 @@ describe("BaseView", function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  describe("constructor", function () {
-
-    it("should require parent", function () {
-      expect(function () {
+  describe("constructor", () => {
+    it("should require parent", () => {
+      expect(() => {
         new BaseView({}); // eslint-disable-line no-new
       }).to.throw("View requires parent");
     });
 
-    it("should require layoutConfig with getPosition function", function () {
-      var msg = "View requires layoutConfig option with getPosition function";
-      expect(function () {
-        new BaseView({ parent: testContainer, layoutConfig: {} }); // eslint-disable-line no-new
+    it("should require layoutConfig with getPosition function", () => {
+      const msg = "View requires layoutConfig option with getPosition function";
+      expect(() => {
+        // eslint-disable-next-line no-new
+        new BaseView({ parent: testContainer,
+          layoutConfig: {} });
       }).to.throw(msg);
     });
 
-    it("should set up resize listener that calls recalculatePosition", function () {
+    it("should set up resize listener that calls recalculatePosition", () => {
       sandbox.spy(BaseView.prototype, "recalculatePosition");
-      var baseView = new BaseView(options);
+      const baseView = new BaseView(options);
 
       expect(testContainer.screen.on).to.have.been.calledOnce
         .and.calledWithExactly("resize", sinon.match.func);
 
-      var resizeHandler = testContainer.screen.on.firstCall.args[1];
+      const resizeHandler = testContainer.screen.on.firstCall.args[1];
       baseView.node = blessed.element();
       resizeHandler();
       expect(baseView.recalculatePosition).to.have.been.calledOnce;
     });
   });
 
-  describe("getPosition", function () {
-
-    it("should return result of layoutConfig getPosition", function () {
-      var baseView = new BaseView(options);
+  describe("getPosition", () => {
+    it("should return result of layoutConfig getPosition", () => {
+      const baseView = new BaseView(options);
       baseView.node = blessed.element();
       expect(options.layoutConfig.getPosition).to.have.not.been.called;
 
@@ -76,13 +75,12 @@ describe("BaseView", function () {
     });
   });
 
-  describe("recalculatePosition", function () {
-
-    it("should set node position", function () {
-      var baseView = new BaseView(options);
+  describe("recalculatePosition", () => {
+    it("should set node position", () => {
+      const baseView = new BaseView(options);
 
       baseView.node = blessed.element();
-      var newPosition = { top: "50%" };
+      const newPosition = { top: "50%" };
       baseView._getPosition = sandbox.stub().returns(newPosition);
 
       baseView.recalculatePosition();

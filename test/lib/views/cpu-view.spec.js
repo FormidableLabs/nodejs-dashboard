@@ -1,24 +1,23 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var CpuView = require("../../../lib/views/cpu-view");
-var BaseLineGraph = require("../../../lib/views/base-line-graph");
-var utils = require("../../utils");
-var MetricsProvider = require("../../../lib/providers/metrics-provider");
+const CpuView = require("../../../lib/views/cpu-view");
+const BaseLineGraph = require("../../../lib/views/base-line-graph");
+const utils = require("../../utils");
+const MetricsProvider = require("../../../lib/providers/metrics-provider");
 
-describe("CpuView", function () {
+describe("CpuView", () => {
+  let sandbox;
+  let testContainer;
+  let options;
 
-  var sandbox;
-  var testContainer;
-  var options;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     options = {
@@ -31,27 +30,25 @@ describe("CpuView", function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  describe("constructor", function () {
-
-    it("should inherit from BaseLineGraph, with cpu graph options", function () {
-      var cpu = new CpuView(options);
+  describe("constructor", () => {
+    it("should inherit from BaseLineGraph, with cpu graph options", () => {
+      const cpu = new CpuView(options);
       expect(cpu).to.be.an.instanceof(CpuView);
       expect(cpu).to.be.an.instanceof(BaseLineGraph);
 
       expect(cpu).to.have.property("unit", "%");
-      var MAX_PERCENT = 100;
-      expect(cpu).to.have.deep.property("node.options.maxY", MAX_PERCENT);
+      const MAX_PERCENT = 100;
+      expect(cpu).to.have.nested.property("node.options.maxY", MAX_PERCENT);
     });
   });
 
-  describe("onEvent", function () {
-
-    it("should call update with formatted cpu utilization", function () {
-      var cpu = new CpuView(options);
+  describe("onEvent", () => {
+    it("should call update with formatted cpu utilization", () => {
+      const cpu = new CpuView(options);
       sandbox.spy(cpu, "update");
 
       cpu.onEvent({ cpu: { utilization: 3.24346 } });

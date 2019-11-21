@@ -1,9 +1,9 @@
 "use strict";
 
-var assert = require("assert");
-var blessed = require("blessed");
-var contrib = require("blessed-contrib");
-var EventEmitter = require("events").EventEmitter;
+const assert = require("assert");
+const blessed = require("blessed");
+const contrib = require("blessed-contrib");
+const { EventEmitter } = require("events");
 
 exports.tryCatch = function (done, func) {
   try {
@@ -29,7 +29,7 @@ exports.tryCatch = function (done, func) {
 exports.getTestContainer = function (sandbox, stubEvents) {
   assert(sandbox, "getTestContainer requires sandbox");
 
-  var MockProgram = function MockProgram() {
+  const MockProgram = function MockProgram() {
     Object.assign(this, {
       key: blessed.program.prototype.key
     });
@@ -39,7 +39,7 @@ exports.getTestContainer = function (sandbox, stubEvents) {
 
   MockProgram.prototype = Object.create(EventEmitter.prototype);
 
-  var MockScreen = function MockScreen() {
+  const MockScreen = function MockScreen() {
     // organized by primitive, Object, stubs, alphabetically
     Object.assign(this, {
       program: new MockProgram(),
@@ -66,13 +66,13 @@ exports.getTestContainer = function (sandbox, stubEvents) {
 
   MockScreen.prototype = Object.create(EventEmitter.prototype);
 
-  var mockScreen = new MockScreen();
+  const mockScreen = new MockScreen();
 
   // prevent "Error: no active screen"
   blessed.Screen.total = 1;
   blessed.Screen.global = mockScreen;
 
-  var container = blessed.box({ parent: mockScreen });
+  const container = blessed.box({ parent: mockScreen });
   sandbox.stub(container, "render");
   return container;
 };

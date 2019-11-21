@@ -1,31 +1,30 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var utils = require("../../utils");
-var LogProvider = require("../../../lib/providers/log-provider");
+const utils = require("../../utils");
+const LogProvider = require("../../../lib/providers/log-provider");
 
-describe("LogProvider", function () {
+describe("LogProvider", () => {
+  let sandbox;
+  let testContainer;
+  let logProvider;
 
-  var sandbox;
-  var testContainer;
-  var logProvider;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     testContainer = utils.getTestContainer(sandbox);
     logProvider = new LogProvider(testContainer.screen);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  it("should store logs", function () {
+  it("should store logs", () => {
     logProvider._onLog("stdout", "a\n");
     logProvider._onLog("stderr", "b\n");
     logProvider._onLog("stdout", "c\n");

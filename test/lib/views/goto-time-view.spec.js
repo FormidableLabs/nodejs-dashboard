@@ -2,21 +2,21 @@
 
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
-var blessed = require("blessed");
+const expect = require("chai").expect;
+const sinon = require("sinon");
+const blessed = require("blessed");
 
-var GotoTimeView = require("../../../lib/views/goto-time-view");
-var utils = require("../../utils");
-var MetricsProvider = require("../../../lib/providers/metrics-provider");
+const GotoTimeView = require("../../../lib/views/goto-time-view");
+const utils = require("../../utils");
+const MetricsProvider = require("../../../lib/providers/metrics-provider");
 
-describe("GotoTimeView", function () {
-  var clock;
-  var sandbox;
-  var testContainer;
-  var options;
+describe("GotoTimeView", () => {
+  let clock;
+  let sandbox;
+  let testContainer;
+  let options;
 
-  var createTestContainer = function (stubEvents) {
+  const createTestContainer = function (stubEvents) {
     testContainer = utils.getTestContainer(sandbox, stubEvents);
     options = {
       parent: testContainer,
@@ -25,24 +25,24 @@ describe("GotoTimeView", function () {
     };
   };
 
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     clock = sinon.useFakeTimers();
     utils.stubWidgets(sandbox);
     createTestContainer(true);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
     clock.restore();
   });
 
-  describe("constructor", function () {
-    it("should create a popup screen", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("constructor", () => {
+    it("should create a popup screen", () => {
+      const gotoTimeView = new GotoTimeView(options);
       expect(gotoTimeView).to.be.an.instanceof(GotoTimeView);
 
       expect(gotoTimeView).to.have.property("metricsProvider").which.is.an.instanceOf(MetricsProvider);
@@ -59,14 +59,14 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("screen_onMetrics", function () {
-    it("updates the time range label", function () {
+  describe("screen_onMetrics", () => {
+    it("updates the time range label", () => {
       // to make the screen act like a real event emitter, set stubEvents to false
       // and create a new testContainer
       createTestContainer(false);
 
-      var gotoTimeView = new GotoTimeView(options);
-      var spyGetTimeRangeLabel = sandbox.spy(gotoTimeView, "getTimeRangeLabel");
+      const gotoTimeView = new GotoTimeView(options);
+      const spyGetTimeRangeLabel = sandbox.spy(gotoTimeView, "getTimeRangeLabel");
 
       gotoTimeView.screen.emit("metrics");
 
@@ -77,10 +77,10 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("node_onShow", function () {
-    it("saves focus and pops up the dialog", function () {
-      var gotoTimeView = new GotoTimeView(options);
-      var spyTextBoxFocus = sandbox.spy(gotoTimeView.textBox, "focus");
+  describe("node_onShow", () => {
+    it("saves focus and pops up the dialog", () => {
+      const gotoTimeView = new GotoTimeView(options);
+      const spyTextBoxFocus = sandbox.spy(gotoTimeView.textBox, "focus");
 
       gotoTimeView.node.emit("show");
 
@@ -91,22 +91,22 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("form_onReset", function () {
-    it("hides any error text being shown", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("form_onReset", () => {
+    it("hides any error text being shown", () => {
+      const gotoTimeView = new GotoTimeView(options);
       gotoTimeView.form.emit("reset");
 
       expect(gotoTimeView.errorText.hide).to.have.been.calledOnce;
     });
   });
 
-  describe("textBox_onKey_enter", function () {
-    it("presses the accept button programmatically", function () {
+  describe("textBox_onKey_enter", () => {
+    it("presses the accept button programmatically", () => {
       // to make the screen act like a real event emitter, set stubEvents to false
       // and create a new testContainer
       createTestContainer(false);
 
-      var gotoTimeView = new GotoTimeView(options);
+      const gotoTimeView = new GotoTimeView(options);
 
       gotoTimeView.textBox.focus();
       gotoTimeView.screen.program.emit("keypress", "enter", { full: "enter" });
@@ -115,13 +115,13 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("textBox_onKey_escape", function () {
-    it("presses the cancel button programmatically", function () {
+  describe("textBox_onKey_escape", () => {
+    it("presses the cancel button programmatically", () => {
       // to make the screen act like a real event emitter, set stubEvents to false
       // and create a new testContainer
       createTestContainer(false);
 
-      var gotoTimeView = new GotoTimeView(options);
+      const gotoTimeView = new GotoTimeView(options);
 
       gotoTimeView.textBox.focus();
       gotoTimeView.screen.program.emit("keypress", "escape", { full: "escape" });
@@ -130,13 +130,13 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("acceptButton_onKey_escape", function () {
-    it("presses the cancel button programmatically", function () {
+  describe("acceptButton_onKey_escape", () => {
+    it("presses the cancel button programmatically", () => {
       // to make the screen act like a real event emitter, set stubEvents to false
       // and create a new testContainer
       createTestContainer(false);
 
-      var gotoTimeView = new GotoTimeView(options);
+      const gotoTimeView = new GotoTimeView(options);
 
       gotoTimeView.acceptButton.focus();
       gotoTimeView.screen.program.emit("keypress", "escape", { full: "escape" });
@@ -145,13 +145,13 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("cancelButton_onKey_escape", function () {
-    it("presses itself programmatically", function () {
+  describe("cancelButton_onKey_escape", () => {
+    it("presses itself programmatically", () => {
       // to make the screen act like a real event emitter, set stubEvents to false
       // and create a new testContainer
       createTestContainer(false);
 
-      var gotoTimeView = new GotoTimeView(options);
+      const gotoTimeView = new GotoTimeView(options);
 
       gotoTimeView.cancelButton.focus();
       gotoTimeView.screen.program.emit("keypress", "escape", { full: "escape" });
@@ -160,37 +160,37 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("acceptButton_onPress", function () {
-    it("submits the form", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("acceptButton_onPress", () => {
+    it("submits the form", () => {
+      const gotoTimeView = new GotoTimeView(options);
       gotoTimeView.acceptButton.emit("press");
 
       expect(gotoTimeView.form.submit).to.have.been.calledOnce;
     });
   });
 
-  describe("cancelButton_onPress", function () {
-    it("cancels the form", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("cancelButton_onPress", () => {
+    it("cancels the form", () => {
+      const gotoTimeView = new GotoTimeView(options);
       gotoTimeView.cancelButton.emit("press");
 
       expect(gotoTimeView.form.cancel).to.have.been.calledOnce;
     });
   });
 
-  describe("form_onSubmit", function () {
-    it("validates data received and hides when valid", function () {
-      var mockData = {
+  describe("form_onSubmit", () => {
+    it("validates data received and hides when valid", () => {
+      const mockData = {
         textBox: ""
       };
-      var mockValidatedData = "";
+      const mockValidatedData = "";
 
-      var stubValidate =
-        sandbox.stub(options.metricsProvider, "validateTimeLabel").returns(mockValidatedData);
+      const stubValidate
+        = sandbox.stub(options.metricsProvider, "validateTimeLabel").returns(mockValidatedData);
 
-      var gotoTimeView = new GotoTimeView(options);
-      var spyValidate = sandbox.spy(gotoTimeView, "validate");
-      var spyHide = sandbox.spy(gotoTimeView, "hide");
+      const gotoTimeView = new GotoTimeView(options);
+      const spyValidate = sandbox.spy(gotoTimeView, "validate");
+      const spyHide = sandbox.spy(gotoTimeView, "hide");
 
       gotoTimeView.form.emit("submit", mockData);
 
@@ -206,20 +206,20 @@ describe("GotoTimeView", function () {
       expect(spyHide).to.have.been.calledOnce;
     });
 
-    it("validates data received and displays error when invalid", function () {
-      var mockData = {
+    it("validates data received and displays error when invalid", () => {
+      const mockData = {
         textBox: ""
       };
-      var mockError = new Error("Invalid");
+      const mockError = new Error("Invalid");
 
-      var stubValidate =
-        sandbox.stub(options.metricsProvider, "validateTimeLabel").throws(mockError);
+      const stubValidate
+        = sandbox.stub(options.metricsProvider, "validateTimeLabel").throws(mockError);
 
-      var gotoTimeView = new GotoTimeView(options);
+      const gotoTimeView = new GotoTimeView(options);
 
-      var spyClearTimeout = sandbox.spy(clock, "clearTimeout");
-      var spyValidate = sandbox.spy(gotoTimeView, "validate");
-      var spyTextBoxFocus = sandbox.spy(gotoTimeView.textBox, "focus");
+      const spyClearTimeout = sandbox.spy(clock, "clearTimeout");
+      const spyValidate = sandbox.spy(gotoTimeView, "validate");
+      const spyTextBoxFocus = sandbox.spy(gotoTimeView.textBox, "focus");
 
       gotoTimeView.form.emit("submit", mockData);
 
@@ -252,10 +252,10 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("form_onCancel", function () {
-    it("hides the popup", function () {
-      var gotoTimeView = new GotoTimeView(options);
-      var spyHide = sandbox.spy(gotoTimeView, "hide");
+  describe("form_onCancel", () => {
+    it("hides the popup", () => {
+      const gotoTimeView = new GotoTimeView(options);
+      const spyHide = sandbox.spy(gotoTimeView, "hide");
 
       gotoTimeView.form.emit("cancel");
 
@@ -263,18 +263,18 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("toggle", function () {
-    it("toggles the visibility of the popup", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("toggle", () => {
+    it("toggles the visibility of the popup", () => {
+      const gotoTimeView = new GotoTimeView(options);
       gotoTimeView.toggle();
 
       expect(gotoTimeView.node.toggle).to.have.been.calledOnce;
     });
   });
 
-  describe("hide", function () {
-    it("hides the popup and restores focus", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("hide", () => {
+    it("hides the popup and restores focus", () => {
+      const gotoTimeView = new GotoTimeView(options);
 
       gotoTimeView.hide();
 
@@ -284,13 +284,13 @@ describe("GotoTimeView", function () {
     });
   });
 
-  describe("isVisible", function () {
-    it("returns the visibility of the popup", function () {
-      var gotoTimeView = new GotoTimeView(options);
+  describe("isVisible", () => {
+    it("returns the visibility of the popup", () => {
+      const gotoTimeView = new GotoTimeView(options);
       gotoTimeView.toggle();
 
       expect(gotoTimeView.node.toggle).to.have.been.calledOnce;
-      expect(gotoTimeView.isVisible()).to.equal.false;
+      expect(gotoTimeView.isVisible()).to.equal(false);
     });
   });
 });

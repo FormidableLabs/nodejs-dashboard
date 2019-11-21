@@ -1,4 +1,5 @@
 "use strict";
-var dashboardAgent = require("./lib/dashboard-agent");
+
+const dashboardAgent = require("./lib/dashboard-agent");
 
 module.exports = dashboardAgent();

@@ -1,25 +1,24 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var BaseView = require("../../../lib/views/base-view");
-var BaseLineGraph = require("../../../lib/views/base-line-graph");
-var EventLoopView = require("../../../lib/views/eventloop-view");
-var utils = require("../../utils");
-var MetricsProvider = require("../../../lib/providers/metrics-provider");
+const BaseView = require("../../../lib/views/base-view");
+const BaseLineGraph = require("../../../lib/views/base-line-graph");
+const EventLoopView = require("../../../lib/views/eventloop-view");
+const utils = require("../../utils");
+const MetricsProvider = require("../../../lib/providers/metrics-provider");
 
-describe("EventLoopView", function () {
+describe("EventLoopView", () => {
+  let sandbox;
+  let testContainer;
+  let options;
 
-  var sandbox;
-  var testContainer;
-  var options;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     options = {
@@ -32,14 +31,13 @@ describe("EventLoopView", function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
-  describe("constructor", function () {
-
-    it("should inherit from BaseLineGraph, with eventLoop graph options", function () {
-      var eventLoop = new EventLoopView(options);
+  describe("constructor", () => {
+    it("should inherit from BaseLineGraph, with eventLoop graph options", () => {
+      const eventLoop = new EventLoopView(options);
       expect(eventLoop).to.be.an.instanceof(EventLoopView);
       expect(eventLoop).to.be.an.instanceof(BaseLineGraph);
       expect(eventLoop).to.be.an.instanceof(BaseView);
@@ -50,16 +48,17 @@ describe("EventLoopView", function () {
     });
   });
 
-  describe("onEvent", function () {
-
-    it("should call update with event loop delay and high", function () {
-      var eventLoop = new EventLoopView(options);
+  describe("onEvent", () => {
+    it("should call update with event loop delay and high", () => {
+      const eventLoop = new EventLoopView(options);
       sandbox.spy(eventLoop, "update");
 
-      var data = { delay: 24, high: 24.346 };
+      const data = { delay: 24,
+        high: 24.346 };
       eventLoop.onEvent({ eventLoop: data });
       expect(eventLoop.update).to.have.been.calledOnce
-        .and.calledWithExactly({ delay: data.delay, high: data.high });
+        .and.calledWithExactly({ delay: data.delay,
+          high: data.high });
     });
   });
 });

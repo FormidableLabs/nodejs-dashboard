@@ -1,22 +1,21 @@
 "use strict";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
+const expect = require("chai").expect;
+const sinon = require("sinon");
 
-var NodeDetailsView = require("../../../lib/views/node-details-view");
-var utils = require("../../utils");
+const NodeDetailsView = require("../../../lib/views/node-details-view");
+const utils = require("../../utils");
 
-describe("NodeDetailsView", function () {
+describe("NodeDetailsView", () => {
+  let sandbox;
+  let testContainer;
+  let view;
 
-  var sandbox;
-  var testContainer;
-  var view;
-
-  before(function () {
-    sandbox = sinon.sandbox.create();
+  before(() => {
+    sandbox = sinon.createSandbox();
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     utils.stubWidgets(sandbox);
     testContainer = utils.getTestContainer(sandbox);
     view = new NodeDetailsView({
@@ -27,17 +26,17 @@ describe("NodeDetailsView", function () {
     });
   });
 
-  afterEach(function () {
+  afterEach(() => {
+    // Need to detach the node to clean up and not hang the tests.
+    view.node.emit("detach");
     sandbox.restore();
   });
 
-  describe("getDetails", function () {
-    it("should include labels", function () {
-      var details = view.getDetails();
+  describe("getDetails", () => {
+    it("should include labels", () => {
+      const details = view.getDetails();
       expect(details).to.be.an("array");
-      var labels = details.map(function (detail) {
-        return detail.label;
-      }).sort();
+      const labels = details.map((detail) => detail.label).sort();
       expect(labels).to.eql([
         "LTS",
         "Uptime",
