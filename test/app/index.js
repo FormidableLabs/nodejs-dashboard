@@ -10,8 +10,9 @@ const slowFunc = function (count) {
   const begin = Date.now();
 
   // Deliberately unused variable.
+  // eslint-disable-next-line no-unused-vars
   let values = _.times(count, () => _.random(0, count));
-  values = _.sortBy(values); // eslint-disable-line no-unused-vars
+  values = _.sortBy(values);
 
   return Date.now() - begin;
 };

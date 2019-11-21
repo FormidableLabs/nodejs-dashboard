@@ -40,8 +40,9 @@ describe("BaseView", () => {
     it("should require layoutConfig with getPosition function", () => {
       const msg = "View requires layoutConfig option with getPosition function";
       expect(() => {
+        // eslint-disable-next-line no-new
         new BaseView({ parent: testContainer,
-          layoutConfig: {} }); // eslint-disable-line no-new
+          layoutConfig: {} });
       }).to.throw(msg);
     });
 

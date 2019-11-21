@@ -392,11 +392,12 @@ describe("MetricsProvider", () => {
       axis = metricsProvider.getXAxis(10000);
 
       // here is the expected (use 9999 not 10000 because the last axis element is zero-based)
-      const years = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60 * 24 * 365.25));
-      const days = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60 * 24) % 365.25);
-      const hours = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60 * 60) % 24);
-      const minutes = Math.floor(metricsProvider.zoomLevelKey * 9999 / (1000 * 60) % 60);
-      const seconds = Math.floor(metricsProvider.zoomLevelKey * 9999 / 1000 % 60);
+      const { zoomLevelKey } = metricsProvider;
+      const years = Math.floor(zoomLevelKey * 9999 / (1000 * 60 * 60 * 24 * 365.25));
+      const days = Math.floor(zoomLevelKey * 9999 / (1000 * 60 * 60 * 24) % 365.25);
+      const hours = Math.floor(zoomLevelKey * 9999 / (1000 * 60 * 60) % 24);
+      const minutes = Math.floor(zoomLevelKey * 9999 / (1000 * 60) % 60);
+      const seconds = Math.floor(zoomLevelKey * 9999 / 1000 % 60);
 
       // build a label
       const label
