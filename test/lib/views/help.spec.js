@@ -12,7 +12,7 @@ describe("HelpView", () => {
   let testContainer;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe("HelpView", () => {
   it("should create a box with text describing keybindings", () => {
     const help = new HelpView({ parent: testContainer });
     expect(help).to.have.property("node").that.is.an.instanceof(blessed.box);
-    expect(help.node).to.have.deep.property("options.content").that.contains("keybindings");
+    expect(help.node).to.have.nested.property("options.content").that.contains("keybindings");
     expect(help.node).to.have.property("hidden", true);
   });
 });

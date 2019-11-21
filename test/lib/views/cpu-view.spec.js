@@ -14,7 +14,7 @@ describe("CpuView", () => {
   let options;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -42,7 +42,7 @@ describe("CpuView", () => {
 
       expect(cpu).to.have.property("unit", "%");
       const MAX_PERCENT = 100;
-      expect(cpu).to.have.deep.property("node.options.maxY", MAX_PERCENT);
+      expect(cpu).to.have.nested.property("node.options.maxY", MAX_PERCENT);
     });
   });
 

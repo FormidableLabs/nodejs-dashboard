@@ -15,7 +15,7 @@ describe("StreamView", () => {
   let options;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe("StreamView", () => {
       const streamView = new StreamView(options);
 
       expect(streamView).to.have.property("node").that.is.an.instanceof(blessed.log);
-      expect(streamView.node).to.have.deep.property("options.label", " stdout / stderr ");
+      expect(streamView.node).to.have.nested.property("options.label", " stdout / stderr ");
       expect(testContainer.screen.on).to.have.been
         .calledWithExactly("stdout", sinon.match.func)
         .and.calledWithExactly("stderr", sinon.match.func);

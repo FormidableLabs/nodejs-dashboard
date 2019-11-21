@@ -26,7 +26,7 @@ describe("GotoTimeView", () => {
   };
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -290,7 +290,7 @@ describe("GotoTimeView", () => {
       gotoTimeView.toggle();
 
       expect(gotoTimeView.node.toggle).to.have.been.calledOnce;
-      expect(gotoTimeView.isVisible()).to.equal.false;
+      expect(gotoTimeView.isVisible()).to.equal(false);
     });
   });
 });

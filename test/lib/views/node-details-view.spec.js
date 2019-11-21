@@ -12,7 +12,7 @@ describe("NodeDetailsView", () => {
   let view;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -27,6 +27,8 @@ describe("NodeDetailsView", () => {
   });
 
   afterEach(() => {
+    // Need to detach the node to clean up and not hang the tests.
+    view.node.emit("detach");
     sandbox.restore();
   });
 

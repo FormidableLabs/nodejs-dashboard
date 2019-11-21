@@ -12,7 +12,7 @@ describe("LogProvider", () => {
   let logProvider;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {

@@ -16,7 +16,7 @@ describe("MemoryGaugeView", () => {
   let options;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -43,19 +43,19 @@ describe("MemoryGaugeView", () => {
       const memory = new MemoryGaugeView(options);
 
       expect(memory).to.have.property("node").that.is.an.instanceof(blessed.box);
-      expect(memory.node).to.have.deep.property("options.label", " memory ");
+      expect(memory.node).to.have.nested.property("options.label", " memory ");
       expect(append.thirdCall).to.have.been.calledOn(testContainer)
         .and.calledWithExactly(memory.node);
 
       expect(testContainer.screen.on).to.have.been.calledWithExactly("metrics", sinon.match.func);
 
       expect(memory).to.have.property("heapGauge").that.is.an.instanceof(contrib.gauge);
-      expect(memory.heapGauge).to.have.deep.property("options.label", "heap");
+      expect(memory.heapGauge).to.have.nested.property("options.label", "heap");
       expect(append.firstCall).to.have.been.calledOn(memory.node)
         .and.calledWithExactly(memory.heapGauge);
 
       expect(memory).to.have.property("rssGauge").that.is.an.instanceof(contrib.gauge);
-      expect(memory.rssGauge).to.have.deep.property("options.label", "resident");
+      expect(memory.rssGauge).to.have.nested.property("options.label", "resident");
       expect(append.secondCall).to.have.been.calledOn(memory.node)
         .and.calledWithExactly(memory.rssGauge);
     });

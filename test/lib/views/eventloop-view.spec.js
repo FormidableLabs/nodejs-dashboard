@@ -15,7 +15,7 @@ describe("EventLoopView", () => {
   let options;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {

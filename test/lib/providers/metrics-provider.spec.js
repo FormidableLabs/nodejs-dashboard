@@ -46,11 +46,11 @@ describe("MetricsProvider", () => {
   let fill;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
 
     mockStart = 10000000;
     mockNow = mockStart;
-    sandbox.stub(Date, "now", () => mockNow);
+    sandbox.stub(Date, "now").callsFake(() => mockNow);
 
     fill = function (count, interval) {
       const mockData = [];
@@ -336,7 +336,7 @@ describe("MetricsProvider", () => {
         .that.deep.equals(metricsProvider._aggregation[metricsProvider.zoomLevelKey].data);
 
       // receiving metrics now would cause an emit
-      sandbox.stub(metricsProvider, "emit", (key, data, discardEvent) => {
+      sandbox.stub(metricsProvider, "emit").callsFake((key, data, discardEvent) => {
         if (discardEvent) {
           return;
         }
@@ -510,7 +510,7 @@ describe("MetricsProvider", () => {
       // load some data
       fill(100, 500);
 
-      sandbox.stub(metricsProvider, "adjustScrollOffset", (direction) => {
+      sandbox.stub(metricsProvider, "adjustScrollOffset").callsFake((direction) => {
         let length = metricsProvider._aggregation[AGGREGATE_TIME_LEVELS[0]].data.length;
 
         length = direction < 0 ? -length : Number(length);
@@ -527,7 +527,7 @@ describe("MetricsProvider", () => {
 
   describe("resetGraphs", () => {
     it("resets zoom level and scroll offsets", () => {
-      sandbox.stub(metricsProvider, "setZoomLevel", (zoom) => {
+      sandbox.stub(metricsProvider, "setZoomLevel").callsFake((zoom) => {
         expect(zoom)
           .to.be.a("number")
           .that.equals(0);

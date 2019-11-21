@@ -12,7 +12,7 @@ describe("UserDetailsView", () => {
   let view;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {

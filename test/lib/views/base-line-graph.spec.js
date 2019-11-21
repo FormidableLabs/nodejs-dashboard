@@ -17,7 +17,7 @@ describe("BaseLineGraph", () => {
   let options;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
   });
 
   beforeEach(() => {
@@ -53,7 +53,7 @@ describe("BaseLineGraph", () => {
       options.layoutConfig.view.limit = limit;
       const baseGraph = new BaseLineGraph(options);
       expect(baseGraph).to.have.property("limit", limit);
-      expect(baseGraph).to.have.deep.property("series.a.y")
+      expect(baseGraph).to.have.nested.property("series.a.y")
         .that.deep.equals(_.times(limit, _.constant(0)));
     });
 
@@ -110,14 +110,14 @@ describe("BaseLineGraph", () => {
       options.layoutConfig.view.title = "cpu";
       options.unit = "%";
       const baseGraph = new BaseLineGraph(options);
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0, 0]);
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 0, 0]);
 
       baseGraph.update({ a: 29 });
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0, 29]);
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 0, 29]);
       expect(baseGraph.node.setLabel).to.have.been.calledWith(" cpu (29%) ");
 
       baseGraph.update({ a: 8 });
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 29, 8]);
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 29, 8]);
       expect(baseGraph.node.setLabel).to.have.been.calledWith(" cpu (8%) ");
     });
 
@@ -128,8 +128,8 @@ describe("BaseLineGraph", () => {
       };
       const baseGraph = new BaseLineGraph(options);
 
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 0]);
-      expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 0]);
+      expect(baseGraph).to.have.nested.property("series.high").that.deep.equals({
         x: [":02", ":01", ":00"],
         y: [0, 0, 0],
         style: { line: "red" }
@@ -137,8 +137,8 @@ describe("BaseLineGraph", () => {
 
       baseGraph.update({ a: 2,
         high: 4 });
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 2]);
-      expect(baseGraph).to.have.deep.property("series.high").that.deep.equals({
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 2]);
+      expect(baseGraph).to.have.nested.property("series.high").that.deep.equals({
         x: [":02", ":01", ":00"],
         y: [4, 4, 4],
         style: { line: "red" }
@@ -155,8 +155,8 @@ describe("BaseLineGraph", () => {
 
       baseGraph.update({ a: 27,
         high: 27 });
-      expect(baseGraph).to.have.deep.property("series.a.y").that.deep.equals([0, 0, 27]);
-      expect(baseGraph).to.have.deep.property("series.high.y").that.deep.equals([27, 27, 27]);
+      expect(baseGraph).to.have.nested.property("series.a.y").that.deep.equals([0, 0, 27]);
+      expect(baseGraph).to.have.nested.property("series.high.y").that.deep.equals([27, 27, 27]);
     });
 
     /* eslint-enable no-magic-numbers */
@@ -175,8 +175,8 @@ describe("BaseLineGraph", () => {
       baseGraph._createGraph(options);
 
       expect(baseGraph).to.have.property("node").that.is.an.instanceof(contrib.line);
-      expect(baseGraph.node).to.have.deep.property("options.label", " graph A ");
-      expect(baseGraph.node).to.have.deep.property("options.maxY", undefined);
+      expect(baseGraph.node).to.have.nested.property("options.label", " graph A ");
+      expect(baseGraph.node).to.have.nested.property("options.maxY", undefined);
       expect(baseGraph.node).to.have.property("position")
         .that.deep.equals(options.layoutConfig.getPosition(options.parent));
 
