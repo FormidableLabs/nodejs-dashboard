@@ -9,8 +9,9 @@ const _ = require("lodash");
 const slowFunc = function (count) {
   const begin = Date.now();
 
+  // Deliberately unused variable.
   let values = _.times(count, () => _.random(0, count));
-  values = _.sortBy(values);
+  values = _.sortBy(values); // eslint-disable-line no-unused-vars
 
   return Date.now() - begin;
 };
