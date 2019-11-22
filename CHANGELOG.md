@@ -1,6 +1,6 @@
 # Change log
 
-## UNRELEASED
+## [v0.5.1] - 2019-11-22
 
 - **Fixed**: Support global installs of `nodejs-dashboard`. Add the `node_modules` directory from wherever `nodejs-dashboard` is installed to `NODE_PATH` to support `node -r nodejs-dashboard` required for full usage. [\#90]
 - *Internal*: Use SIGINT for Ctrl-c. [\#93]
@@ -62,6 +62,7 @@
 - *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
 - *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
+[v0.5.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.3...v0.5.0
 [v0.4.3]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.1...v0.4.3
 [v0.4.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.0...v0.4.1
