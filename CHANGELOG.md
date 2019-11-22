@@ -1,5 +1,10 @@
 # Change log
 
+## UNRELEASED
+
+- **Fixed**: Support global installs of `nodejs-dashboard`. Add the `node_modules` directory from wherever `nodejs-dashboard` is installed to `NODE_PATH` to support `node -r nodejs-dashboard` required for full usage. [\#90]
+- *Internal*: Use SIGINT for Ctrl-c. [\#93]
+
 ## [v0.5.0] - 2019-11-21
 
 - **Breaking**: Update node engines to `8`+
@@ -57,6 +62,7 @@
 - *Internal*: Remove dependency on root-require, update repo url in package.json [\#2]
 - *Internal*: Test scaffolding and basic reporter integration test [\#3]
 
+[v0.5.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.3...v0.5.0
 [v0.4.3]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.1...v0.4.3
 [v0.4.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.3.0...v0.4.0
@@ -66,6 +72,8 @@
 [v0.1.2]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/FormidableLabs/nodejs-dashboard/compare/v0.1.0...v0.1.1
 
+[\#93]: https://github.com/FormidableLabs/nodejs-dashboard/pull/93
+[\#90]: https://github.com/FormidableLabs/nodejs-dashboard/issues/90
 [\#76]: https://github.com/FormidableLabs/nodejs-dashboard/pull/76
 [\#68]: https://github.com/FormidableLabs/nodejs-dashboard/pull/72
 [\#67]: https://github.com/FormidableLabs/nodejs-dashboard/pull/70

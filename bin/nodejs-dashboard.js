@@ -75,9 +75,23 @@ process.env[config.PORT_KEY] = port;
 process.env[config.REFRESH_INTERVAL_KEY] = program.refreshinterval;
 process.env[config.BLOCKED_THRESHOLD_KEY] = program.eventdelay;
 
+// Enhance `NODE_PATH` to include the dashboard such that `require("nodejs-dashboard")`
+// works even if globally installed.
+// See: https://github.com/FormidableLabs/nodejs-dashboard/issues/90
+const IS_WIN = process.platform.indexOf("win") === 0;
+const DELIM = IS_WIN ? ";" : ":";
+const DASHBOARD_PATH = path.resolve(__dirname, "../..");
+const NODE_PATH = (process.env.NODE_PATH || "")
+  .split(DELIM)
+  .filter(Boolean)
+  .concat(DASHBOARD_PATH)
+  .join(DELIM);
 
 const child = spawn(command, args, {
-  env: process.env,
+  env: {
+    ...process.env,
+    NODE_PATH
+  },
   stdio: [null, null, null, null],
   detached: true
 });
