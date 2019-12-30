@@ -4,7 +4,7 @@
   Telemetry dashboard for node.js apps from the terminal!
 </h4>
 
-[![Build Status](https://travis-ci.org/FormidableLabs/nodejs-dashboard.svg?branch=master)](https://travis-ci.org/FormidableLabs/nodejs-dashboard)
+[![Build Status](https://travis-ci.com/FormidableLabs/nodejs-dashboard.svg?branch=master)](https://travis-ci.com/FormidableLabs/nodejs-dashboard)
 
 ![http://g.recordit.co/WlUvKhXqnp.gif](http://g.recordit.co/WlUvKhXqnp.gif)
 
