@@ -116,3 +116,7 @@ Specifies the interval in milliseconds that the metrics should be refreshed. The
 
 ##### `--settings`
 Overrides default or layout settings for views. Option value `settings` should have a format `<view_type.setting.path>=<value>,...`. For example `--settings log.scrollback=100` will override `scrollback` setting for any view of `log` type (nested paths can be used if needed). For details about layouts, see [Customizing Layouts](/LAYOUTS.md)).
+
+## Maintenance Status
+
+**Archived:** This project is no longer maintained by Formidable. We are no longer responding to issues or pull requests unless they relate to security concerns. We encourage interested developers to fork this project and make it their own!
